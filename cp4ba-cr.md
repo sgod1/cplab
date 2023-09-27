@@ -16,7 +16,7 @@ Cloupak foundational pattern is *always* required by other patterns.
 
 Installation configuration script is smart about required and optional components and their dependencies.
 
-#### Optional: Patterns Knowlege Base
+#### Patterns Knowlege Base
 We can define knowledge base for patterns and their dependencies that we can view and query.
 
 ```
@@ -118,7 +118,7 @@ always(workflow_process_service, cp_foundation, license).
 always(workflow_process_service, cp_foundation, certmgr).
 ```
 
-### Creating Workflow Process Service Authoring CR**.
+### Creating Workflow Process Service Authoring CR.
 
 > Complete prerequisite steps to install CP4BA CASE package.
 
