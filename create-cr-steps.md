@@ -33,14 +33,21 @@ cd $CERTKUBE/scripts
 ./cp4a-prerequisites.sh -m property
 ```
 
-> Select `option 8 - Workflow Process Service Authoring`, hit return, and hit return again on the second screen and third screens.<br/>
-> For LDAP configuration, select `Yes`.<br/>
-> For LDAP type, select `option 2 - IBM Tivoli Directory Server / Security Directory Server'<br/>
-> For slow storage class enter `ocs-storagecluster-cephfs`<br/>
-> For medium storage class enter `ocs-storagecluster-cephfs`<br/>
-> For fast storage class enter `ocs-storagecluster-cephfs`<br/>
-> For block storage class enter `ocs-storagecluster-ceph-rbd`<br/>
-> For external Postgresql enter `No`. Workflow Process Service Authoring Operator will provision an EDB postgreSQL database.
+> Select *option 8 - Workflow Process Service Authoring*, hit return, and hit return again on the second screen and third screens.
+
+> For LDAP configuration, select *Yes*.
+
+> For LDAP type, select *option 2 - IBM Tivoli Directory Server / Security Directory Server*
+
+> For slow storage class, enter *ocs-storagecluster-cephfs*
+
+> For medium storage class, enter *ocs-storagecluster-cephfs*
+
+> For fast storage class, enter *ocs-storagecluster-cephfs*
+
+> For block storage class, enter *ocs-storagecluster-ceph-rbd*
+
+> For external Postgresql, enter *No*. Workflow Process Service Authoring Operator will provision an EDB postgreSQL database.
 
 > Change to `cp4ba-prerequisites/propertyfile` directory and edit propery files.
 
