@@ -247,16 +247,25 @@ cd $CERTKUBE/scripts
 ./cp4a-deployment
 ```
 
-> For License Accept select: 'Yes'<br/>
-> For Content CR select: 'No'<br/>
-> For Deployment Type select: `2`, Production<br/>
-> Hit `Enter` for selected capabilities<br/>
-> For deployment profile select: `1`, small<br/>
-> For Cloud Platform select: '2', Openshift Container Platform (OCP) - Private Cloud<br/>
-> For default IAM admin user, select: `No`<br/>
-> Enter user name: user01<br/>
-> Hit `Enter` for JDBC driver URL<br/>
-> At the summary screen, select: 'Yes', Proceed with deployment.
+> For License Accept, select: *Yes*
+
+> For Content CR, select: *No*
+
+> For Deployment Type, select: `2`, *Production*
+
+> Hit `Enter` for selected capabilities
+
+> For deployment profile, select: `1`, *small*
+
+> For Cloud Platform, select: `2`, *Openshift Container Platform (OCP) - Private Cloud*
+
+> For default IAM admin user, select: *No*
+
+> Enter user name: *user01*
+
+> Hit `Enter` for JDBC driver URL
+
+> At the summary screen, select: *Yes*, Proceed with deployment.
 
 ```
 Creating the Custom Resource of the Cloud Pak for Business Automation operator...
