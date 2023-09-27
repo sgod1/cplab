@@ -1,4 +1,4 @@
-### Cloud Pak Operators
+### Deploying CP4BA Cloud Pak Operator.
 
 > Complete `deploy cloud pak operator steps`. (Required)
 
