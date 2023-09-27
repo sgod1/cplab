@@ -181,9 +181,10 @@ We will work with *Workflow Process Service Authoring* CR.
 
 @Todo: Describe Workflow Process Service is ...
 
-> Required: Follow preprequisites steps to deploy *OpenLdap Bitnami* container and validate in-cluster ldap search.
+> *Required*: Follow preprequisites steps to deploy *OpenLdap Bitnami* container and validate in-cluster ldap search.<br/>
 
 > Review steps to create Workflow Service Authoring CR.
+
 > Review steps generating cloud-pak CR yaml file from property files.
 
 >View generated CR in `$CERTKUBE/scripts/generated-cr` directory.
