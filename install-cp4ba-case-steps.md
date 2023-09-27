@@ -2,9 +2,7 @@
 
 Download CP4BA case package 23.0.1-IF001.
 
-> Open a browser at:
-
-[501](https://github.com/IBM/cloud-pak/tree/master/repo/case/ibm-cp-automation/5.0.1)
+> Open CASE repository page: [501] (https://github.com/IBM/cloud-pak/tree/master/repo/case/ibm-cp-automation/5.0.1)
 
 > Download compressed CP4BA case tar file: `ibm-cp-automation-5.0.1.tgz`
 
