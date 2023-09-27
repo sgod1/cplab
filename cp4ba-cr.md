@@ -292,7 +292,7 @@ By reviewing output of ldap CR query, we see that some parameters, like Ldap ser
 
 We deployed ldap server on the cluster, and from the pod it is faster to reach ldap using cluster service url, rather than external node port url.
 
-#### This is KEY**
+#### This is KEY<br/>
 We do not want to make direct changes to CR or to keep multiple copies of CR for different environments.
 
 `Kustomize` is standard kubernetes tool to apply patches to kubernetes resources.<br/>
@@ -446,7 +446,7 @@ oc kustomize . | yq .spec.ldap_configuration.lc_ldap_port
 oc kustomize . | yq .spec.shared_configuration.sc_deployment_license
 ```
 
-#### prod* overlay kustomizations
+#### prod overlay kustomizations
 
 > Change to the `overlay/prod` directory and create `kustomiztion.yaml` file.
 
