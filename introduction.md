@@ -11,5 +11,7 @@ Postgres Database is part of the Cloud Pak, and Open LDAP is an additional deplo
 
 We do not discuss Business Automation functionality.
 
-Focus is on the Cloud Pak in the context of Open Shift.<br/>
-Lab steps are simple and support explanation of topics in Cloud Pak architecture.
+Focus is on the Cloud Pak in the context of Open Shift.
+
+Lab steps are simple and support explanation of topics in Cloud Pak architecture.<br/>
+Prerequisites and documented steps are placed in *steps* files.
