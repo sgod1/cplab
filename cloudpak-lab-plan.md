@@ -4,7 +4,7 @@ This lab is an introduction to Cloud Pak for Business Automation (CP4BA) in the 
 
 We start with high-level Cloud Pak architecture and how it integrates with Open Shift.<br/>
 
-Next we study ICP4ACluster, custom resource for CP4BA mulitpattern operator. We focus on ways to manage complexity, query CR, and manage differences between environments with kustomize.<br/>
+Next we study ICP4ACluster, custom resource for CP4BA multi-pattern operator. We focus on ways to manage complexity, query CR, and manage differences between environments with kustomize.<br/>
 
 Next, we install CP4BA operator and discuss operator dependencies.<br/>
 
