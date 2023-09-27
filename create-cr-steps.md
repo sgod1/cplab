@@ -118,7 +118,7 @@ LC_USER_FILTER="(&(cn=%v)(objectclass=inetOrgPerson))"
 LC_GROUP_FILTER="(&(cn=%v)(|(objectclass=groupofnames)(objectclass=groupofuniquenames)(objectclass=groupofurls)))"
 ```
 
-- Edit `cp4ba_user_profile.property` file
+> Edit `cp4ba_user_profile.property` file
 
 Set ba studio admin user to `user01`.
 
