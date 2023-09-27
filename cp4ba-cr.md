@@ -193,7 +193,7 @@ We will work with *Workflow Process Service Authoring* CR.
 cd $CERTKUBE
 
 ls scripts/generated-cr
-ibm_cp4a_cr_final.yaml			ibm_cp4a_cr_final_internal_ldap.yaml
+ibm_cp4a_cr_final.yaml
 ```
 
 > *Do not deploy generated cloud-pak CR at this time.*
