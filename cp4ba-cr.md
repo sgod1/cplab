@@ -20,15 +20,21 @@ Installation configuration script is smart about required and optional component
 We can define knowledge base for patterns and their dependencies that we can view and query.<br/>
 
 ```
-always(Pattern1, Component1) means that when Pattern1 is installed, Component1 is always installed.
+always(Pattern1, Component1) 
+  means that when Pattern1 is installed, Component1 is always installed.
 
-always(Pattern1, Pattern2, Component2) means that when Pattern1 is installed, then Component2 from Pattern2 is alawys installed.
+always(Pattern1, Pattern2, Component2) 
+  means that when Pattern1 is installed, then Component2 from Pattern2 is alawys installed.
 
-optional(Pattern1, Component1) means that Component1 can be optionally installed when Pattern1 is installed.
+optional(Pattern1, Component1) 
+  means that Component1 can be optionally installed when Pattern1 is installed.
 
-optional(Pattern1, Pattern2, Component2) means that Component2 from Pattern2 can be optionally installed when Pattern1 is installed.
+optional(Pattern1, Pattern2, Component2) 
+  means that Component2 from Pattern2 can be optionally installed when Pattern1 is installed.
 
-depends_on(Pattern1, Pattern2, Component2, Pattern3, Component3) means that when Pattern1 is installed, and Component2 from Pattern2 is installed (required or optional), then Component2 from Pattern2 depends on Component3 from Pattern3.
+depends_on(Pattern1, Pattern2, Component2, Pattern3, Component3) 
+  means that when Pattern1 is installed, and Component2 from Pattern2 is installed (required or optional), 
+  then Component2 from Pattern2 depends on Component3 from Pattern3.
 ```
 
 > Example: *workflow_runtime* pattern:<br/>
