@@ -1,8 +1,8 @@
 ### Building and Managing CP4ACluster CR.
 
-CP4BA multipattern CR represents Business Automation capabilities or patterns.<br/>
+*CP4BA multipattern CR* represents Business Automation capabilities or patterns.<br/>
 
-These capabilities are: @todo: list capabilities.<br/>
+These capabilities are: *Automation Decision Services*, *Automation Document Processing*, *Automation Workstream Services*, *Business Automation Application*, *Business Automation Workflow*, *FileNet Content Manager*, *Operational Decision Manager*, and *Workflow Process Service Authoring*.<br/>
 
 A pattern (capability) is a collection of components.<br/>
 
@@ -14,7 +14,7 @@ Some required components in a pattern are mandatory and some are optional.<br/>
 
 Cloupak foundational pattern is *always* required by other patterns.<br/>
 
-Installation configuration script is smart about required and optional components and their dependencies.<br/>
+Installation configuration script is smart about *required and optional components and their dependencies*.<br/>
 
 #### Patterns Knowlege Base
 We can define knowledge base for patterns and their dependencies that we can view and query.<br/>
@@ -147,11 +147,13 @@ ibm_cp4a_cr_production_FC_workflow_authoring.yaml			ibm_cp4a_cr_production_workf
 CR's with `_FC_` in their name define fully customizable CR's will all required and optional parameters.<br/>
 Other CR's define only required parameters and omit optional parameters because they will be set to default values by the cloud-pak operator.<br/>
 
-Ether way, these CR's are complicated and editing them directly is error prone.
+Ether way, these CR's are complicated and editing them directly is error prone.<br/>
+
+#### Prerequisites Script.
 
 To help with cloud pak CR authoring, prerequisites script prepares input for cloud-pak CR.<br/>
 
-Prerequsites script knows about patterns, their dependencies and compatibility.
+Prerequsites script knows about patterns, their dependencies and compatibility.<br/>
 
 > Refer to *pattern knowledge base* to review required, optional, and dependent components that can be installed for different patterns.
 
@@ -202,16 +204,17 @@ You can view CP4BA CR in text editor and search for specific parameters.<br/>
 
 Another way to examine CR is to use tools like `yq` to query CR yaml with json path.<br/>
 
-`yq` is yaml processor. Please note that json is valid yaml syntax.<br/>
+`yq` is yaml processor. Please note that *json is valid yaml syntax*.<br/>
 
 Json syntax is more compact and easier to interpret. You can choose yaml or json output format from yq.<br/>
-By default `yq` outputs json. Pass `-y` flag to `yq` to get yaml output.</br>
+By default `yq` outputs json. Pass `-y` flag to `yq` to get yaml output.<br/> 
+Quote `yq` query expressions, to prevent shell from pre-processing special characters.</br>
 
 >*Lab Steps*<br/>
-For example, to see `metadata` portion of CP4BA CR:<br/>
+> Query `metadata` portion of CP4BA CR:<br/>
 
 ```
-cat ibm_cp4a_cr_final.yaml | yq .metadata
+cat ibm_cp4a_cr_final.yaml | yq '.metadata'
 {
   "name": "icp4adeploy",
   "labels": {
