@@ -1,0 +1,23 @@
+####################################################
+## USER Property for CP4BA ##
+####################################################
+## Use this parameter to specify the license for the CP4A deployment and
+## the possible values are: non-production and production and if not set, the license will
+## be defaulted to production.  This value could be different from the other licenses in the CR.
+CP4BA.CP4BA_LICENSE="<Required>"
+
+## On OCP 3.x and 4.x, the User script will populate these three (3) parameters based on your input for "production" deployment.
+## If you manually deploying without using the User script, then you would provide the different storage classes for the slow, medium
+## and fast storage parameters below.  If you only have 1 storage class defined, then you can use that 1 storage class for all 3 parameters.
+## sc_block_storage_classname is for Zen, Zen requires/recommends block storage (RWO) for metastoreDB
+CP4BA.SLOW_FILE_STORAGE_CLASSNAME="ocs-storagecluster-cephfs"
+CP4BA.MEDIUM_FILE_STORAGE_CLASSNAME="ocs-storagecluster-cephfs"
+CP4BA.FAST_FILE_STORAGE_CLASSNAME="ocs-storagecluster-cephfs"
+CP4BA.BLOCK_STORAGE_CLASS_NAME="ocs-storagecluster-ceph-rbd"
+
+####################################################
+## USER Property for BAS ##
+####################################################
+## Designate an existing LDAP user for the BAStudio admin user.
+BASTUDIO.ADMIN_USER="user01"
+
