@@ -2,22 +2,22 @@
 
 CP4BA multipattern CR represents Business Automation capabilities or patterns.<br/>
 
-These capabilities are: @todo: list capabilities.
+These capabilities are: @todo: list capabilities.<br/>
 
-A pattern (capability) is a collection of components.
+A pattern (capability) is a collection of components.<br/>
 
-Component in a pattern maps to a pod.
+Component in a pattern maps to a pod.<br/>
 
-A pattern may require components from other patterns.
+A pattern may require components from other patterns.<br/>
 
-Some required components in a pattern are mandatory and some are optional.
+Some required components in a pattern are mandatory and some are optional.<br/>
 
-Cloupak foundational pattern is *always* required by other patterns.
+Cloupak foundational pattern is *always* required by other patterns.<br/>
 
-Installation configuration script is smart about required and optional components and their dependencies.
+Installation configuration script is smart about required and optional components and their dependencies.<br/>
 
 #### Patterns Knowlege Base
-We can define knowledge base for patterns and their dependencies that we can view and query.
+We can define knowledge base for patterns and their dependencies that we can view and query.<br/>
 
 ```
 always(Pattern1, Component1) means that when Pattern1 is installed, Component1 is always installed.
@@ -31,7 +31,7 @@ optional(Pattern1, Pattern2, Component2) means that Component2 from Pattern2 can
 depends_on(Pattern1, Pattern2, Component2, Pattern3, Component3) means that when Pattern1 is installed, and Component2 from Pattern2 is installed (required or optional), then Component2 from Pattern2 depends on Component3 from Pattern3.
 ```
 
-> Example: *workflow_runtime* pattern:
+> Example: *workflow_runtime* pattern:<br/>
 
 ```
 //
@@ -63,7 +63,7 @@ always(workflow_runtime, cp_foundation, license).
 always(workflow_runtime, cp_foundation, certmgr).
 ```
 
-> Example: FileNet *Content* pattern
+> Example: FileNet *Content* pattern<br/>
 
 ```
 //
@@ -93,7 +93,7 @@ always(content, cp_foundation, license).
 always(content, cp_foundation, certmgr).
 ```
 
-> Example: *Workflow Process Service Authoring* pattern.
+> Example: *Workflow Process Service Authoring* pattern.<br/>
 
 ```
 //
@@ -120,18 +120,11 @@ always(workflow_process_service, cp_foundation, certmgr).
 
 ### Creating Workflow Process Service Authoring CR.
 
-> Complete prerequisite steps to install CP4BA CASE package.
-
-> Define `CERTKUBE` environment variable to point to the `cert-kubernetes` directory.
+> View CR templates for CP4BA patterns. <br/>
 
 ```
-export CERTKUBE=~/cp4ba/502/ibm-cp-automation/inventory/cp4aOperatorSdk/files/deploy/crs/cert-kubernetes
-```
-
-`$CERTKUBE/descriptors/patters` directory contains CR templates for CP4BA patterns. 
-
-```
-ls $CERTKUBE/descriptors/patterns
+cd $PATTERNS
+ls
 
 ibm_cp4a_cr_production_FC_application.yaml				ibm_cp4a_cr_production_FC_workstreams.yaml				ibm_cp4a_cr_starter_application.yaml
 ibm_cp4a_cr_production_FC_content.yaml					ibm_cp4a_cr_production_application.yaml					ibm_cp4a_cr_starter_content.yaml
@@ -150,44 +143,36 @@ Other CR's define only required parameters and omit optional parameters because 
 
 Ether way, these CR's are complicated and editing them directly is error prone.
 
-It is better to define required values as name-value pairs in property files and then generate output CR.
+To help with cloud pak CR authoring, prerequisites script prepares input for cloud-pak CR.<br/>
 
-`cp4a-prerequisites.sh` script in `$CERTKUBE/scripts` directory prepares input for cloud-pak CR generation script.<br/>
+Prerequsites script knows about patterns, their dependencies and compatibility.
 
-`cp4a-prerequisites.sh` script has 3 modes: `property`, `generate`, and `validate`.
+> Refer to *pattern knowledge base* to review required, optional, and dependent components that can be installed for different patterns.
 
-To use this script we need to run it in each mode: `property`, `generate`, and `validate`.
+Prerequisites script works in steps designed to simplify and validate parameters required for the cloud-pak CR.<br/>
 
-`generate` mode will create input to `cp4a-deployment.sh` script to create cloud-pak operator CR.
+In the first step, script creates property files templates required by the capabilities we want to deploy.<br/>
 
-```
-Usage: cp4a-prerequisites.sh -m [modetype]
+In the second step, after property files are updated with required values, script creates database setup files, and yaml secrets.<br/>
 
-Options:
-  -h  Display help
-  -m  The valid mode types are: [property], [generate], or [validate]
-      STEP1: Run the script in [property] mode. Creates property files (DB/LDAP property file) with default values (database name/user).
-      STEP2: Modify the DB/LDAP/user property files with your values.
-      STEP3: Run the script in [generate] mode. Generates the DB SQL statement files and YAML templates for the secrets based on the values in the property files.
-      STEP4: Create the databases and secrets by using the modified DB SQL statement files and YAML templates for the secrets.
-      STEP5: Run the script in [validate] mode. Checks whether the databases and the secrets are created before you install CP4BA.
-```
+In the third step, script validates property values, checking database logins, directory logins, storage classes, etc.<br/>
 
-`cp4a-prerequisites.sh` script knows about patterns, their dependencies and compatibility.
+The actual job of generating cloud pak CR is done by the `cp4a-deployment.sh` script. It takes input created by the prerequisites script and generates cloud pak CR yaml file.<br/>
 
-Refer to *pattern knowledge base* to review required, optional, and dependent components that can be installed for different patterns.
+> Prerequsites script:  `$SCRIPTS/cp4a-prerequisites.sh`<br/>
+> Cloud Pak CR directory: `$SCRIPTS/generated-cr`.<br/>
 
-We will work with *Workflow Process Service Authoring* CR.
+We will work with the *Workflow Process Service Authoring* capability.
 
-@Todo: Describe Workflow Process Service is ...
+*Workflow Process Service Authoring* is a capability with a small footprint and resource usage for authoring and running workflows.<br/>
 
-> *Required*: Follow preprequisites steps to deploy *OpenLdap Bitnami* container and validate in-cluster ldap search.<br/>
+The authoring environment includes IBM Business Automation Studio and allows you to create, maintain, and edit Business Automation Workflows.<br/>
 
-> Review steps to create Workflow Service Authoring CR.
+> *Lab Steps*<br/>
+> Review steps to create Workflow Service Authoring CR.<br/>
+> Review steps generating cloud-pak CR yaml file from property files.<br/>
 
-> Review steps generating cloud-pak CR yaml file from property files.
-
->View generated CR in `$CERTKUBE/scripts/generated-cr` directory.
+>Review generated CR in `$SCRIPTS/generated-cr` directory.<br/>
 
 ```
 cd $CERTKUBE
@@ -201,22 +186,23 @@ ibm_cp4a_cr_final.yaml
 
 ### Using `yq` to work with the CP4BACluster CR
 
-CP4BACluster CR is complex and contains multiple components from patterns selected for installation.
+CP4BACluster CR is complex and contains multiple components from patterns selected for installation.><br/>
 
-There are sections for different components. Some sections are shared between all patterns and some sections are component specific.
+There are sections for different components. Some sections are shared between all patterns and some sections are component specific.<br/>
 
-For example, shared configuration for ldap and datasource configuration applies to all capabilities.
+For example, shared configuration for ldap and datasource configuration applies to all capabilities.<br/>
 
-You can view CP4BA CR in text editor and search for specific parameters.
+You can view CP4BA CR in text editor and search for specific parameters.<br/>
 
-Another way to examine CR is to use tools like `yq` to query CR yaml with json path.
+Another way to examine CR is to use tools like `yq` to query CR yaml with json path.<br/>
 
-`yq` is yaml processor. Please note that json is valid yaml syntax.
+`yq` is yaml processor. Please note that json is valid yaml syntax.<br/>
 
 Json syntax is more compact and easier to interpret. You can choose yaml or json output format from yq.<br/>
-By default `yq` outputs json. Pass `-y` flag to `yq` to get yaml output.
+By default `yq` outputs json. Pass `-y` flag to `yq` to get yaml output.</br>
 
-For example, to see `metadata` portion of CP4BA CR:
+>*Lab Steps*<br/>
+For example, to see `metadata` portion of CP4BA CR:<br/>
 
 ```
 cat ibm_cp4a_cr_final.yaml | yq .metadata
@@ -231,7 +217,7 @@ cat ibm_cp4a_cr_final.yaml | yq .metadata
 }
 ```
 
-> Query CR `metadata` as yaml:
+> Query CR `metadata` as yaml:<br/>
 
 ```
 cat ibm_cp4a_cr_final.yaml | yq -y .metadata
@@ -243,7 +229,7 @@ labels:
   release: 23.0.1
 ```
 
-> Query CR storage configuration:
+> Query CR storage configuration:<br/>
 
 ```
 cat ibm_cp4a_cr_final.yaml | yq .spec.shared_configuration.storage_configuration
@@ -255,7 +241,7 @@ cat ibm_cp4a_cr_final.yaml | yq .spec.shared_configuration.storage_configuration
 }
 ```
 
-> Query CR ldap configuration:
+> Query CR ldap configuration:<br/>
 
 ```
 cat ibm_cp4a_cr_final.yaml | yq .spec.ldap_configuration                      
@@ -288,21 +274,22 @@ cat ibm_cp4a_cr_final.yaml | yq .spec.ldap_configuration
 
 ### Using Kustomize to work with CP4BA Cluster CR**
 
-By reviewing output of ldap CR query, we see that some parameters, like Ldap server Host and Port, will be different between environments.
+By reviewing output of ldap CR query, we see that some parameters, like Ldap server Host and Port, will be different between environments.<br/>
 
-We deployed ldap server on the cluster, and from the pod it is faster to reach ldap using cluster service url, rather than external node port url.
+We deployed ldap server on the cluster, and from the pod it is faster to reach ldap using cluster service url, rather than external node port url.<br/>
 
 #### This is KEY<br/>
-We do not want to make direct changes to CR or to keep multiple copies of CR for different environments.
+We do not want to make direct changes to CR or to keep multiple copies of CR for different environments.<br/>
 
 `Kustomize` is standard kubernetes tool to apply patches to kubernetes resources.<br/>
-`Kustomize` is integrated with `oc` command and invoked with `oc kustomize`.
+`Kustomize` is integrated with `oc` command and invoked with `oc kustomize`.<br/>
 
-We will show examples how to customize `namespace`, `labels`, `annotations`, and how to patch CP4BA CR with environment specific values.
+We will show examples how to customize `namespace`, `labels`, `annotations`, and how to patch CP4BA CR with environment specific values.<br/>
 
-`Kustomize` overlay idiom is to have *base* directory with original resources and *overlay* directories with kustomizations for each environment.
+`Kustomize` overlay idiom is to have *base* directory with original resources and *overlay* directories with kustomizations for each environment.<br/>
 
-> Create `$CERTKUBE/scripts/kustomize` directory and overlay subdirectories.
+> *Lab Steps*<br/>
+> Create `$CERTKUBE/scripts/kustomize` directory and overlay subdirectories.<br/>
 
 ```
 mkdir -p $CERTKUBE/scripts/kustomize
@@ -313,13 +300,13 @@ mkdir -p overlay/dev
 mkdir -p operlay/prod
 ```
 
-> Copy ibm_cp4a_cr_final.yaml to the `base` directoy.
+> Copy ibm_cp4a_cr_final.yaml to the `base` directoy.<br/>
 
 ```
 cp $CERTKUBE/scripts/generated-cr/ibm_cp4a_cr_final.yaml $CERTKUBE/scripts/kustomize/base
 ```
 
-> Change to the `base` directory and create `kustomization.yaml` file.
+> Change to the `base` directory and create `kustomization.yaml` file.<br/>
 
 ```
 cd $CERTKUBE/scripts/kustomize/base
@@ -335,12 +322,13 @@ resources:
 EOF
 ```
 
-Add CP4BA CR file to a `resources` list. Resources in this list will be processed by `kustomize`.
+Add CP4BA CR file to a `resources` list. Resources in this list will be processed by `kustomize`.<br/>
 
-Note that there are no kustomizations in this file yet.
+Note that there are no kustomizations in this file yet.<br/>
 
 #### Dev overlay kustomizations.
 
+> *Lab Steps*<br/>
 > Change to the `overlay/dev` directory and create `kustomiztion.yaml` file.
 
 ```
@@ -369,30 +357,31 @@ patches:
 EOF
 ```
 
-`bases` key in `kustomization.yaml` list directories with resources to apply kustomizations.
+`bases` key in `kustomization.yaml` list directories with resources to apply kustomizations.<br/>
 
-Our `base/kustomizaion.yaml` file makes cloud-pak CR file kustomizable.
+Our `base/kustomizaion.yaml` file makes cloud-pak CR file kustomizable.<br/>
 
-There are a number of standard `kustomize` transformers:
+There are a number of standard `kustomize` transformers:<br/>
 
-> `namespace` transformer will update namespace references.
+> `namespace` transformer will update namespace references.<br/>
 
-> `commonLabels` transformer will add labels to `metadata/labels` field of the CR.
+> `commonLabels` transformer will add labels to `metadata/labels` field of the CR.<br/>
 
->`commonAnnotations` transformer will add annotations to `metadata/annotations`.
+>`commonAnnotations` transformer will add annotations to `metadata/annotations`.<br/>
 
-The `prefix/suffix` transformer adds a `prefix/suffix` to the `metadata/name` field for all resources.
+The `prefix/suffix` transformer adds a `prefix/suffix` to the `metadata/name` field for all resources.<br/>
 
 Note that it is possible to create transformer configurations that are specific to the CR syntax.<br/>
-We do not show this use case.
+We do not show this use case.<br/>
 
-To kustomize other elements of the cloud-pak CR we will use patches.
+To kustomize other elements of the cloud-pak CR we will use patches.<br/>
 
-We will kustomize ldap server configuration, ldap server port, and cloud-pak license type.
+We will kustomize ldap server configuration, ldap server port, and cloud-pak license type.<br/>
 
-Patches are listed under `patches` key in `kustomization.yaml`.
+Patches are listed under `patches` key in `kustomization.yaml`.<br/>
 
-> Create `lc-ldap-server-patch.yaml` in `overlay/dev` directory.
+> *Lab Steps*<br/>
+> Create `lc-ldap-server-patch.yaml` in `overlay/dev` directory.<br/>
 
 ```
 cd $CERTKUBE/scripts/kustomize/overlay/dev
@@ -411,7 +400,7 @@ spec:
 EOF
 ```
 
-> Create `lc-license-type-patch.yaml` in `overlay/dev` directory.
+> Create `lc-license-type-patch.yaml` in `overlay/dev` directory.<br/>
 
 ```
 cat <<EOF > lc-license-type-patch.yaml
@@ -425,9 +414,9 @@ spec:
 EOF
 ```
 
-This type of patch is called `patch strategic merge`.
+This type of patch is called `patch strategic merge`.<br/>
 
-> Apply `dev` overlay kustomizations:
+> Apply `dev` overlay kustomizations:<br/>
 
 ```
 cd $CERTKUBE/scripts/kustomize/overlay/dev
@@ -450,6 +439,7 @@ oc kustomize . | yq .spec.shared_configuration.sc_deployment_license
 
 > Change to the `overlay/prod` directory and create `kustomiztion.yaml` file.
 
+> *Lab Steps*<br/>
 ```
 cd $CERTKUBE/scripts/kustomize/overlay/prod
 ```
@@ -480,11 +470,11 @@ patchesJson6902:
 EOF
 ```
 
-Note that we are using different key for the patch: `patchesJson6902`.
+Note that we are using different key for the patch: `patchesJson6902`.<br/>
 
-This type of patch allows multiple `add/delete/replace` customizations.
+This type of patch allows multiple `add/delete/replace` customizations.<br/>
 
-> Create `multi-json-patch.json` file.
+> Create `multi-json-patch.json` file.<br/>
 
 ```
 cat <<EOF > multi-json-patch.json
@@ -508,7 +498,7 @@ cat <<EOF > multi-json-patch.json
 EOF
 ```
 
-> Apply `prod` overlay kustomizations:
+> Apply `prod` overlay kustomizations:<br/>
 
 ```
 cd $CERTKUBE/scripts/kustomize/overlay/prod
@@ -516,7 +506,7 @@ cd $CERTKUBE/scripts/kustomize/overlay/prod
 oc kustomize .
 ```
 
-> observe applied changes:
+> observe applied changes:<br/>
 
 ```
 oc kustomize . | yq .metadata.namespace
@@ -529,7 +519,8 @@ oc kustomize . | yq .spec.shared_configuration.sc_deployment_license
 
 #### Differences between kustomizations.
 
-> Save `oc kustomize` output in each overlay directory and then run `diff` command to see differences.
+> *Lab Steps*<br/>
+> Save `oc kustomize` output in each overlay directory and then run `diff` command to see differences.<br/>
 
 ```
 cd $CERTKUBE/scripts/kustomize
@@ -552,4 +543,4 @@ diff kustomized-cr-dev.yaml kustomized-cr-prod.yaml
 >     sc_drivers_url: null
 ```
 
-You can see that strategic patch merge removed null `sc_drivers_url` key and 6902 json patch preserved the null value.
+You can see that strategic patch merge removed null `sc_drivers_url` key and 6902 json patch preserved the null value.<br/>
