@@ -4,4 +4,5 @@ metadata:
   name: icp4adeploy
 spec:
   ldap_configuration:
-    lc_ldap_server: roky.dogsrus.io
+    lc_ldap_server: openldap.openldap.svc
+    lc_ldap_port: 1389

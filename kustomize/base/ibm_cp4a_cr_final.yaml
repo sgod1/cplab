@@ -79,7 +79,7 @@ spec:
     ## Use this parameter to specify the license for the CP4A deployment and
     ## the possible values are: non-production and production and if not set, the license will
     ## be defaulted to production.  This value could be different from the other licenses in the CR.
-    sc_deployment_license: "production"
+    sc_deployment_license: "<Required>"
     ## The deployment context, which has a default value of "CP4A".  Unless you are instructed to change this value or 
     ## know the reason to change this value, please leave the default value.
     sc_deployment_context: "CP4A"
@@ -145,34 +145,34 @@ spec:
   ## 2. Do post actions with https://www.ibm.com/docs/en/cloud-paks/cp-biz-automation/22.0.1?topic=tasks-business-automation-studio to add the LDAP connection manually after install
   ldap_configuration:
     ## The possible values are: "IBM Security Directory Server" or "Microsoft Active Directory"
-    lc_selected_ldap_type: "Microsoft Active Directory"
+    lc_selected_ldap_type: "IBM Security Directory Server"
     ## The name of the LDAP server to connect
-    lc_ldap_server: "worker14.szesto.io"
+    lc_ldap_server: "worker1.cloudpak.szesto.io"
     ## The port of the LDAP server to connect.  Some possible values are: 389, 636, etc.
-    lc_ldap_port: "636"
+    lc_ldap_port: "31389"
     ## The LDAP bind secret for LDAP authentication.  The secret is expected to have ldapUsername and ldapPassword keys.  Refer to Knowledge Center for more info.
     lc_bind_secret: "ldap-bind-secret"
     ## The LDAP base DN.  For example, "dc=example,dc=com", "dc=abc,dc=com", etc
-    lc_ldap_base_dn: "ou=cloudpak,dc=szesto,dc=io"
+    lc_ldap_base_dn: "dc=example,dc=org"
     ## Enable SSL/TLS for LDAP communication. Refer to Knowledge Center for more info.
-    lc_ldap_ssl_enabled: true
+    lc_ldap_ssl_enabled: false
     ## The name of the secret that contains the LDAP SSL/TLS certificate.
     lc_ldap_ssl_secret_name: "ibm-cp4ba-ldap-ssl-secret"
     ## The LDAP user name attribute. Semicolon-separated list that must include the first RDN user distinguished names. One possible value is "*:uid" for TDS and "user:sAMAccountName" for AD. Refer to Knowledge Center for more info.
-    lc_ldap_user_name_attribute: "user:sAMAccountName"
+    lc_ldap_user_name_attribute: "*:uid"
     ## The LDAP user display name attribute. One possible value is "cn" for TDS and "sAMAccountName" for AD. Refer to Knowledge Center for more info.
-    lc_ldap_user_display_name_attr: "sAMAccountName"
+    lc_ldap_user_display_name_attr: "cn"
     ## The LDAP group base DN.  For example, "dc=example,dc=com", "dc=abc,dc=com", etc
-    lc_ldap_group_base_dn: "ou=cloudpak,dc=szesto,dc=io"
+    lc_ldap_group_base_dn: "ou=users,cn=example,cn=org"
     ## The LDAP group name attribute.  One possible value is "*:cn" for TDS and "*:cn" for AD. Refer to Knowledge Center for more info.
     lc_ldap_group_name_attribute: "*:cn"
     ## The LDAP group display name attribute.  One possible value for both TDS and AD is "cn". Refer to Knowledge Center for more info.
     lc_ldap_group_display_name_attr: "cn"
     ## The LDAP group membership search filter string.  One possible value is "(|(&(objectclass=groupofnames)(member={0}))(&(objectclass=groupofuniquenames)(uniquemember={0})))" for TDS
     ## and "(&(cn=%v)(objectcategory=group))" for AD.
-    lc_ldap_group_membership_search_filter: "(&(cn=%v)(objectclass=group))"
+    lc_ldap_group_membership_search_filter: "(|(&(objectclass=groupofnames)(member={0}))(&(objectclass=groupofuniquenames)(uniquemember={0})))"
     ## The LDAP group membership ID map.  One possible value is "groupofnames:member" for TDS and "memberOf:member" for AD.
-    lc_ldap_group_member_id_map: "memberOf:member"
+    lc_ldap_group_member_id_map: "groupofnames:member"
     ## The User script will uncomment the section needed based on user's input from User script.  If you are deploying without the User script,
     ## uncomment the necessary section (depending if you are using Active Directory (ad) or Tivoli Directory Service (tds)) accordingly.
     # ad:
@@ -186,14 +186,14 @@ spec:
 
     ## The User script will uncomment the section needed based on user's input from User script.  If you are deploying without the User script,
     ## uncomment the necessary section (depending if you are using Active Directory (ad) or Tivoli Directory Service (tds)) accordingly.
-    ad:
-      lc_ad_gc_host: "worker14.szesto.io"
-      lc_ad_gc_port: "3269"
-      lc_user_filter: "(&(sAMAccountName=%v)(objectclass=user))"
-      lc_group_filter: "(&(cn=%v)(objectclass=group))"
-      # tds:
-      #   lc_user_filter: "(&(cn=%v)(objectclass=person))"
-      #   lc_group_filter: "(&(cn=%v)(|(objectclass=groupofnames)(objectclass=groupofuniquenames)(objectclass=groupofurls)))"
+    # ad:
+    #   lc_ad_gc_host: "<Required>"
+    #   lc_ad_gc_port: "<Required>"
+    #   lc_user_filter: "(&(sAMAccountName=%v)(objectcategory=user))"
+    #   lc_group_filter: "(&(cn=%v)(objectcategory=group))"
+    tds:
+      lc_user_filter: "(&(cn=%v)(objectclass=inetOrgPerson))"
+      lc_group_filter: "(&(cn=%v)(|(objectclass=groupofnames)(objectclass=groupofuniquenames)(objectclass=groupofurls)))"
   #############################################################################
   ## This section contains the BAStudio component configurations              #
   #############################################################################
@@ -201,4 +201,4 @@ spec:
     # Designate an existing LDAP user for the BAStudio and WfPS authoring repostiory admin user.
     # If not provided. Then the default IAM admin user will be used as the default admin user ID.
     # You can get that from secret ibm-iam-bindinfo-platform-auth-idp-credentials
-    admin_user: "karson"
+    admin_user: "user01"
