@@ -23,7 +23,7 @@ spec:
   - $CP4BA
 EOF
 
-oc apply $OPOLM/cp4ba_operator_group.yaml
+oc apply -f $OPOLM/cp4ba_operator_group.yaml
 
 # subscribe to cloud pak operator in one-namespace mode
 CHANNEL="v23.1"
