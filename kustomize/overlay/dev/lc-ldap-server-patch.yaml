@@ -1,0 +1,7 @@
+apiVersion: icp4a.ibm.com/v1
+kind: ICP4ACluster
+metadata:
+  name: icp4adeploy
+spec:
+  ldap_configuration:
+    lc_ldap_server: roky.dogsrus.io

@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: cpprod
+
+bases:
+- ../../base
+
+patchesJson6902:
+- path: multi-json-patch.json
+  target:
+    group: icp4a.ibm.com
+    version: v1
+    kind: ICP4ACluster
+    name: icp4adeploy

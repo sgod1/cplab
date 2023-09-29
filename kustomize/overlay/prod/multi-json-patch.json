@@ -1,0 +1,12 @@
+[
+  {
+    "op": "replace",
+    "path": "/spec/ldap_configuration/lc_ldap_server",
+    "value": "tobsky.dogsrus.io"
+  },
+  {
+    "op": "replace",
+    "path": "/spec/ldap_configuration/ad/lc_ad_gc_host",
+    "value": "roky.dogsrus.io"
+  }
+]
