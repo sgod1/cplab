@@ -168,7 +168,7 @@ In the third step, script validates property values, checking database logins, d
 The actual job of generating cloud pak CR is done by the `cp4a-deployment.sh` script. It takes input created by the prerequisites script and generates cloud pak CR yaml file.<br/>
 
 > Prerequsites script:  `$SCRIPTS/cp4a-prerequisites.sh`<br/>
-> Cloud Pak CR directory: `$SCRIPTS/generated-cr`.<br/>
+> Generated cloud pak CR: `$SCRIPTS/generated-cr/ibm_cp4a_cr_final.yaml`.<br/>
 
 We will work with the *Workflow Process Service Authoring* capability.
 
@@ -180,16 +180,15 @@ The authoring environment includes IBM Business Automation Studio and allows you
 > Review steps to create Workflow Service Authoring CR.<br/>
 > Review steps generating cloud-pak CR yaml file from property files.<br/>
 
->Review generated CR in `$SCRIPTS/generated-cr` directory.<br/>
+> Review generated CR in `$CASEGEN/generated-cr` directory.<br/>
 
 ```
-cd $CERTKUBE
+cd $CASEGEN/generated-cr
 
-ls scripts/generated-cr
-ibm_cp4a_cr_final.yaml
+cat ibm_cp4a_cr_final.yaml
 ```
 
-> *Do not deploy generated cloud-pak CR at this time.*
+> *Do not deploy cloud-pak CR at this time.*
 
 
 ### Using `yq` to work with the CP4BACluster CR
@@ -211,8 +210,10 @@ By default `yq` outputs json. Pass `-y` flag to `yq` to get yaml output.<br/>
 Quote `yq` query expressions, to prevent shell from pre-processing special characters.</br>
 
 >*Lab Steps*<br/>
-> Query `metadata` portion of CP4BA CR:<br/>
-
+> Query `metadata` portion of CP4BA CR as json:<br/>
+```
+cd $CASEGEN/generated-cr
+```
 ```
 cat ibm_cp4a_cr_final.yaml | yq '.metadata'
 {
@@ -227,9 +228,11 @@ cat ibm_cp4a_cr_final.yaml | yq '.metadata'
 ```
 
 > Query CR `metadata` as yaml:<br/>
-
 ```
-cat ibm_cp4a_cr_final.yaml | yq -y .metadata
+cd $CASEGEN/generated-cr
+```
+```
+cat ibm_cp4a_cr_final.yaml | yq -y '.metadata'
 name: icp4adeploy
 labels:
   app.kubernetes.io/instance: ibm-dba
@@ -239,9 +242,11 @@ labels:
 ```
 
 > Query CR storage configuration:<br/>
-
 ```
-cat ibm_cp4a_cr_final.yaml | yq .spec.shared_configuration.storage_configuration
+cd $CASEGEN/generated-cr
+```
+```
+cat ibm_cp4a_cr_final.yaml | yq '.spec.shared_configuration.storage_configuration'
 {
   "sc_slow_file_storage_classname": "ocs-storagecluster-cephfs",
   "sc_medium_file_storage_classname": "ocs-storagecluster-cephfs",
@@ -251,9 +256,11 @@ cat ibm_cp4a_cr_final.yaml | yq .spec.shared_configuration.storage_configuration
 ```
 
 > Query CR ldap configuration:<br/>
-
 ```
-cat ibm_cp4a_cr_final.yaml | yq .spec.ldap_configuration                      
+cd $CASEGEN/generated-cr
+```
+```
+cat ibm_cp4a_cr_final.yaml | yq '.spec.ldap_configuration'
 {
   "lc_selected_ldap_type": "IBM Security Directory Server",
   "lc_ldap_server": "worker1.cloudpak.szesto.io",
@@ -281,13 +288,13 @@ cat ibm_cp4a_cr_final.yaml | yq .spec.ldap_configuration
 > Write more queries to see different portions of CP4BA CR.
 
 
-### Using Kustomize to work with CP4BA Cluster CR**
+### Using Kustomize to work with CP4BA Cluster CR.**
 
 By reviewing output of ldap CR query, we see that some parameters, like Ldap server Host and Port, will be different between environments.<br/>
 
 We deployed ldap server on the cluster, and from the pod it is faster to reach ldap using cluster service url, rather than external node port url.<br/>
 
-#### This is KEY<br/>
+#### This is KEY
 We do not want to make direct changes to CR or to keep multiple copies of CR for different environments.<br/>
 
 `Kustomize` is standard kubernetes tool to apply patches to kubernetes resources.<br/>
@@ -296,6 +303,16 @@ We do not want to make direct changes to CR or to keep multiple copies of CR for
 We will show examples how to customize `namespace`, `labels`, `annotations`, and how to patch CP4BA CR with environment specific values.<br/>
 
 `Kustomize` overlay idiom is to have *base* directory with original resources and *overlay* directories with kustomizations for each environment.<br/>
+
+You can view complete kustomizations in the browser:<br/> 
+[kustomize] (https://github.com/sgod1/cplab/tree/main/kustomize)<br/>
+
+Or in `$KUST` directory.<br/>
+```
+cd $KUST
+ls
+base	overlay
+```
 
 > *Lab Steps*<br/>
 > Create `$CERTKUBE/scripts/kustomize` directory and overlay subdirectories.<br/>
@@ -312,14 +329,15 @@ mkdir -p operlay/prod
 > Copy ibm_cp4a_cr_final.yaml to the `base` directoy.<br/>
 
 ```
-cp $CERTKUBE/scripts/generated-cr/ibm_cp4a_cr_final.yaml $CERTKUBE/scripts/kustomize/base
+cp $CASEGEN/generated-cr/ibm_cp4a_cr_final.yaml $CERTKUBE/scripts/kustomize/base
 ```
 
 > Change to the `base` directory and create `kustomization.yaml` file.<br/>
-
 ```
 cd $CERTKUBE/scripts/kustomize/base
 ```
+
+Add cloud pak CR file to `resources` list. Resources in this list will be processed by `kustomize`.<br/>
 
 ```
 cat <<EOF > kustomization.yaml
@@ -330,8 +348,6 @@ resources:
 - ibm_cp4a_cr_final.yaml
 EOF
 ```
-
-Add CP4BA CR file to a `resources` list. Resources in this list will be processed by `kustomize`.<br/>
 
 Note that there are no kustomizations in this file yet.<br/>
 
@@ -376,7 +392,7 @@ There are a number of standard `kustomize` transformers:<br/>
 
 > `commonLabels` transformer will add labels to `metadata/labels` field of the CR.<br/>
 
->`commonAnnotations` transformer will add annotations to `metadata/annotations`.<br/>
+> `commonAnnotations` transformer will add annotations to `metadata/annotations`.<br/>
 
 The `prefix/suffix` transformer adds a `prefix/suffix` to the `metadata/name` field for all resources.<br/>
 
@@ -385,7 +401,7 @@ We do not show this use case.<br/>
 
 To kustomize other elements of the cloud-pak CR we will use patches.<br/>
 
-We will kustomize ldap server configuration, ldap server port, and cloud-pak license type.<br/>
+We will kustomize *ldap server configuration*, *ldap server port*, and cloud-pak *license type*.<br/>
 
 Patches are listed under `patches` key in `kustomization.yaml`.<br/>
 
@@ -436,12 +452,12 @@ oc kustomize .
 > Observe applied changes:
 
 ```
-oc kustomize . | yq .metadata.namespace
-oc kustomize . | yq .metadata.labels
-oc kustomize . | yq .metadata.annotations
-oc kustomize . | yq .spec.ldap_configuration.lc_ldap_server
-oc kustomize . | yq .spec.ldap_configuration.lc_ldap_port
-oc kustomize . | yq .spec.shared_configuration.sc_deployment_license
+oc kustomize . | yq '.metadata.namespace'
+oc kustomize . | yq '.metadata.labels'
+oc kustomize . | yq '.metadata.annotations'
+oc kustomize . | yq '.spec.ldap_configuration.lc_ldap_server'
+oc kustomize . | yq '.spec.ldap_configuration.lc_ldap_port'
+oc kustomize . | yq '.spec.shared_configuration.sc_deployment_license'
 ```
 
 #### prod overlay kustomizations
@@ -518,15 +534,20 @@ oc kustomize .
 > observe applied changes:<br/>
 
 ```
-oc kustomize . | yq .metadata.namespace
-oc kustomize . | yq .metadata.labels
-oc kustomize . | yq .metadata.annotations
-oc kustomize . | yq .spec.ldap_configuration.lc_ldap_server
-oc kustomize . | yq .spec.ldap_configuration.lc_ldap_port
-oc kustomize . | yq .spec.shared_configuration.sc_deployment_license
+oc kustomize . | yq '.metadata.namespace'
+oc kustomize . | yq '.metadata.labels'
+oc kustomize . | yq '.metadata.annotations'
+oc kustomize . | yq '.spec.ldap_configuration.lc_ldap_server'
+oc kustomize . | yq '.spec.ldap_configuration.lc_ldap_port'
+oc kustomize . | yq '.spec.shared_configuration.sc_deployment_license'
 ```
 
 #### Differences between kustomizations.
+
+If you did not complete previous steps, you can copy complete kustomization directory:<br/>
+```
+cp -r $KUST $CERTKUBE/scripts
+```
 
 > *Lab Steps*<br/>
 > Save `oc kustomize` output in each overlay directory and then run `diff` command to see differences.<br/>
