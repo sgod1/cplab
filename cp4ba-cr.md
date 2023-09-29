@@ -560,7 +560,7 @@ oc kustomize overlay/prod/ > kustomized-cr-prod.yaml
 ```
 
 ```
-diff kustomized-cr-dev.yaml kustomized-cr-prod.yaml
+diff --color kustomized-cr-dev.yaml kustomized-cr-prod.yaml
 11c11
 <     stack: dev1
 ---
