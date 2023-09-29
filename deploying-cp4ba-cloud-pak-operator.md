@@ -1,9 +1,8 @@
-### Deploying CP4BA Cloud Pak Operator.
+### Deploy CP4BA CR.
 
-> Complete `deploy cloud pak operator steps`. (Required)
+> Complete `Install CP4BA operator steps`. (Required)<br/>
 
-> Query installed operators.
-
+> Query installed operators.<br/>
 ```
 oc project cp4ba
 
@@ -27,27 +26,27 @@ icp4a-foundation-operator.v23.1.2             IBM CP4BA Foundation              
 operand-deployment-lifecycle-manager.v4.1.0   Operand Deployment Lifecycle Manager                          4.1.0                                      Succeeded
 ```
 
-Why do we see so many operators when we subscribed to just one cloud-pak opearator, ibm-cp4a-operator.v23.1.2?
+We installed one `ibm-cp4a-operator.v23.1.2` operator. Why do we see other operators?<br/>
 
-The answer is that `ibm-cp4a-operator.v23.1.2` operator depends on other operators.
+The answer is that `ibm-cp4a-operator.v23.1.2` operator depends on other operators.<br/>
 
-Dependencies are declared in operator's csv.
-
-#### This is key
-CSV declared operator dependencies are *static*.
-
-Static dependency means that when we subscribe to an operator version, we also subscribe to all dependent operators versions.
-
-Static operator dependencies is a powerful feature, but it assumes that we know all dependencies at subsciption time.
-
-Some capabilities required by the operator for Cloud Pak CR are dynamic, not known ahead of time, and other capabilities may have to be shared between services.
-
-For example, Cloud Pak may require different versions of databases based on CR, on prem or in-cluster, or may require a shared service like identity management.
+Dependencies are declared in operator's csv.<br/>
 
 #### This is key
-To satisfy cloud pak operator requirements for Cloud Pak CR we need shared and dynamic operator dependency management for operators and their operands.
+CSV declared operator dependencies are *static*.<br/>
 
-Most cloud pak operator dependencies are operators for automation capabilities, such as FileNet, Document Processing, etc. 
+Static dependency means that when we subscribe to an operator version, we also subscribe to all dependent operators versions.<br/>
+
+Static operator dependencies is a powerful feature, but it assumes that we know all dependencies at subsciption time.<br/>
+
+Some capabilities required by the operator for Cloud Pak CR are dynamic, not known ahead of time, and other capabilities may have to be shared between services.<br/>
+
+For example, Cloud Pak may require different versions of databases based on CR, on prem or in-cluster, or may require a shared service like identity management.<br/>
+
+#### This is key
+To satisfy cloud pak operator requirements for Cloud Pak CR we need shared and dynamic operator dependency management for operators and their operands.<br/>
+
+Most cloud pak operator dependencies are operators for automation capabilities, such as FileNet, Document Processing, etc.<br/>
 
 There are 2 operators that do not fall into this category: `ibm-common-service-operator`, and `operand-deployment-lifecycle-manager` operator.<br/>
 Operand Deployment Lifecycle Manager `(ODLM)` resolves dynamic and shared dependencies, requested by the cloud pak for CR.<br/>
@@ -55,12 +54,13 @@ Common Services operator is a bridge between cloud pak operator and dynamic capa
 
 #### Apply Kustomized CR.
 
-> Change to `$CERTKUBE/kustomize` directory and apply `production` overlay.
+> Note: In the lab steps, we created kustomizations in `$CERTKUBE/scripts/kustomize` directory.<br/>
+> To minimize potential deployment errors we use lab kustomizations in `$KUST` directory, which are the same.<br/>
 
-We can pass kustomize output to `oc appy` directly, but here we save kustomized CR and apply it in a separate step.
+> Change to `$KUST` directory and apply `production` overlay.<br/>
 
 ```
-cd $CERTKUBE/kustomize
+cd $KUST
 
 oc kustomize overlay/prod > kustomized-cr-prod.yaml
 
@@ -70,15 +70,15 @@ oc apply -f kustomized-cr-prod.yaml
 icp4acluster.icp4a.ibm.com/icp4adeploy created
 ```
 
-Watch for events
+Watch for events<br/>
 
 ```
 oc get events --watch
 ```
 
-It will take some time to complete.
+Deployment will take some time to complete.<br/>
 
-If you look at the event output you will see that new operator subscriptions are dynamically created, together with new CR's, and operand services become online.<br/>
-When all is complete, ICP4ACluster CR is in the `ready` state and we can log into Cloud Pak console.
+If you follow event output you will see that new operator subscriptions are dynamically created, together with new CR's, and operand services.<br/>
+When all is complete, ICP4ACluster CR is in the `ready` state and we can log into the Cloud Pak console.<br/>
 
-We discuss how this works next.
+We discuss how this works next.<br/>

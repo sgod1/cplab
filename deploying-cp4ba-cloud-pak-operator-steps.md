@@ -1,59 +1,68 @@
 ### Deploying CP4BA Cloud-Pak Operator steps
 
-To deploy cloud pak operator we need *CatalogSources*, *OperatorGroup*, and cloud pak operator *Subscription*.
+> Lab steps.<br/>
+> Run `$CASEGEN/install-cp4ba-operator.sh` script to install CP4BA multipattern operator.<br/>
 
-These steps can be done on the command line or wit OpenShift console.
+```
+$CASEGEN/install-cp4ba-operators.sh
+```
 
-We use command line, because all yaml files that we need are included in the $CERTKUBE directory.
+> Optional<br/>
+Review steps to install cloud pak operator.<br/>
+If you did not run deploy-cp4ba-operators.sh script, you can manually execute steps.<br/>
 
-You can follow up with the OpenShift console.
+To deploy cloud pak operator we create *CatalogSources*, *OperatorGroup*, and cloud pak operator *Subscription*.<br/>
 
-> Create cp4ba project.
+All yaml files are included in the $OPOLM directory within case package.<br/>
+
+> Create cp4ba project.<br/>
 ```
 oc new-project cp4ba
 ```
 
-> Create catalog sources.
+#### Create Catalog Sources.
+> Create catalog sources.<br/>
 
-Change to `$CERTKUBE/descriptors/op-olm` directory and examine `catalog_source.yaml` file.
+Change to the `$OPOLM` directory and examine `catalog_source.yaml` file.<br/>
 
 ```
-cd $CERTKUBE/descriptors/op-olm
+cd $OPOLM
 cat catalog_source.yaml
 ```
 
-Note that catalog sources are release specific.
+Note that catalog sources are release specific.<br/>
 
-Catalog sources are created in `openshift-marketplace` namespace.
+Catalog sources are created in the `openshift-marketplace` namespace.<br/>
 
-> Apply catalog_sources.yaml.
+> Apply catalog_sources.yaml.<br/>
 
 ```
 oc project cp4ba
-oc apply -f $CERTKUBE/descriptors/op-olm/catalog_source.yaml
+oc apply -f $OPOLM/catalog_source.yaml
 ```
 
-> View catalog sources.
+> View catalog sources.<br/>
 
 ```
 oc get CatalogSource -n openshift-marketplace
 ```
 
+#### Install Signletons.
 > install `Singleton` services.
 
 `Singleton` services are *IBM Certificate Manager* service, and *IBM License* service.<br/>
-These services are required.
+These services are required.<br/>
 
-Change to `$CERTKUBE/scripts/cpfs/installer_scripts/cp3pt0-deployment` directory and run `setup_singleton.sh` script.<br/>
-Wait for the script to complete.
+Change to `$CP3PT0` directory and run `setup_singleton.sh` script.<br/>
+Wait for the script to complete.<br/>
 
 ```
-cd $CERTKUBE/scripts/cpfs/installer_scripts/cp3pt0-deployment
+cd $CP3PT0
 
 ./setup_singleton.sh --enable-licensing --license-accept
 ```
 
-View output:
+View output:<br/>
 
 ```
 ./setup_singleton.sh --enable-licensing --license-accept
@@ -167,7 +176,9 @@ oc project cp4ba
 oc apply -f $CERTKUBE/descriptors/op-olm/operator_group.yaml
 ```
 
-- Subscribe to cloud-pak CP4BA multipattern operator
+#### Subsribe to cloud pak operator in 'one namespace' mode.
+
+> Subscribe to cloud-pak CP4BA multipattern operator
 
 Cloud-pak operator can be installed in 'all namespaces' mode, or in 'one namespace' mode.
 
@@ -177,10 +188,8 @@ The mode of installation plays important role in cloud-pak multitenancy configur
 All permissions for cloudpaks and foundational services are escalated to the cluster permissions in this mode.
 Workload isolation is not possible in this mode. This is so called 'single tenant cluster'.
 
-Subsribe to cloud pak operator in 'one namespace' mode.
-
 ```
-cd $CERTKUBE/descriptors/op-olm
+cd $OPOLM
 ```
 
 Note that original `subscription.yaml` file is templated for namespace.
@@ -202,19 +211,19 @@ EOF
 ```
 
 ```
-cd $CERTKUBE/descriptors/op-olm
+cd $CERTKUBE/descriptors/$OPOLM
 oc project cp4ba
 
 oc apply -f subscription.yaml
 ```
 
-- Watch for events.
+> Watch for events.
 
 ```
 oc get events --watch
 ```
 
-Query insalled operators.
+Query insalled operators.<br/>
 
 ```
 oc get csv
