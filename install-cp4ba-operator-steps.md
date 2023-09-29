@@ -1,10 +1,10 @@
-### Deploying CP4BA Cloud-Pak Operator steps
+### Install CP4BA Operator steps.
 
 > Lab steps.<br/>
 > Run `$CASEGEN/install-cp4ba-operator.sh` script to install CP4BA multipattern operator.<br/>
 
 ```
-$CASEGEN/install-cp4ba-operators.sh
+$CASEGEN/install-cp4ba-operator.sh
 ```
 
 > Optional<br/>
