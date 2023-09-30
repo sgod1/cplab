@@ -57,7 +57,7 @@ ibm-zen-operator.v5.0.0                       IBM Zen Service                   
 icp4a-foundation-operator.v23.1.1             IBM CP4BA Foundation                                          23.1.1                                      Succeeded
 operand-deployment-lifecycle-manager.v4.0.0   Operand Deployment Lifecycle Manager                          4.0.0                                       Succeeded
 ```
-The reason is that some operator dependencies are resolved dynamically, at run time.<br/s>
+The reason is that some operator dependencies are resolved dynamically, at run time.<br/>
 
 To support Cloud Pak requirements,`Foundational services operators` enable *runtime dependency resolution*, *versioning*, and *sharing* of `foundational services`.<br/>
 
@@ -299,7 +299,7 @@ spec:
   operandBindInfo: {}
 ```
 
-By using information about foundational service operator subscription and about foundational service operator CR, ODLM will create operator subscriptions, and CR tp trigger operand deployment reconciliation for ibm-im-operator, and ibm-platformui-operator.<br/>
+By using information about foundational service operator subscription and about foundational service operator CR, ODLM will create operator subscriptions, and CR to trigger operand deployment reconciliation for ibm-im-operator, and ibm-platformui-operator.<br/>
 
 > Lab step.<br/>
 Validate ibm-im-operator, and ibm-platformui-operator subscriptions.<br/>
