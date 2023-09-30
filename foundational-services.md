@@ -417,12 +417,12 @@ Another topology is to install foundational services in one namespace and cloud 
 In this case foundational services can be shared by a tenant. Foundational service operators must be given access to tenant namespaces.
 
 Another topology is to place operators in one namespace and create operands in another namespace.<br/>
-This approach is taken by Cloud Pak for Data.
+This approach is taken by Cloud Pak for Data.<br/>
 
-If cloud pak operator is installed in 'all-namespaces' mode, then foundational services operators must be installed in 'all namespaces` mode.<br/>
-If one cloud pak operator is installed in 'all-namespaces' mode, then all other cloud pak operators must be installed in `all-namespaces` mode.
+If cloud pak operator is installed in 'all-namespaces' mode, then foundational services operators must be installed in `all namespaces` mode.<br/>
+If one cloud pak operator is installed in 'all-namespaces' mode, then all other cloud pak operators must be installed in `all-namespaces` mode.<br/>
 
-It is recommended that cloud paks are installed in isolated namespaces and not share foundational services.
+It is recommended that cloud paks are installed in isolated namespaces and not share foundational services.<br/>
 
 ### Cloud Pak Cluster Topology Considerations
 
