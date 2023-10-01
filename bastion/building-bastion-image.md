@@ -18,6 +18,8 @@ Copy Dockerfile from the `bastion` directory to the `$BUILDDIR`.
 Copy `create-bastion-buildconfig.sh` script to `$BUILDDIR`.
 Copy `build-bastion.sh` script to `$BUILDDIR`.
 
+Run `copy-build-scripts.sh $BUILDDIR` to copy these files to `$BUILDDIR`<br/>
+
 #### Create cp4ba project.
 Log into the OpenShift cluster and change to the `cp4ba` project.<br/>
 Create `cp4ba` project, if it does not exist: `oc new-project cp4ba`<br/>
