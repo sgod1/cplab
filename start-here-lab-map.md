@@ -1,3 +1,39 @@
+### Introduction
+
+The goal of this module is to learn about Cloud Pak for Business Automation in the context of Open Shift.
+
+This module is delivered as a follow up to Open Shift training.
+
+Cloud Pak for Business Automation was selected because of the interests of the audience.
+
+Workflow Service Authoring pattern has small footprint and on-cluster dependencies.<br/>
+Postgres Database is part of the Cloud Pak, and Open LDAP is an additional deployment.
+
+We do not discuss Business Automation functionality.
+
+Focus is on the Cloud Pak in the context of Open Shift.
+
+Lab steps are simple and support explanation of topics in Cloud Pak architecture.<br/>
+Prerequisites and documented steps are placed in *steps* files.
+
+### Cloud Pak on Open Shift Lab overview.
+
+We start with high-level Cloud Pak architecture and how it integrates with Open Shift.<br/>
+
+We study *ICP4ACluster*, custom resource for CP4BA multi-pattern operator. We create *Workflow Process Service Authoring* CR. We focus on ways to manage complexity, query CR, and manage differences between environments with kustomize.<br/>
+
+We install CP4BA operator and discuss operator dependencies.<br/>
+
+We apply production kustomizations to ICP4A CR and start cloud pak install. This may take some time to complete.<br/>
+
+We study *Foundational Services* Operators and runtime on-demand operator dependency resolution.<br/>
+
+We review *Foundational Sevices* impact on multi-tenancy cloud pak deployments.<br/>
+
+After CP4BA install is complete, we log into the Cloud Pak console for a brief review of *Workflow Process Service Authoring* environment. We review running pods and storage claims.
+
+We review workload isolation patterns and best practice for cloud pak deployment.<br/>
+
 ### Lab Map.
 
 There are 4 modules in this lab: *CP4BA multi-pattern CR*, *CP4BA mutl-pattern operator*, *Foundational Services Operators and Services*, and *Workflow Process Authoring Capability*.<br/>
@@ -46,7 +82,7 @@ You should see a list of cluster nodes.<br/>
 Module 1 is about managing CP4BA multi-pattern cloud pak CR.<br/> 
 Techniques disussed in this module are applicable to other cloud paks.<br/>
 
-Follow `cp4ba-cr.md` to complete module 1.<br/>
+Follow `module1-cp4ba-cr.md` to complete module 1.<br/>
 
 #### Module 2.
 Module 2 is about CP4BA multi-pattern operator.<br/>
@@ -60,7 +96,7 @@ Module 3 is about `Foundational Services`.<br/>
 This module discusses Foundational Operators and Services, ODLM, and on-demand dependecy resolution.<br/>
 This module concludes with multi-tenancy and workload isolation.<br/>
 
-Follow `foundational-services.md` to complete module 3.<br/>
+Follow `module3-foundational-services.md` to complete module 3.<br/>
 
 #### Module 4.
 Module 4 is a brief review of deployed CP4BA capability `Workflow Process Service Authoring`.<br/>
