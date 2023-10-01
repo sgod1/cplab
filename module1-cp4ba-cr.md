@@ -348,7 +348,7 @@ We will show examples how to customize `namespace`, `labels`, `annotations`, and
 `Kustomize` overlay idiom is to have *base* directory with original resources and *overlay* directories with kustomizations for each environment.<br/>
 
 You can view complete kustomizations in the browser:<br/> 
-[kustomize] (https://github.com/sgod1/cplab/tree/main/kustomize)<br/>
+[kustomize](https://github.com/sgod1/cplab/tree/main/kustomize)<br/>
 
 Or in `$KUST` directory.<br/>
 ```
