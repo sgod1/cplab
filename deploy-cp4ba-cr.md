@@ -1,6 +1,22 @@
-### Deploy CP4BA CR.
+### IBM Cloud Pak for Business Automation (CP4BA) multi-pattern operator.
 
-> Complete `Install CP4BA operator steps`. (Required)<br/>
+> Lab steps.<br/>
+Run a script to install CP4BA operator.(*Required*)<br/>
+```
+$CASEGEN/cloudpak-operators/install-cp4ba-operator.sh
+```
+
+Script executes standard steps to install CP4BA operator to create catalog sources and operator subscription.<br/>
+Catalog sources are release specific.<br/>
+
+CP4BA Operator subscription is created in `one-namespace` mode.<br/>
+
+In `one-namespace` mode operator watches for CRs in the namespace where it is installed, and does not have access to other namespaces.<br/>
+For an operator to act and create opearnd deployment, operator CR must be created in the operator namespace.<br/>
+
+In `all namespaces` mode, operator watches all namespaces and CR will trigger operand deployment in any namespace where it is created.<br/>
+
+Choice of operator subscription mode plays important role in multi tenancy and workload isolation.<br/>
 
 > Query installed operators.<br/>
 ```
@@ -39,18 +55,19 @@ Static dependency means that when we subscribe to an operator version, we also s
 
 Static operator dependencies is a powerful feature, but it assumes that we know all dependencies at subsciption time.<br/>
 
-Some capabilities required by the operator for Cloud Pak CR are dynamic, not known ahead of time, and other capabilities may have to be shared between services.<br/>
+Capabilities required by CP4BA CR are not known ahead of time, and may vary depending on the pattern installed.<br/> 
+In addition, pattern capabilites must share a set of core foundational services.<br/>
 
 For example, Cloud Pak may require different versions of databases based on CR, on prem or in-cluster, or may require a shared service like identity management.<br/>
 
 #### This is key
-To satisfy cloud pak operator requirements for Cloud Pak CR we need shared and dynamic operator dependency management for operators and their operands.<br/>
+To satisfy cloud pak operator requirements we need on-demand subscription management and dependency resolution.<br/>
 
-Most cloud pak operator dependencies are operators for automation capabilities, such as FileNet, Document Processing, etc.<br/>
+Most cloud pak operator dependencies are automation capabilities: FileNet, Document Processing, etc.<br/>
 
-There are 2 operators that do not fall into this category: `ibm-common-service-operator`, and `operand-deployment-lifecycle-manager` operator.<br/>
+There are 2 special operators that support foundational services: `ibm-common-service-operator`, and `operand-deployment-lifecycle-manager` operator.<br/>
 Operand Deployment Lifecycle Manager `(ODLM)` resolves dynamic and shared dependencies, requested by the cloud pak for CR.<br/>
-Common Services operator is a bridge between cloud pak operator and dynamic capabilities of ODLM.<br/>
+Common Services operator is a link between cloud pak operator and dynamic capabilities of ODLM.<br/>
 
 #### Apply Kustomized CR.
 

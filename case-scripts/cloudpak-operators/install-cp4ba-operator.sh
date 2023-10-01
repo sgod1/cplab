@@ -2,15 +2,18 @@
 
 CP4BA=cp4ba
 
-# create cloud pak project
-oc new-project $CP4BA
+# set a project
+oc project $CP4BA
 
+# step 1:
 # create catalog sources
 oc apply -f $OPOLM/catalog_source.yaml
 
+# step 2:
 # install singleton services
 $CP3PT0/setup_singleton.sh --enable-licensing --license-accept
 
+# step 3:
 # create operator group
 cat <<EOF > $OPOLM/cp4ba_operator_group.yaml
 apiVersion: operators.coreos.com/v1alpha2
@@ -25,6 +28,7 @@ EOF
 
 oc apply -f $OPOLM/cp4ba_operator_group.yaml
 
+# step 5:
 # subscribe to cloud pak operator in one-namespace mode
 CHANNEL="v23.1"
 
