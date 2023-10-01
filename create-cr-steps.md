@@ -1,23 +1,22 @@
-### Steps to Generate Workflow Process Authoring CR
+### Steps to Generate Workflow Process Service Authoring CR.
 
-These are steps to create `Workflow Process Authoring CR` using scripts in the CP4BA CASE package.<br/>
-These steps follow documentation and provde comments and required values.
+Performing these steps in the lab module is optional.<br/>
 
-When all steps are completed, CR is generated in
+Steps to create `Workflow Process Authoring CR` using scripts in the CP4BA CASE package.<br/>
+These steps follow online documentation and provde comments and required values.
 
-```
-$CERTKUBE/scripts/generated-cr/ibm_cp4a_cr_final.yaml
-```
+#### Final output
+Final output: `$CERTKUBE/scripts/generated-cr/ibm_cp4a_cr_final.yaml`.
 
-Before you start, set your project and working directory.
-
+#### Begin.
+Before you start, set your current project and working directory.
 ```
 oc project cp4ba
 
 cd $KUBECERT/scripts
 ```
 
-> Query storage classes, we will use them as input to prerequisites script:
+> Query storage classes, we will use them as input to prerequisites script:<br/>
 ```
 oc get sc
 NAME                          PROVISIONER                             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
@@ -27,7 +26,8 @@ ocs-storagecluster-cephfs     openshift-storage.cephfs.csi.ceph.com   Delete    
 openshift-storage.noobaa.io   openshift-storage.noobaa.io/obc         Delete          Immediate              false                  15d
 ```
 
-> Run prerequisite script in `property` mode:
+#### Property mode.
+> Run prerequisite script in `property` mode and select *Workflow Process Service Authoring* capability.<br/>
 ```
 cd $CERTKUBE/scripts
 ./cp4a-prerequisites.sh -m property
@@ -61,7 +61,7 @@ Note that openldap server that we deployed to the cluster can be accessed intern
 or externally from outside the cluster.
 
 When running prerequisites script in `validation` mode we must use external LDAP_SERVER and external LDAP_PORT.<br/>
-External values: LDAP_SERVER="any-worker-node-domain-name", LDAP_PORT=31389
+External values: LDAP_SERVER="worker-1", LDAP_PORT=31389
 
 When running in pods it is better to use internal LDAP_SERVER and internal LDAP_PORT.
 Internal values: LDAP_SERVER="openldap.openldap.svc", LDAP_PORT="1389"
@@ -154,6 +154,7 @@ CP4BA.BLOCK_STORAGE_CLASS_NAME="ocs-storagecluster-ceph-rbd"
 BASTUDIO.ADMIN_USER="user01"
 ```
 
+#### Generate mode
 > Run prerequisite script in `generate` mode:
 ```
 cd $CERTKUBE/scripts
@@ -182,6 +183,7 @@ stringData:
   ldapPassword: "adminpassword"
 ```
 
+#### Apply secrets.
 > Set current project to `cp4ba` and apply ldap-bind-secret.yaml
 
 ```
@@ -192,6 +194,7 @@ oc apply -f cp4ba-prerequisites/secret_template/ldap-bind-secret.yaml
 secret/ldap-bind-secret created
 ```
 
+#### Validate mode.
 > Run prerequisite script in 'validate' mode. Make sure it completes without errors.
 
 Note: if you see errors from validation script, fix errors and rerun validation again.
@@ -245,6 +248,7 @@ Total time taken: 107 ms
 [✔] Connected to LDAP "worker1.cloudpak.szesto.io" using BindDN:"cn=admin,dc=example,dc=org" successfuly, PASSED!
 ```
 
+#### CR Generating script.
 > Run CR generation script
 
 ```

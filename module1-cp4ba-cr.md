@@ -17,7 +17,8 @@ Cloupak foundational pattern is *always* required by other patterns.<br/>
 Installation configuration script is smart about *required and optional components and their dependencies*.<br/>
 
 #### Patterns Knowlege Base
-We can define knowledge base for patterns and their dependencies that we can view and query.<br/>
+We can define knowledge base for patterns and their dependencies.<br/>
+We can query knowledge base to derive relationships between patterns and components.<br/>
 
 ```
 always(Pattern1, Component1) 
@@ -126,6 +127,7 @@ always(workflow_process_service, cp_foundation, certmgr).
 
 ### Creating Workflow Process Service Authoring CR.
 
+> Lab step.<br/>
 > View CR templates for CP4BA patterns. <br/>
 
 ```
@@ -144,10 +146,42 @@ ibm_cp4a_cr_production_FC_workflow.yaml					ibm_cp4a_cr_production_workflow_auth
 ibm_cp4a_cr_production_FC_workflow_authoring.yaml			ibm_cp4a_cr_production_workflow_process_service_authoring.yaml		ibm_pf_cr_production_process_flow_authoring.yaml
 ```
 
-CR's with `_FC_` in their name define fully customizable CR's will all required and optional parameters.<br/>
+CR's with `_FC_` in their name are fully customizable CR's will all required and optional parameters.<br/>
 Other CR's define only required parameters and omit optional parameters because they will be set to default values by the cloud-pak operator.<br/>
 
 Ether way, these CR's are complicated and editing them directly is error prone.<br/>
+
+> Lab step.<br/>
+View `ibm_cp4a_cr_production_workflow_process_service_authoring.yaml` CR<br/>
+We will work with Workflow Process Service Authoring capability in this module<br/>
+This capability is designed to be small and CR is less complex than other patterns.<br/>
+Optional parameters are not included, and set to default values by cloud pak operator.<br/>
+
+```
+cd $PATTERNS
+cat ibm_cp4a_cr_production_workflow_process_service_authoring.yaml
+```
+
+> Lab step.<br/>
+View `ibm_cp4a_cr_production_workflow.yaml`
+This is Business Automation Worklow CR. You can see that this yaml file is more complex.<br/>
+Optional parameters are not included, and set to default values by cloud pak operator.<br/>
+
+```
+cd $PATTERNS
+cat `ibm_cp4a_cr_production_workflow.yaml`
+```
+
+> Lab step.<br/>
+View `ibm_cp4a_cr_production_content.yaml` CR.<br/>
+This is Content management pattern.<br/>
+Optional parameters are not included, and set to default values by cloud pak operator.<br/>
+
+```
+cd $PATTERNS
+cat `ibm_cp4a_cr_production_content.yaml`
+```
+It is clear that we need a way to understand and manage pattern CR's.<br/>
 
 #### Prerequisites Script.
 
@@ -155,7 +189,7 @@ To help with cloud pak CR authoring, prerequisites script prepares input for clo
 
 Prerequsites script knows about patterns, their dependencies and compatibility.<br/>
 
-> Refer to *pattern knowledge base* to review required, optional, and dependent components that can be installed for different patterns.
+> Refer to *pattern knowledge base* to review required, optional, and dependent components that can be installed for different patterns.<br/>
 
 Prerequisites script works in steps designed to simplify and validate parameters required for the cloud-pak CR.<br/>
 
@@ -165,28 +199,37 @@ In the second step, after property files are updated with required values, scrip
 
 In the third step, script validates property values, checking database logins, directory logins, storage classes, etc.<br/>
 
-The actual job of generating cloud pak CR is done by the `cp4a-deployment.sh` script. It takes input created by the prerequisites script and generates cloud pak CR yaml file.<br/>
+Prerequisites script is preparing property files as input for generating cloud pak CR.</br/>
 
-> Prerequsites script:  `$SCRIPTS/cp4a-prerequisites.sh`<br/>
-> Generated cloud pak CR: `$SCRIPTS/generated-cr/ibm_cp4a_cr_final.yaml`.<br/>
+The actual job of generating cloud pak CR is done by the `cp4a-deployment.sh` script.<br/>
+It takes input created by the prerequisites script and generates cloud pak CR yaml file.<br/>
 
-We will work with the *Workflow Process Service Authoring* capability.
+Scripts are located in the `$SCRIPTS` directory within cloud pak case package.<br/>
+For example, prerequsites scirpt is `$SCRIPTS/cp4a-prerequisites.sh`.<br/>
+CR generator script is `$SCRIPTS/cp4a-deployment.sh`.<br/>
+
+We will work with the *Workflow Process Service Authoring* capability.<br/>
 
 *Workflow Process Service Authoring* is a capability with a small footprint and resource usage for authoring and running workflows.<br/>
 
 The authoring environment includes IBM Business Automation Studio and allows you to create, maintain, and edit Business Automation Workflows.<br/>
 
-> *Lab Steps*<br/>
-> Review steps to create Workflow Service Authoring CR.<br/>
-> Review steps generating cloud-pak CR yaml file from property files.<br/>
+Setting property values created by the prerequisites script is an important step in preparing cloud pak CR.</br>
+Input must be correct and pass validation.<br/>
 
-> Review generated CR in `$CASEGEN/generated-cr` directory.<br/>
+For the purposes of this module, setting property values and validating input is time consuming and error prone.<br/>
+We will use generated cloud pak CR from the git repo.<br/>
 
+> Lab Steps<br/>
+> Review steps to create Workflow Service Authoring CR in `create-cr-steps.md`.<br/>
+
+> Review generated final CP4BA CR `$CASEGEN/generated-cr/ibm_cp4a_cr_final.yaml`.<br/>
 ```
 cd $CASEGEN/generated-cr
 
 cat ibm_cp4a_cr_final.yaml
 ```
+We showed how to create yaml CR yaml from property files with simple name, value syntax.<br/>
 
 > *Do not deploy cloud-pak CR at this time.*
 
