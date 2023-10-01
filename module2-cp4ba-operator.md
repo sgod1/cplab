@@ -69,6 +69,15 @@ There are 2 special operators that support foundational services: `ibm-common-se
 Operand Deployment Lifecycle Manager `(ODLM)` resolves dynamic and shared dependencies, requested by the cloud pak for CR.<br/>
 Common Services operator is a link between cloud pak operator and dynamic capabilities of ODLM.<br/>
 
+#### Prerequisite: Apply ldap bind secret.
+Prerequisites script created ldap bind secret for the directory server.<br/>
+This secret is usually applied before property files validation.<br/>
+
+Apply ldap bind secret manually.<br/>
+```
+oc apply -f $CASEGEN/cp4ba-prerequisites/secret_template/ldap-bind-secret.yaml
+```
+
 #### Apply Kustomized CR.
 
 > Note: In the lab steps, we created kustomizations in `$CERTKUBE/scripts/kustomize` directory.<br/>

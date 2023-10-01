@@ -147,13 +147,13 @@ spec:
     ## The possible values are: "IBM Security Directory Server" or "Microsoft Active Directory"
     lc_selected_ldap_type: "IBM Security Directory Server"
     ## The name of the LDAP server to connect
-    lc_ldap_server: "worker1.cloudpak.szesto.io"
+    lc_ldap_server: "openldap.openldap.svc"
     ## The port of the LDAP server to connect.  Some possible values are: 389, 636, etc.
-    lc_ldap_port: "31389"
+    lc_ldap_port: "1389"
     ## The LDAP bind secret for LDAP authentication.  The secret is expected to have ldapUsername and ldapPassword keys.  Refer to Knowledge Center for more info.
     lc_bind_secret: "ldap-bind-secret"
     ## The LDAP base DN.  For example, "dc=example,dc=com", "dc=abc,dc=com", etc
-    lc_ldap_base_dn: "dc=example,dc=org"
+    lc_ldap_base_dn: "ou=users,dc=example,dc=org"
     ## Enable SSL/TLS for LDAP communication. Refer to Knowledge Center for more info.
     lc_ldap_ssl_enabled: false
     ## The name of the secret that contains the LDAP SSL/TLS certificate.
@@ -163,7 +163,7 @@ spec:
     ## The LDAP user display name attribute. One possible value is "cn" for TDS and "sAMAccountName" for AD. Refer to Knowledge Center for more info.
     lc_ldap_user_display_name_attr: "cn"
     ## The LDAP group base DN.  For example, "dc=example,dc=com", "dc=abc,dc=com", etc
-    lc_ldap_group_base_dn: "ou=users,cn=example,cn=org"
+    lc_ldap_group_base_dn: "ou=users,dc=example,dc=org"
     ## The LDAP group name attribute.  One possible value is "*:cn" for TDS and "*:cn" for AD. Refer to Knowledge Center for more info.
     lc_ldap_group_name_attribute: "*:cn"
     ## The LDAP group display name attribute.  One possible value for both TDS and AD is "cn". Refer to Knowledge Center for more info.
@@ -192,7 +192,7 @@ spec:
     #   lc_user_filter: "(&(sAMAccountName=%v)(objectcategory=user))"
     #   lc_group_filter: "(&(cn=%v)(objectcategory=group))"
     tds:
-      lc_user_filter: "(&(cn=%v)(objectclass=inetOrgPerson))"
+      lc_user_filter: "(&(uid=%v)(objectclass=inetOrgPerson))"
       lc_group_filter: "(&(cn=%v)(|(objectclass=groupofnames)(objectclass=groupofuniquenames)(objectclass=groupofurls)))"
   #############################################################################
   ## This section contains the BAStudio component configurations              #

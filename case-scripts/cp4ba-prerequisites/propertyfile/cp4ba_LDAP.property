@@ -5,13 +5,13 @@
 LDAP_TYPE="IBM Security Directory Server"
 
 ## The name of the LDAP server to connect
-LDAP_SERVER="worker1.cloudpak.szesto.io"
+LDAP_SERVER="openldap.openldap.svc"
 
 ## The port of the LDAP server to connect.  Some possible values are: 389, 636, etc.
-LDAP_PORT="31389"
+LDAP_PORT="1389"
 
 ## The LDAP base DN.  For example, "dc=example,dc=com", "dc=abc,dc=com", etc
-LDAP_BASE_DN="dc=example,dc=org"
+LDAP_BASE_DN="ou=users,dc=example,dc=org"
 
 ## The LDAP bind DN. For example, "uid=user1,dc=example,dc=com", "uid=user1,dc=abc,dc=com", etc.
 LDAP_BIND_DN="cn=admin,dc=example,dc=org"
@@ -35,7 +35,7 @@ LDAP_USER_NAME_ATTRIBUTE="*:uid"
 LDAP_USER_DISPLAY_NAME_ATTR="cn"
 
 ## The LDAP group base DN.  For example, "dc=example,dc=com", "dc=abc,dc=com", etc
-LDAP_GROUP_BASE_DN="ou=users,cn=example,cn=org"
+LDAP_GROUP_BASE_DN="ou=users,dc=example,dc=org"
 
 ## The LDAP group name attribute.  One possible value is "*:cn" for TDS and "*:cn" for AD. Refer to Knowledge Center for more info.
 LDAP_GROUP_NAME_ATTRIBUTE="*:cn"
@@ -50,7 +50,7 @@ LDAP_GROUP_MEMBERSHIP_SEARCH_FILTER="(|(&(objectclass=groupofnames)(member={0}))
 LDAP_GROUP_MEMBER_ID_MAP="groupofnames:member"
 
 ## One possible value is "(&(cn=%v)(objectclass=person))"
-LC_USER_FILTER="(&(cn=%v)(objectclass=inetOrgPerson))"
+LC_USER_FILTER="(&(uid=%v)(objectclass=inetOrgPerson))"
 
 ## One possible value is "(&(cn=%v)(|(objectclass=groupofnames)(objectclass=groupofuniquenames)(objectclass=groupofurls)))"
 LC_GROUP_FILTER="(&(cn=%v)(|(objectclass=groupofnames)(objectclass=groupofuniquenames)(objectclass=groupofurls)))"

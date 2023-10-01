@@ -16,14 +16,6 @@ openldap-75654cb8b9-mwjd7   1/1     Running   0          173m
 oc exec -n openldap openldap-75654cb8b9-mwjd7 -- ldapsearch -x -H ldap://openldap.openldap.svc:1389 -b "dc=example,dc=org" -s sub -D "cn=admin,dc=example,dc=org" -x -w adminpassword
 ```
 
->Validate external ldap search:
-
-Here `$WORKER` is worker node in the cluster and `31389` is node port allocated on each node.
-
-```
-ldapsearch -H ldap:/$WORKER:31389  -b "dc=example,dc=org" -s sub -D "cn=admin,dc=example,dc=org" -x -w adminpassword
-```
-
 Expected search output:
 
 ```

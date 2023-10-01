@@ -2,6 +2,24 @@
 
 Performing these steps in the lab module is optional.<br/>
 
+Note: prerequisites `generate` step creates ldap bind secret. This secret must be applied.<br/>
+
+```
+# YAML template for ldap-bind-secret secret
+---
+kind: Secret
+apiVersion: v1
+type: Opaque
+metadata:
+  name: ldap-bind-secret
+  # DO NOT change the content of metadata.labels
+  labels:
+    name: ldap-bind-secret
+stringData:
+  ldapUsername: "cn=admin,dc=example,dc=org"
+  ldapPassword: "adminpassword"
+```
+
 Steps to create `Workflow Process Authoring CR` using scripts in the CP4BA CASE package.<br/>
 These steps follow online documentation and provde comments and required values.
 
@@ -55,6 +73,7 @@ cd $CERTKUBE/scripts
 cd $CERTKUBE/scripts/cp4ba-prerequisites/propertyfile
 ```
 
+#### Edit LDAP properties file.
 > Edit `cp4ba_LDAP.property` file:
 
 Note that openldap server that we deployed to the cluster can be accessed internally by pods running on the cluster<br/>
@@ -74,13 +93,13 @@ Internal values: LDAP_SERVER="openldap.openldap.svc", LDAP_PORT="1389"
 LDAP_TYPE="IBM Security Directory Server"
 
 ## The name of the LDAP server to connect
-LDAP_SERVER="worker1.cloudpak.szesto.io"
+LDAP_SERVER="openldap.openldap.svc"
 
 ## The port of the LDAP server to connect.  Some possible values are: 389, 636, etc.
-LDAP_PORT="31389"
+LDAP_PORT="1389"
 
 ## The LDAP base DN.  For example, "dc=example,dc=com", "dc=abc,dc=com", etc
-LDAP_BASE_DN="dc=example,dc=org"
+LDAP_BASE_DN="ou=users,dc=example,dc=org"
 
 ## The LDAP bind DN. For example, "uid=user1,dc=example,dc=com", "uid=user1,dc=abc,dc=com", etc.
 LDAP_BIND_DN="cn=admin,dc=example,dc=org"
@@ -119,12 +138,13 @@ LDAP_GROUP_MEMBERSHIP_SEARCH_FILTER="(|(&(objectclass=groupofnames)(member={0}))
 LDAP_GROUP_MEMBER_ID_MAP="groupofnames:member"
 
 ## One possible value is "(&(cn=%v)(objectclass=person))"
-LC_USER_FILTER="(&(cn=%v)(objectclass=inetOrgPerson))"
+LC_USER_FILTER="(&(uid=%v)(objectclass=inetOrgPerson))"
 
 ## One possible value is "(&(cn=%v)(|(objectclass=groupofnames)(objectclass=groupofuniquenames)(objectclass=groupofurls)))"
 LC_GROUP_FILTER="(&(cn=%v)(|(objectclass=groupofnames)(objectclass=groupofuniquenames)(objectclass=groupofurls)))"
 ```
 
+#### Edit user profile property file.
 > Edit `cp4ba_user_profile.property` file
 
 Set ba studio admin user to `user01`.
@@ -204,51 +224,7 @@ cd $CERTKUBE/scripts
 ./cp4a-prerequisites.sh -m validate
 ```
 
-```
-*****************************************************
-Validating the prerequisites before you install CP4BA
-*****************************************************
-
-============== Checking Slow/Medium/Fast/Block storage class required by CP4BA ==============
-
-[INFO] Checking the storage class: "ocs-storagecluster-cephfs"...
-......
-
-[✔] Verification storage class: "ocs-storagecluster-cephfs", PASSED!
-
-[INFO] Checking the storage class: "ocs-storagecluster-cephfs"...
-......
-
-[✔] Verification storage class: "ocs-storagecluster-cephfs", PASSED!
-
-[INFO] Checking the storage class: "ocs-storagecluster-cephfs"...
-......
-
-[✔] Verification storage class: "ocs-storagecluster-cephfs", PASSED!
-
-[INFO] Checking the storage class: "ocs-storagecluster-ceph-rbd"...
-......
-
-[✔] Verification storage class: "ocs-storagecluster-ceph-rbd", PASSED!
-============== Checking the Kubernetes secret required by CP4BA existing in cluster or not ==============
-
-[✔] Found secret "ldap-bind-secret" in Kubernetes cluster, PASSED!
-
-============== All secrets created in Kubernetes cluster, PASSED! ==============
-
-============== Checking LDAP connection required by CP4BA ==============
-
-Checking connection for LDAP server "worker1.cloudpak.szesto.io" using Bind DN "cn=admin,dc=example,dc=org"..
-Binding...
-Binding with principal: cn=admin,dc=example,dc=org
-Connected to: ldap://worker1.cloudpak.szesto.io:31389
-Binding took 107 ms
-Total time taken: 107 ms
-
-[✔] Connected to LDAP "worker1.cloudpak.szesto.io" using BindDN:"cn=admin,dc=example,dc=org" successfuly, PASSED!
-```
-
-#### CR Generating script.
+#### Run CR deployment script.
 > Run CR generation script
 
 ```
@@ -278,7 +254,6 @@ cd $CERTKUBE/scripts
 
 > At the summary screen, select: *Yes*, Proceed with deployment.
 
-```
 Creating the Custom Resource of the Cloud Pak for Business Automation operator...
 
 Applying value in property file into final CR

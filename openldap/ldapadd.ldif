@@ -1,0 +1,41 @@
+# ocp, example.org
+dn: ou=ocp,dc=example,dc=org
+changetype: add
+objectClass: organizationalUnit
+ou: ocp
+
+# user1, ocp, example.org
+dn: cn=user1,ou=ocp,dc=example,dc=org
+changetype: add
+cn: user1
+sn: bar1
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+userPassword:: Yml0bmFtaTE=
+uid: user1
+uidNumber: 1000
+gidNumber: 1000
+homeDirectory: /home/user1
+
+# user2, ocp, example.org
+dn: cn=user2,ou=ocp,dc=example,dc=org
+changetype: add
+cn: user2
+sn: bar2
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+userPassword:: Yml0bmFtaTE=
+uid: user2
+uidNumber: 1000
+gidNumber: 1000
+homeDirectory: /home/user2
+
+# workers, ocp, example.org
+dn: cn=workers,ou=ocp,dc=example,dc=org
+changetype: add
+cn: workers
+objectClass: groupOfNames
+member: cn=user1,ou=ocp,dc=example,dc=org
+member: cn=user2,ou=ocp,dc=example,dc=org
