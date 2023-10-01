@@ -13,7 +13,7 @@ oc get pods -n openldap
 NAME                        READY   STATUS    RESTARTS   AGE
 openldap-75654cb8b9-mwjd7   1/1     Running   0          173m
 
-oc exec openldap-75654cb8b9-mwjd7 -- ldapsearch -x -H ldap://openldap.openldap.svc:1389 -b "dc=example,dc=org" -s sub -D "cn=admin,dc=example,dc=org" -x -w adminpassword
+oc exec -n openldap openldap-75654cb8b9-mwjd7 -- ldapsearch -x -H ldap://openldap.openldap.svc:1389 -b "dc=example,dc=org" -s sub -D "cn=admin,dc=example,dc=org" -x -w adminpassword
 ```
 
 >Validate external ldap search:
