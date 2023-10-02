@@ -32,7 +32,7 @@ oc apply -f $OPOLM/cp4ba_operator_group.yaml
 # subscribe to cloud pak operator in one-namespace mode
 CHANNEL="v23.1"
 
-cat <<EOF > cp4ba_subscription.yaml
+cat <<EOF > $OPOLM/cp4ba_subscription.yaml
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
