@@ -81,12 +81,14 @@ oc apply -f $CASEGEN/cp4ba-prerequisites/secret_template/ldap-bind-secret.yaml
 #### Apply Kustomized CR.
 
 > Note: In the lab steps, we created kustomizations in `$CERTKUBE/scripts/kustomize` directory.<br/>
-> To minimize potential deployment errors we use lab kustomizations in `$KUST` directory, which are the same.<br/>
+> To minimize potential deployment errors we use generated cr in `$CASEGEN/generated_cr` and kustomizations in `$KUST` directory.<br/>
 
 > Change to `$KUST` directory and apply `production` overlay.<br/>
 
 ```
 cd $KUST
+
+cp $CASEGEN/generated_cr/ibm_cp4a_cr_final.yaml $KUST/base
 
 oc kustomize overlay/prod > kustomized-cr-prod.yaml
 
