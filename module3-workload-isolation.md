@@ -17,6 +17,10 @@ If one cloud pak operator is installed in 'all-namespaces' mode, then all other 
 
 It is recommended that cloud paks are installed in isolated namespaces and not share foundational services.<br/>
 
+#### Simple Isolation.
+![Simple Isolation](./images/2-namespace-request.drawio.png)
+
+
 ### Cloud Pak Cluster Topology Considerations
 
 > IBM recommends, that Cloud Pak namespaces be labeled and assigned to machine sets. Machine set must have 3 or more nodes<br/>
