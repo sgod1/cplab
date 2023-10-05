@@ -21,7 +21,11 @@ It is recommended that cloud paks are installed in isolated namespaces and not s
 ![Simple Isolation](./images/2-namespace-request.drawio.png)
 
 #### Cloud Paks and Namespaces for the Same Tenant with Shared Services
-![Multi-Namespace](./images/multi-namespacesx.drawio.png)
+![Multi Namespace](./images/multi-namespacesx.drawio.png)
+
+#### All Namespace Mode Installation with Single-Tenancy
+![All Namespace](./images/allnamespacesst.drawio.png)
+
 
 ### Cloud Pak Cluster Topology Considerations
 
