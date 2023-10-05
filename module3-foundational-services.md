@@ -88,7 +88,11 @@ ODLM manages *groups of operands*.<br/>
 For shared foundational services, `ODLM` creates just one instance of a service operator, and one instance of a service.<br/>
 In some cases, ODLM will just install it's operand without creating triggering CR.<br/>
 
-#### ODLM on-demand dependecy resolution.
+#### *ODLM* architecture.<br/>
+
+![ODLM architecture](./images/odlm-arch.png)
+
+#### *ODLM* on-demand dependecy resolution.
 
 We review ODLM configuration CRs, and explain runtime dependency resolution.<br/>
 
