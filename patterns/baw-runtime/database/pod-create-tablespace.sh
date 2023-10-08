@@ -12,7 +12,7 @@ cmd1="create tablespace $ts owner $tsu location '$tsloc'"
 cmd2="grant create on tablespace $ts to $tsu"
 
 echo cmd1 "=>" $cmd1
-echo cnd2 "=>" $cnd2
+echo cmd2 "=>" $cmd2
 
 oc exec $pod -- mkdir -p "$tsloc"
 oc exec $pod -- psql -d $db -U postgres -c "$cmd1"
