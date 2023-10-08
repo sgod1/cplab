@@ -1,0 +1,696 @@
+---
+--- gcddb, create tablespace gcddb_tbs owner gcd_user location ''
+---
+apiVersion: postgresql.k8s.enterprisedb.io/v1
+kind: Cluster
+metadata:
+  name: cluster-gcddb
+#  namespace: postgres
+spec:
+  logLevel: info
+  startDelay: 30
+  stopDelay: 30
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+  backup:
+    target: prefer-standby
+  enableSuperuserAccess: true
+  monitoring:
+    disableDefaultQueries: false
+    enablePodMonitor: false
+  minSyncReplicas: 0
+  postgresGID: 26
+  replicationSlots:
+    highAvailability:
+      enabled: false
+      slotPrefix: _cnp_
+    updateInterval: 30
+  primaryUpdateMethod: restart
+  bootstrap:
+    initdb:
+      dataChecksums: true
+      database: gcddb
+      encoding: UTF8
+      localeCType: C
+      localeCollate: C
+      owner: gcd_user
+      postInitApplicationSQL:
+        - REVOKE CONNECT ON DATABASE gcddb FROM public
+        - GRANT ALL PRIVILEGES ON DATABASE gcddb TO gcd_user
+  postgresql:
+    parameters:
+      log_truncate_on_rotation: 'false'
+      archive_mode: 'on'
+      log_filename: postgres
+      archive_timeout: 5min
+      max_replication_slots: '32'
+      log_rotation_size: '0'
+      shared_preload_libraries: ''
+      logging_collector: 'on'
+      wal_receiver_timeout: 5s
+      log_directory: /controller/log
+      log_destination: csvlog
+      wal_sender_timeout: 5s
+      max_worker_processes: '32'
+      max_parallel_workers: '32'
+      log_rotation_age: '0'
+      max_connections: '400'
+      shared_memory_type: mmap
+      dynamic_shared_memory_type: posix
+      wal_keep_size: 512MB
+    pg_hba:
+      - host gcddb gcd_user all scram-sha-256
+  failoverDelay: 0
+  postgresUID: 26
+  walStorage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  maxSyncReplicas: 0
+  switchoverDelay: 40000000
+  storage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  primaryUpdateStrategy: unsupervised
+  instances: 1
+---
+--- bawdocs, create tablespace bawdocs_tbs owner bawdocs_user location ''
+---
+apiVersion: postgresql.k8s.enterprisedb.io/v1
+kind: Cluster
+metadata:
+  name: cluster-bawdocs
+#  namespace: postgres
+spec:
+  logLevel: info
+  startDelay: 30
+  stopDelay: 30
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+  backup:
+    target: prefer-standby
+  enableSuperuserAccess: true
+  monitoring:
+    disableDefaultQueries: false
+    enablePodMonitor: false
+  minSyncReplicas: 0
+  postgresGID: 26
+  replicationSlots:
+    highAvailability:
+      enabled: false
+      slotPrefix: _cnp_
+    updateInterval: 30
+  primaryUpdateMethod: restart
+  bootstrap:
+    initdb:
+      dataChecksums: true
+      database: bawdocs
+      encoding: UTF8
+      localeCType: C
+      localeCollate: C
+      owner: bawdocs_user
+      postInitApplicationSQL:
+        - REVOKE CONNECT ON DATABASE bawdocs FROM public
+        - GRANT ALL PRIVILEGES ON DATABASE bawdocs TO bawdocs_user
+  postgresql:
+    parameters:
+      log_truncate_on_rotation: 'false'
+      archive_mode: 'on'
+      log_filename: postgres
+      archive_timeout: 5min
+      max_replication_slots: '32'
+      log_rotation_size: '0'
+      shared_preload_libraries: ''
+      logging_collector: 'on'
+      wal_receiver_timeout: 5s
+      log_directory: /controller/log
+      log_destination: csvlog
+      wal_sender_timeout: 5s
+      max_worker_processes: '32'
+      max_parallel_workers: '32'
+      log_rotation_age: '0'
+      max_connections: '400'
+      shared_memory_type: mmap
+      dynamic_shared_memory_type: posix
+      wal_keep_size: 512MB
+    pg_hba:
+      - host bawdocs bawdocs_user all scram-sha-256
+  failoverDelay: 0
+  postgresUID: 26
+  walStorage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  maxSyncReplicas: 0
+  switchoverDelay: 40000000
+  storage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  primaryUpdateStrategy: unsupervised
+  instances: 1
+---
+--- bawdos, create tablespace bawdos_tbs owner bawdos_user location ''
+---
+apiVersion: postgresql.k8s.enterprisedb.io/v1
+kind: Cluster
+metadata:
+  name: cluster-bawdos
+#  namespace: postgres
+spec:
+  logLevel: info
+  startDelay: 30
+  stopDelay: 30
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+  backup:
+    target: prefer-standby
+  enableSuperuserAccess: true
+  monitoring:
+    disableDefaultQueries: false
+    enablePodMonitor: false
+  minSyncReplicas: 0
+  postgresGID: 26
+  replicationSlots:
+    highAvailability:
+      enabled: false
+      slotPrefix: _cnp_
+    updateInterval: 30
+  primaryUpdateMethod: restart
+  bootstrap:
+    initdb:
+      dataChecksums: true
+      database: bawdos
+      encoding: UTF8
+      localeCType: C
+      localeCollate: C
+      owner: bawdos_user
+      postInitApplicationSQL:
+        - REVOKE CONNECT ON DATABASE bawdos FROM public
+        - GRANT ALL PRIVILEGES ON DATABASE bawdos TO bawdos_user
+  postgresql:
+    parameters:
+      log_truncate_on_rotation: 'false'
+      archive_mode: 'on'
+      log_filename: postgres
+      archive_timeout: 5min
+      max_replication_slots: '32'
+      log_rotation_size: '0'
+      shared_preload_libraries: ''
+      logging_collector: 'on'
+      wal_receiver_timeout: 5s
+      log_directory: /controller/log
+      log_destination: csvlog
+      wal_sender_timeout: 5s
+      max_worker_processes: '32'
+      max_parallel_workers: '32'
+      log_rotation_age: '0'
+      max_connections: '400'
+      shared_memory_type: mmap
+      dynamic_shared_memory_type: posix
+      wal_keep_size: 512MB
+    pg_hba:
+      - host bawdos bawdos_user all scram-sha-256
+  failoverDelay: 0
+  postgresUID: 26
+  walStorage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  maxSyncReplicas: 0
+  switchoverDelay: 40000000
+  storage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  primaryUpdateStrategy: unsupervised
+  instances: 1
+---
+--- bawtos, create tablespace bawtos_tbs owner bawtos_user location ''
+---
+apiVersion: postgresql.k8s.enterprisedb.io/v1
+kind: Cluster
+metadata:
+  name: cluster-bawtos
+#  namespace: postgres
+spec:
+  logLevel: info
+  startDelay: 30
+  stopDelay: 30
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+  backup:
+    target: prefer-standby
+  enableSuperuserAccess: true
+  monitoring:
+    disableDefaultQueries: false
+    enablePodMonitor: false
+  minSyncReplicas: 0
+  postgresGID: 26
+  replicationSlots:
+    highAvailability:
+      enabled: false
+      slotPrefix: _cnp_
+    updateInterval: 30
+  primaryUpdateMethod: restart
+  bootstrap:
+    initdb:
+      dataChecksums: true
+      database: bawtos
+      encoding: UTF8
+      localeCType: C
+      localeCollate: C
+      owner: bawdos_user
+      postInitApplicationSQL:
+        - REVOKE CONNECT ON DATABASE bawtos FROM public
+        - GRANT ALL PRIVILEGES ON DATABASE bawtos TO bawtos_user
+  postgresql:
+    parameters:
+      log_truncate_on_rotation: 'false'
+      archive_mode: 'on'
+      log_filename: postgres
+      archive_timeout: 5min
+      max_replication_slots: '32'
+      log_rotation_size: '0'
+      shared_preload_libraries: ''
+      logging_collector: 'on'
+      wal_receiver_timeout: 5s
+      log_directory: /controller/log
+      log_destination: csvlog
+      wal_sender_timeout: 5s
+      max_worker_processes: '32'
+      max_parallel_workers: '32'
+      log_rotation_age: '0'
+      max_connections: '400'
+      shared_memory_type: mmap
+      dynamic_shared_memory_type: posix
+      wal_keep_size: 512MB
+    pg_hba:
+      - host bawtos bawtos_user all scram-sha-256
+  failoverDelay: 0
+  postgresUID: 26
+  walStorage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  maxSyncReplicas: 0
+  switchoverDelay: 40000000
+  storage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  primaryUpdateStrategy: unsupervised
+  instances: 1
+---
+--- chosdb, create tablespace chosdb_tbs owner chos_user location '', grant create on tablespace chosdb_tbs to chos_user
+---
+apiVersion: postgresql.k8s.enterprisedb.io/v1
+kind: Cluster
+metadata:
+  name: cluster-chosdb
+#  namespace: postgres
+spec:
+  logLevel: info
+  startDelay: 30
+  stopDelay: 30
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+  backup:
+    target: prefer-standby
+  enableSuperuserAccess: true
+  monitoring:
+    disableDefaultQueries: false
+    enablePodMonitor: false
+  minSyncReplicas: 0
+  postgresGID: 26
+  replicationSlots:
+    highAvailability:
+      enabled: false
+      slotPrefix: _cnp_
+    updateInterval: 30
+  primaryUpdateMethod: restart
+  bootstrap:
+    initdb:
+      dataChecksums: true
+      database: chosdb
+      encoding: UTF8
+      localeCType: C
+      localeCollate: C
+      owner: chos_user
+      postInitApplicationSQL:
+        - REVOKE CONNECT ON DATABASE chosdb FROM public
+        - GRANT ALL PRIVILEGES ON DATABASE chosdb TO chos_user
+  postgresql:
+    parameters:
+      log_truncate_on_rotation: 'false'
+      archive_mode: 'on'
+      log_filename: postgres
+      archive_timeout: 5min
+      max_replication_slots: '32'
+      log_rotation_size: '0'
+      shared_preload_libraries: ''
+      logging_collector: 'on'
+      wal_receiver_timeout: 5s
+      log_directory: /controller/log
+      log_destination: csvlog
+      wal_sender_timeout: 5s
+      max_worker_processes: '32'
+      max_parallel_workers: '32'
+      log_rotation_age: '0'
+      max_connections: '400'
+      shared_memory_type: mmap
+      dynamic_shared_memory_type: posix
+      wal_keep_size: 512MB
+    pg_hba:
+      - host chosdb chos_user all scram-sha-256
+  failoverDelay: 0
+  postgresUID: 26
+  walStorage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  maxSyncReplicas: 0
+  switchoverDelay: 40000000
+  storage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  primaryUpdateStrategy: unsupervised
+  instances: 1
+---
+--- aeosdb, create tablespace aeosdb_tbs owner aeos_user location '', grant create on tablespace aeosdb_tbs to aeos_user
+---
+apiVersion: postgresql.k8s.enterprisedb.io/v1
+kind: Cluster
+metadata:
+  name: cluster-aeosdb
+#  namespace: postgres
+spec:
+  logLevel: info
+  startDelay: 30
+  stopDelay: 30
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+  backup:
+    target: prefer-standby
+  enableSuperuserAccess: true
+  monitoring:
+    disableDefaultQueries: false
+    enablePodMonitor: false
+  minSyncReplicas: 0
+  postgresGID: 26
+  replicationSlots:
+    highAvailability:
+      enabled: false
+      slotPrefix: _cnp_
+    updateInterval: 30
+  primaryUpdateMethod: restart
+  bootstrap:
+    initdb:
+      dataChecksums: true
+      database: aeosdb
+      encoding: UTF8
+      localeCType: C
+      localeCollate: C
+      owner: aeos_user
+      postInitApplicationSQL:
+        - REVOKE CONNECT ON DATABASE aeosdb FROM public
+        - GRANT ALL PRIVILEGES ON DATABASE chosdb TO aeos_user
+  postgresql:
+    parameters:
+      log_truncate_on_rotation: 'false'
+      archive_mode: 'on'
+      log_filename: postgres
+      archive_timeout: 5min
+      max_replication_slots: '32'
+      log_rotation_size: '0'
+      shared_preload_libraries: ''
+      logging_collector: 'on'
+      wal_receiver_timeout: 5s
+      log_directory: /controller/log
+      log_destination: csvlog
+      wal_sender_timeout: 5s
+      max_worker_processes: '32'
+      max_parallel_workers: '32'
+      log_rotation_age: '0'
+      max_connections: '400'
+      shared_memory_type: mmap
+      dynamic_shared_memory_type: posix
+      wal_keep_size: 512MB
+    pg_hba:
+      - host aeosdb aeos_user all scram-sha-256
+  failoverDelay: 0
+  postgresUID: 26
+  walStorage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  maxSyncReplicas: 0
+  switchoverDelay: 40000000
+  storage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  primaryUpdateStrategy: unsupervised
+  instances: 1
+---
+--- icndb, create tablespace icndb_tbs owner icn_user location '', grant create on tablespace icndb_tbs to icn_user
+---
+apiVersion: postgresql.k8s.enterprisedb.io/v1
+kind: Cluster
+metadata:
+  name: cluster-icndb
+#  namespace: postgres
+spec:
+  logLevel: info
+  startDelay: 30
+  stopDelay: 30
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+  backup:
+    target: prefer-standby
+  enableSuperuserAccess: true
+  monitoring:
+    disableDefaultQueries: false
+    enablePodMonitor: false
+  minSyncReplicas: 0
+  postgresGID: 26
+  replicationSlots:
+    highAvailability:
+      enabled: false
+      slotPrefix: _cnp_
+    updateInterval: 30
+  primaryUpdateMethod: restart
+  bootstrap:
+    initdb:
+      dataChecksums: true
+      database: icndb
+      encoding: UTF8
+      localeCType: C
+      localeCollate: C
+      owner: icn_user
+      postInitApplicationSQL:
+        - REVOKE CONNECT ON DATABASE icndb FROM public
+        - GRANT ALL PRIVILEGES ON DATABASE icndb TO icn_user
+  postgresql:
+    parameters:
+      log_truncate_on_rotation: 'false'
+      archive_mode: 'on'
+      log_filename: postgres
+      archive_timeout: 5min
+      max_replication_slots: '32'
+      log_rotation_size: '0'
+      shared_preload_libraries: ''
+      logging_collector: 'on'
+      wal_receiver_timeout: 5s
+      log_directory: /controller/log
+      log_destination: csvlog
+      wal_sender_timeout: 5s
+      max_worker_processes: '32'
+      max_parallel_workers: '32'
+      log_rotation_age: '0'
+      max_connections: '400'
+      shared_memory_type: mmap
+      dynamic_shared_memory_type: posix
+      wal_keep_size: 512MB
+    pg_hba:
+      - host icndb icn_user all scram-sha-256
+  failoverDelay: 0
+  postgresUID: 26
+  walStorage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  maxSyncReplicas: 0
+  switchoverDelay: 40000000
+  storage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  primaryUpdateStrategy: unsupervised
+  instances: 1
+---
+--- aaedb, create tablespace aaedb_tbs owner aae_user location '', grant create on tablespace aaedb_tbs to aae_user
+---
+apiVersion: postgresql.k8s.enterprisedb.io/v1
+kind: Cluster
+metadata:
+  name: cluster-aaedb
+#  namespace: postgres
+spec:
+  logLevel: info
+  startDelay: 30
+  stopDelay: 30
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+  backup:
+    target: prefer-standby
+  enableSuperuserAccess: true
+  monitoring:
+    disableDefaultQueries: false
+    enablePodMonitor: false
+  minSyncReplicas: 0
+  postgresGID: 26
+  replicationSlots:
+    highAvailability:
+      enabled: false
+      slotPrefix: _cnp_
+    updateInterval: 30
+  primaryUpdateMethod: restart
+  bootstrap:
+    initdb:
+      dataChecksums: true
+      database: aaedb
+      encoding: UTF8
+      localeCType: C
+      localeCollate: C
+      owner: aae_user
+      postInitApplicationSQL:
+        - REVOKE CONNECT ON DATABASE aaedb FROM public
+        - GRANT ALL PRIVILEGES ON DATABASE aaedb TO aae_user
+  postgresql:
+    parameters:
+      log_truncate_on_rotation: 'false'
+      archive_mode: 'on'
+      log_filename: postgres
+      archive_timeout: 5min
+      max_replication_slots: '32'
+      log_rotation_size: '0'
+      shared_preload_libraries: ''
+      logging_collector: 'on'
+      wal_receiver_timeout: 5s
+      log_directory: /controller/log
+      log_destination: csvlog
+      wal_sender_timeout: 5s
+      max_worker_processes: '32'
+      max_parallel_workers: '32'
+      log_rotation_age: '0'
+      max_connections: '400'
+      shared_memory_type: mmap
+      dynamic_shared_memory_type: posix
+      wal_keep_size: 512MB
+    pg_hba:
+      - host aaedb aae_user all scram-sha-256
+  failoverDelay: 0
+  postgresUID: 26
+  walStorage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  maxSyncReplicas: 0
+  switchoverDelay: 40000000
+  storage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  primaryUpdateStrategy: unsupervised
+  instances: 1
+---
+--- bawdb, create tablespace bawdb_tbs owner baw_user location '', grant create on tablespace bawdb_tbs to baw_user
+---
+apiVersion: postgresql.k8s.enterprisedb.io/v1
+kind: Cluster
+metadata:
+  name: cluster-bawdb
+#  namespace: postgres
+spec:
+  logLevel: info
+  startDelay: 30
+  stopDelay: 30
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+  backup:
+    target: prefer-standby
+  enableSuperuserAccess: true
+  monitoring:
+    disableDefaultQueries: false
+    enablePodMonitor: false
+  minSyncReplicas: 0
+  postgresGID: 26
+  replicationSlots:
+    highAvailability:
+      enabled: false
+      slotPrefix: _cnp_
+    updateInterval: 30
+  primaryUpdateMethod: restart
+  bootstrap:
+    initdb:
+      dataChecksums: true
+      database: bawdb
+      encoding: UTF8
+      localeCType: C
+      localeCollate: C
+      owner: baw_user
+      postInitApplicationSQL:
+        - REVOKE CONNECT ON DATABASE bawdb FROM public
+        - GRANT ALL PRIVILEGES ON DATABASE bawdb TO baw_user
+#        - CREATE SCHEMA baw_user IF NOT EXISTS
+#        - ALTER SCHEMA baw_user OWNER TO baw_user
+#        - GRANT ALL ON SCHEMA baw_user TO baw_user
+  postgresql:
+    parameters:
+      log_truncate_on_rotation: 'false'
+      archive_mode: 'on'
+      log_filename: postgres
+      archive_timeout: 5min
+      max_replication_slots: '32'
+      log_rotation_size: '0'
+      shared_preload_libraries: ''
+      logging_collector: 'on'
+      wal_receiver_timeout: 5s
+      log_directory: /controller/log
+      log_destination: csvlog
+      wal_sender_timeout: 5s
+      max_worker_processes: '32'
+      max_parallel_workers: '32'
+      log_rotation_age: '0'
+      max_connections: '400'
+      shared_memory_type: mmap
+      dynamic_shared_memory_type: posix
+      wal_keep_size: 512MB
+    pg_hba:
+      - host bawdb baw_user all scram-sha-256
+  failoverDelay: 0
+  postgresUID: 26
+  walStorage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  maxSyncReplicas: 0
+  switchoverDelay: 40000000
+  storage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  primaryUpdateStrategy: unsupervised
+  instances: 1
