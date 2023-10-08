@@ -48,7 +48,7 @@ CONTENT.KEYSTORE_PASSWORD="$KEYSTORE_PASSWORD"
 CONTENT_INITIALIZATION.ENABLE="No"
 
 ## user name for GCD administrator, for example, "CEAdmin". This parameter accepts comma-separated lists (without spacing), for example, "CEAdmin1,CEAdmin2"
-CONTENT_INITIALIZATION.LDAP_ADMIN_USER_NAME="$LDAP_ADMIN_USER_NAME"
+CONTENT_INITIALIZATION.LDAP_ADMIN_USER_NAME="$ADMIN_USER"
 
 ## Names of groups containing GCD administrators, for example, "P8Administrators". This parameter accepts comma-separated lists (without spacing), for example, "P8Group1,P8Group2"
 CONTENT_INITIALIZATION.LDAP_ADMINS_GROUPS_NAME="readers"
