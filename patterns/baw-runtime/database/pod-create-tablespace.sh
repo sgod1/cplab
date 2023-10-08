@@ -11,9 +11,10 @@ tsloc="/var/lib/postgresql/data/ts"
 cmd1="create tablespace $ts owner $tsu location '$tsloc'"
 cmd2="grant create on tablespace $ts to $tsu"
 
-echo cmd1 "=>" $cmd1
-echo cmd2 "=>" $cmd2
-
 oc exec $pod -- mkdir -p "$tsloc"
+
+echo in-pod command "=>" $cmd1
 oc exec $pod -- psql -d $db -U postgres -c "$cmd1"
+
+echo in-pod command "=>" $cmd2
 oc exec $pod -- psql -d $db -U postgres -c "$cmd2"
