@@ -265,7 +265,7 @@ spec:
       encoding: UTF8
       localeCType: C
       localeCollate: C
-      owner: bawdos_user
+      owner: bawtos_user
       postInitApplicationSQL:
         - REVOKE CONNECT ON DATABASE bawtos FROM public
         - GRANT ALL PRIVILEGES ON DATABASE bawtos TO bawtos_user
@@ -422,7 +422,7 @@ spec:
       owner: aeos_user
       postInitApplicationSQL:
         - REVOKE CONNECT ON DATABASE aeosdb FROM public
-        - GRANT ALL PRIVILEGES ON DATABASE chosdb TO aeos_user
+        - GRANT ALL PRIVILEGES ON DATABASE aeosdb TO aeos_user
   postgresql:
     parameters:
       log_truncate_on_rotation: 'false'
