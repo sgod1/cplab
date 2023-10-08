@@ -43,7 +43,7 @@ bawtos.BAWTOS_DB_USER_NAME="bawtos_user"
 bawtos.BAWTOS_DB_USER_PASSWORD="$bawtos"
 
 ## Provide the name of the database for Case History when Case History Emitter is enabled. For example: "CHOS"
-chosdb.CHOS_DB_NAME="CHOS"
+chosdb.CHOS_DB_NAME="CHOSDB"
 ## Provide the user name for the object store database required by Case History when Case History Emitter is enabled. For example: "dbuser1"
 chosdb.CHOS_DB_USER_NAME="chos_user"
 ## Provide the password for the user of Object Store of P8Domain.
