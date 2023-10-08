@@ -1,7 +1,7 @@
 ## cp4ba_db_server.property
 ## Please input the value for the multiple database server/instance name, this key supports comma-separated lists. ##
 ## (NOTES: The value (CAN NOT CONTAIN DOT CHARACTER) is alias name for database server/instance, it is not real database server/instance host name.) ##
-DB_SERVER_LIST="gcddb,bawdocs,bawdos,bawtos,chosdb,aeosdb,icndb,aaedb,cloudpak9"
+DB_SERVER_LIST="gcddb,bawdocs,bawdos,bawtos,chosdb,aeosdb,icndb,aaedb,bawdb"
 
 ####################################################
 ## Property for Database Server "gcddb" required by IBM Cloud Pak for Business Automation on postgresql type database ##
