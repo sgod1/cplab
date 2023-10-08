@@ -12,5 +12,5 @@ cmd1="create tablespace $ts owner $tsu location $tsloc"
 cmd2="grant create on tablespace $ts to $tsu"
 
 oc exec $pod -- mkdir -p "$tsloc"
-oc exec $pod -- psql -d $db -U postgres -c $cmd1
-oc exec $pod -- psql -d $db -U postgres -c $cmd2
+oc exec $pod -- psql -d $db -U postgres -c "$cmd1"
+oc exec $pod -- psql -d $db -U postgres -c "$cmd2"
