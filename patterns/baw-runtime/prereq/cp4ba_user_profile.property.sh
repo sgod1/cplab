@@ -1,3 +1,7 @@
+envfile=$1
+outfile=$2
+. $envfile
+cat <<EOF > $outfile
 ## cp4ba_user_profile.property
 ####################################################
 ## USER Property for CP4BA ##
@@ -130,3 +134,4 @@ APP_ENGINE.SESSION_REDIS_USERNAME=""
 ####################################################
 ## Designate an existing LDAP user for the Workflow Server admin user.
 BAW_RUNTIME.ADMIN_USER="$ADMIN_USER"
+EOF
