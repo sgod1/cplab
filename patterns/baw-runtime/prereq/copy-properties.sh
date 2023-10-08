@@ -12,7 +12,7 @@ cp ./cp4ba_LDAP.property $PROPDIR
 
 namespace="$postgresns"
 
-cat ./cp4ba_db_server.property.sh > $PROPDIR/cp4ba_db_server.property
+./cp4ba_db_server.property.sh $envfile $PROPDIR/cp4ba_db_server.property
 
 APPLOGIN_USER="$user"
 APPLOGIN_PASSWORD="$password"

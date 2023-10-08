@@ -1,3 +1,7 @@
+envfile=$1
+outfile=$2
+. $envfile
+cat <<EOF > $outfile
 ## cp4ba_db_server.property
 ## Please input the value for the multiple database server/instance name, this key supports comma-separated lists. ##
 ## (NOTES: The value (CAN NOT CONTAIN DOT CHARACTER) is alias name for database server/instance, it is not real database server/instance host name.) ##
@@ -10,7 +14,7 @@ DB_SERVER_LIST="gcddb,bawdocs,bawdos,bawtos,chosdb,aeosdb,icndb,aaedb,bawdb"
 gcddb.DATABASE_TYPE="postgresql"
 
 ## Provide the database server name or IP address of the database server.
-gcddb.DATABASE_SERVERNAME="cluster-gcddb-rw.$namespace.svc.cluster.local"
+gcddb.DATABASE_SERVERNAME="cluster-gcddb-rw.$pgnamespace.svc.cluster.local"
 
 ## Provide the database server port. For Db2, the default is "50000". For Oracle, the default is "1521". For Postgresql, the default is "5432".
 gcddb.DATABASE_PORT="5432"
@@ -36,7 +40,7 @@ gcddb.DATABASE_SSL_CERT_FILE_FOLDER="$CERTKUBE/scripts/cp4ba-prerequisites/prope
 bawdocs.DATABASE_TYPE="postgresql"
 
 ## Provide the database server name or IP address of the database server.
-bawdocs.DATABASE_SERVERNAME="cluster-bawdocs-rw.$namespace.svc.cluster.local"
+bawdocs.DATABASE_SERVERNAME="cluster-bawdocs-rw.$pgnamespace.svc.cluster.local"
 
 ## Provide the database server port. For Db2, the default is "50000". For Oracle, the default is "1521". For Postgresql, the default is "5432".
 bawdocs.DATABASE_PORT="5432"
@@ -62,7 +66,7 @@ bawdocs.DATABASE_SSL_CERT_FILE_FOLDER="$CERTKUBE/scripts/cp4ba-prerequisites/pro
 bawdos.DATABASE_TYPE="postgresql"
 
 ## Provide the database server name or IP address of the database server.
-bawdos.DATABASE_SERVERNAME="cluster-bawdos-rw.$namespace.svc.cluster.local"
+bawdos.DATABASE_SERVERNAME="cluster-bawdos-rw.$pgnamespace.svc.cluster.local"
 
 ## Provide the database server port. For Db2, the default is "50000". For Oracle, the default is "1521". For Postgresql, the default is "5432".
 bawdos.DATABASE_PORT="5432"
@@ -88,7 +92,7 @@ bawdos.DATABASE_SSL_CERT_FILE_FOLDER="$CERTKUBE/scripts/cp4ba-prerequisites/prop
 bawtos.DATABASE_TYPE="postgresql"
 
 ## Provide the database server name or IP address of the database server.
-bawtos.DATABASE_SERVERNAME="cluster-bawtos-rw.$namespace.svc.cluster.local"
+bawtos.DATABASE_SERVERNAME="cluster-bawtos-rw.$pgnamespace.svc.cluster.local"
 
 ## Provide the database server port. For Db2, the default is "50000". For Oracle, the default is "1521". For Postgresql, the default is "5432".
 bawtos.DATABASE_PORT="5432"
@@ -114,7 +118,7 @@ bawtos.DATABASE_SSL_CERT_FILE_FOLDER="$CERTKUBE/scripts/cp4ba-prerequisites/prop
 chosdb.DATABASE_TYPE="postgresql"
 
 ## Provide the database server name or IP address of the database server.
-chosdb.DATABASE_SERVERNAME="cluster-chosdb-rw.$namespace.svc.cluster.local"
+chosdb.DATABASE_SERVERNAME="cluster-chosdb-rw.$pgnamespace.svc.cluster.local"
 
 ## Provide the database server port. For Db2, the default is "50000". For Oracle, the default is "1521". For Postgresql, the default is "5432".
 chosdb.DATABASE_PORT="5432"
@@ -140,7 +144,7 @@ chosdb.DATABASE_SSL_CERT_FILE_FOLDER="$CERTKUBE/scripts/cp4ba-prerequisites/prop
 aeosdb.DATABASE_TYPE="postgresql"
 
 ## Provide the database server name or IP address of the database server.
-aeosdb.DATABASE_SERVERNAME="cluster-aeosdb-rw.$namespace.svc.cluster.local"
+aeosdb.DATABASE_SERVERNAME="cluster-aeosdb-rw.$pgnamespace.svc.cluster.local"
 
 ## Provide the database server port. For Db2, the default is "50000". For Oracle, the default is "1521". For Postgresql, the default is "5432".
 aeosdb.DATABASE_PORT="5432"
@@ -166,7 +170,7 @@ aeosdb.DATABASE_SSL_CERT_FILE_FOLDER="$CERTKUBE/scripts/cp4ba-prerequisites/prop
 icndb.DATABASE_TYPE="postgresql"
 
 ## Provide the database server name or IP address of the database server.
-icndb.DATABASE_SERVERNAME="cluster-icndb-rw.$namespace.svc.cluster.local"
+icndb.DATABASE_SERVERNAME="cluster-icndb-rw.$pgnamespace.svc.cluster.local"
 
 ## Provide the database server port. For Db2, the default is "50000". For Oracle, the default is "1521". For Postgresql, the default is "5432".
 icndb.DATABASE_PORT="5432"
@@ -192,7 +196,7 @@ icndb.DATABASE_SSL_CERT_FILE_FOLDER="$CERTKUBE/scripts/cp4ba-prerequisites/prope
 aaedb.DATABASE_TYPE="postgresql"
 
 ## Provide the database server name or IP address of the database server.
-aaedb.DATABASE_SERVERNAME="cluster-aaedb-rw.$namespace.svc.cluster.local"
+aaedb.DATABASE_SERVERNAME="cluster-aaedb-rw.$pgnamespace.svc.cluster.local"
 
 ## Provide the database server port. For Db2, the default is "50000". For Oracle, the default is "1521". For Postgresql, the default is "5432".
 aaedb.DATABASE_PORT="5432"
@@ -218,7 +222,7 @@ aaedb.DATABASE_SSL_CERT_FILE_FOLDER="$CERTKUBE/scripts/cp4ba-prerequisites/prope
 bawdb.DATABASE_TYPE="postgresql"
 
 ## Provide the database server name or IP address of the database server.
-bawdb.DATABASE_SERVERNAME="cluster-bawdb-rw.$namespace.svc.cluster.local"
+bawdb.DATABASE_SERVERNAME="cluster-bawdb-rw.$pgnamespace.svc.cluster.local"
 
 ## Provide the database server port. For Db2, the default is "50000". For Oracle, the default is "1521". For Postgresql, the default is "5432".
 bawdb.DATABASE_PORT="5432"
@@ -236,3 +240,4 @@ bawdb.DATABASE_SSL_SECRET_NAME="ibm-cp4ba-db-ssl-secret-for-bawdb"
 
 ## If POSTGRESQL_SSL_CLIENT_SERVER is "False" and DATABASE_SSL_ENABLE is "True", please get the SSL certificate file (rename db-cert.crt) from server and then copy into this directory.Default value is "/cp4ba/501/ibm-cp-automation/inventory/cp4aOperatorSdk/files/deploy/crs/cert-kubernetes/scripts/cp4ba-prerequisites/propertyfile/cert/db/cloudpak9".
 bawdb.DATABASE_SSL_CERT_FILE_FOLDER="$CERTKUBE/scripts/cp4ba-prerequisites/propertyfile/cert/db/bawdb"
+EOF
