@@ -20,7 +20,7 @@ ICN_DB_USER_PASSWORD="$icndb"
 APP_ENGINE_DB_USER_PASSWORD="$aaedb"
 BAW_RUNTIME_DB_USER_PASSWORD="$bawdb"
 
-./cp4ba_db_name_user.property.sh $PROPDIR/cp4ba_db_name_user.property/cp4ba_db_name_user.property
+./cp4ba_db_name_user.property.sh $PROPDIR/cp4ba_db_name_user.property
 
 namespace="$postgresns"
 
