@@ -1,3 +1,5 @@
+outfile=$1
+cat <<EOF >$outfile
 ## cp4ba_db_name_user.property 
 ==================================================================================================================
 NOTES: Please change the "<DB_SERVER_NAME>" variable to assign each database to a database server or instance.
@@ -84,3 +86,4 @@ bawdb.BAW_RUNTIME_DB_NAME="BAWDB"
 ## Provide the schema name that is used to qualify unqualified database objects in dynamically prepared SQL statements when
 ## the schema name is different from the user name of the database for Business Automation Workflow.
 bawdb.BAW_RUNTIME_DB_CURRENT_SCHEMA="baw_user"
+EOF
