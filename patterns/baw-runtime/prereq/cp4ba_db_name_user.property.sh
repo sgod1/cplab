@@ -50,7 +50,7 @@ chosdb.CHOS_DB_USER_NAME="chos_user"
 chosdb.CHOS_DB_USER_PASSWORD="$chosdb"
 
 ## Provide the name of the database for the object store required by AE Data Persistent. For example: "AEOS"
-aeosdb.AEOS_DB_NAME="AEOS"
+aeosdb.AEOS_DB_NAME="AEOSDB"
 ## Provide the user name of the database for the object store required by AE Data Persistent. For example: "dbuser1"
 aeosdb.AEOS_DB_USER_NAME="aeos_user"
 ## Provide the password for the user of Object Store of P8Domain. 
