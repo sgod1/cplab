@@ -1,6 +1,7 @@
 #!/bin/bash -x
 
-CP4BA=cp4ba
+# namespace parameter
+CP4BA=${1:-"cp4ba"}
 
 # set a project
 oc project $CP4BA
