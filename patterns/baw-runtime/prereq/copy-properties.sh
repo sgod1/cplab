@@ -8,19 +8,7 @@ mkdir -p $PROPDIR
 
 cp ./cp4ba_LDAP.property $PROPDIR
 
-. $envfile
-
-GCD_DB_USER_PASSWORD="$gcddb"
-BAWDOCS_DB_USER_PASSWORD="$bawdocs"
-BAWDOS_DB_USER_PASSWORD="$bawdos"
-BAWTOS_DB_USER_PASSWORD="$bawtos"
-CHOS_DB_USER_PASSWORD="$chosdb"
-AEOS_DB_USER_PASSWORD="$aeosdb"
-ICN_DB_USER_PASSWORD="$icndb"
-APP_ENGINE_DB_USER_PASSWORD="$aaedb"
-BAW_RUNTIME_DB_USER_PASSWORD="$bawdb"
-
-./cp4ba_db_name_user.property.sh $PROPDIR/cp4ba_db_name_user.property
+./cp4ba_db_name_user.property.sh $envfile $PROPDIR/cp4ba_db_name_user.property
 
 namespace="$postgresns"
 
