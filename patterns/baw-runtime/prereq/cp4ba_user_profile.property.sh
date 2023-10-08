@@ -1,6 +1,9 @@
 envfile=$1
 outfile=$2
 . $envfile
+
+cie=${CONTENT_INITIALIZATION_ENABLE:-"Yes"}
+
 cat <<EOF > $outfile
 ## cp4ba_user_profile.property
 ####################################################
@@ -49,7 +52,7 @@ CONTENT.KEYSTORE_PASSWORD="$KEYSTORE_PASSWORD"
 ## Enable/disable ECM (FNCM) / BAN initialization (e.g., creation of P8 domain, creation/configuration of object stores,
 ## creation/configuration of CSS servers, and initialization of Navigator (ICN).
 ## The default valuse is "Yes", set "No" to disable.
-CONTENT_INITIALIZATION.ENABLE="No"
+CONTENT_INITIALIZATION.ENABLE="$cie"
 
 ## user name for GCD administrator, for example, "CEAdmin". This parameter accepts comma-separated lists (without spacing), for example, "CEAdmin1,CEAdmin2"
 CONTENT_INITIALIZATION.LDAP_ADMIN_USER_NAME="$ADMIN_USER"
