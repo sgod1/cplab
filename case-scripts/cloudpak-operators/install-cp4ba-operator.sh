@@ -3,6 +3,8 @@
 # namespace parameter
 CP4BA=${1:-"cp4ba"}
 
+echo Target namespace: $CP4BA
+
 # set a project
 oc project $CP4BA
 
