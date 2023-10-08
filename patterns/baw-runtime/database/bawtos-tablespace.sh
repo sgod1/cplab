@@ -6,4 +6,4 @@ db="bawtos"
 tsu="bawtos_user"
 ts="pg_default"
 
-./pod-create-tablespace $pod $db $tsu $ts
+./pod-create-tablespace.sh $pod $db $tsu $ts

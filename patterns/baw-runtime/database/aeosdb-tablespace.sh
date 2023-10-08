@@ -6,4 +6,4 @@ db="aeosdb"
 tsu="aeos_user"
 ts="aeosdb_tbs"
 
-./pod-create-tablespace $pod $db $tsu $ts
+./pod-create-tablespace.sh $pod $db $tsu $ts
