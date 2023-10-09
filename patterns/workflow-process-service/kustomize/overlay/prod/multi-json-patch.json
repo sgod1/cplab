@@ -1,0 +1,17 @@
+[
+  {
+    "op": "replace",
+    "path": "/spec/ldap_configuration/lc_ldap_server",
+    "value": "openldap.openldap.svc.cluster.local"
+  },
+  {
+    "op": "replace",
+    "path": "/spec/ldap_configuration/lc_ldap_port",
+    "value": "1389"
+  },
+  {
+    "op": "replace",
+    "path": "/spec/shared_configuration/sc_deployment_license",
+    "value": "production"
+  }
+]
