@@ -183,7 +183,7 @@ cat `ibm_cp4a_cr_production_content.yaml`
 ```
 It is clear that we need a way to understand and manage pattern CR's.<br/>
 
-#### Prerequisites Script.
+#### Preparing CR input - Prerequisites Script.
 
 To help with cloud pak CR authoring, prerequisites script prepares input for cloud-pak CR.<br/>
 
@@ -205,7 +205,7 @@ The actual job of generating cloud pak CR is done by the `cp4a-deployment.sh` sc
 It takes input created by the prerequisites script and generates cloud pak CR yaml file.<br/>
 
 Scripts are located in the `$SCRIPTS` directory within cloud pak case package.<br/>
-For example, prerequsites scirpt is `$SCRIPTS/cp4a-prerequisites.sh`.<br/>
+Prerequsites scirpt is `$SCRIPTS/cp4a-prerequisites.sh`.<br/>
 CR generator script is `$SCRIPTS/cp4a-deployment.sh`.<br/>
 
 We will work with the *Workflow Process Service Authoring* capability.<br/>
@@ -218,18 +218,59 @@ Setting property values created by the prerequisites script is an important step
 Input must be correct and pass validation.<br/>
 
 For the purposes of this module, setting property values and validating input is time consuming and error prone.<br/>
-We will use generated cloud pak CR from the git repo.<br/>
 
-> Lab Steps<br/>
-> Review steps to create Workflow Service Authoring CR in `create-cr-steps.md`.<br/>
-
-> Review generated final CP4BA CR `$CASEGEN/generated-cr/ibm_cp4a_cr_final.yaml`.<br/>
+We will take a shorcut for the `-m property` step, by copying property files from the pattern git repo.<br/>
 ```
-cd $CASEGEN/generated-cr
+$WPS_GIT/prereq/copy-properties.sh
+```
+Examine property files.<br/>
+```
+cd $SCRIPTS/cp4ba-prerequisites/propertyfile
+
+cat cp4ba_LDAP.property
+cat cp4ba_user_profile.property
+```
+Generate artifacts (secrets, database scripts, etc), that depend on property files.<br/>
+```
+cd $SCRIPTS
+./cp4a-prerequisites.sh -m generate
+```
+
+Apply generated ldap secret.<br/>
+This step is important. Without this step validation step fails, and CR deployment fails.<br/>
+```
+cd $SCRIPTS/cp4ba-prerequisites/secret_template
+oc project cp4ba
+oc apply -f ./ldap-bind-secret.yaml
+```
+
+Validate CR prerequisites.<br/>
+```
+cd $SCRIPTS
+oc project cp4ba
+./cp4a-prerequisites.sh -m validate
+```
+Observe validation output for *storage classes* and *ldap* directory.<br/>
+
+Find directory service in `openldap` project to explain how ldap validation works.<br/>
+
+Generate CR.<br/>
+`cp4a-deployment.sh` script is used for CR generation.<br/>
+This script takes output from the `cp4a-prerequisites.sh` and generates CR in `$SCRIPTS/generated-cr` directory.<br/>
+There are a number of options available for CR generation: the size of the deployment, etc.<br/>
+
+We will take a shortcut and copy CR from the pattern git repo.<br/>
+```
+cp $WPS_GIT/generated-cr/copy-cr.sh
+```
+
+> Review final CP4BA CR `$SCRIPTS/generated-cr/ibm_cp4a_cr_final.yaml`.<br/>
+```
+cd $SCRIPTS/generated-cr
 
 cat ibm_cp4a_cr_final.yaml
 ```
-We showed how to create yaml CR yaml from property files with simple name, value syntax.<br/>
+We showed how to create CR yaml file from input property files with simple name - value syntax.<br/>
 
 > *Do not deploy cloud-pak CR at this time.*
 
@@ -347,49 +388,25 @@ We will show examples how to customize `namespace`, `labels`, `annotations`, and
 
 `Kustomize` overlay idiom is to have *base* directory with original resources and *overlay* directories with kustomizations for each environment.<br/>
 
-You can view complete kustomizations in the browser:<br/> 
-[kustomize](https://github.com/sgod1/cplab/tree/main/kustomize)<br/>
-
-Or in `$KUST` directory.<br/>
-```
-cd $KUST
-ls
-base	overlay
-```
-
 > *Lab Steps*<br/>
-> Create `$CERTKUBE/scripts/kustomize` directory and overlay subdirectories.<br/>
-
+Copy `kustomize` directory from the git repo.<br/>
+This will also copy generated cr into kustomize base.<br/>
 ```
-mkdir -p $CERTKUBE/scripts/kustomize
-cd $CERTKUBE/scripts/kustomize
-
-mkdir base
-mkdir -p overlay/dev
-mkdir -p operlay/prod
+$WPS_GIT/kustomize/copy-kustomize.sh
 ```
 
-> Copy ibm_cp4a_cr_final.yaml to the `base` directoy.<br/>
+Review kustomization base.<br/>
+CR file included in `resources` list will be processed by `kustomize`.<br/>
 
 ```
-cp $CASEGEN/generated-cr/ibm_cp4a_cr_final.yaml $CERTKUBE/scripts/kustomize/base
-```
+cd $SCRIPTS/kustomize/base
+cat kustomization.yaml
 
-> Change to the `base` directory and create `kustomization.yaml` file.<br/>
-```
-cd $CERTKUBE/scripts/kustomize/base
-```
-
-Add cloud pak CR file to `resources` list. Resources in this list will be processed by `kustomize`.<br/>
-
-```
-cat <<EOF > kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
 - ibm_cp4a_cr_final.yaml
-EOF
 ```
 
 Note that there are no kustomizations in this file yet.<br/>
@@ -397,14 +414,12 @@ Note that there are no kustomizations in this file yet.<br/>
 #### Dev overlay kustomizations.
 
 > *Lab Steps*<br/>
-> Change to the `overlay/dev` directory and create `kustomiztion.yaml` file.
+> Change to the `overlay/dev` directory and review development `kustomiztion.yaml` file.
 
 ```
-cd $CERTKUBE/scripts/kustomize/overlay/dev
-```
+cd $SCRIPTS/kustomize/overlay/dev
+cat kustomization.yaml
 
-```
-cat <<EOF > kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
@@ -422,7 +437,6 @@ bases:
 patches:
 - path: lc-ldap-server-patch.yaml
 - path: lc-license-type-patch.yaml
-EOF
 ```
 
 `bases` key in `kustomization.yaml` list directories with resources to apply kustomizations.<br/>
@@ -449,14 +463,12 @@ We will kustomize *ldap server configuration*, *ldap server port*, and cloud-pak
 Patches are listed under `patches` key in `kustomization.yaml`.<br/>
 
 > *Lab Steps*<br/>
-> Create `lc-ldap-server-patch.yaml` in `overlay/dev` directory.<br/>
+> Review `lc-ldap-server-patch.yaml` in `overlay/dev` directory.<br/>
 
 ```
-cd $CERTKUBE/scripts/kustomize/overlay/dev
-```
+cd $SCRIPTS/kustomize/overlay/dev
+cat lc-ldap-server-patch.yaml
 
-```
-cat <<EOF > lc-ldap-server-patch.yaml
 apiVersion: icp4a.ibm.com/v1
 kind: ICP4ACluster
 metadata:
@@ -465,13 +477,14 @@ spec:
   ldap_configuration:
     lc_ldap_server: openldap.openldap.svc
     lc_ldap_port: 1389
-EOF
 ```
 
-> Create `lc-license-type-patch.yaml` in `overlay/dev` directory.<br/>
+> Review `lc-license-type-patch.yaml` in `overlay/dev` directory.<br/>
 
 ```
-cat <<EOF > lc-license-type-patch.yaml
+cd $SCRIPTS/kustomize/overlay/dev
+cat lc-license-type-patch.yaml
+
 apiVersion: icp4a.ibm.com/v1
 kind: ICP4ACluster
 metadata:
@@ -479,7 +492,6 @@ metadata:
 spec:
   shared_configuration:
     sc_deployment_license: non-production
-EOF
 ```
 
 This type of patch is called `patch strategic merge`.<br/>
@@ -487,7 +499,7 @@ This type of patch is called `patch strategic merge`.<br/>
 > Apply `dev` overlay kustomizations:<br/>
 
 ```
-cd $CERTKUBE/scripts/kustomize/overlay/dev
+cd $SCRIPTS/kustomize/overlay/dev
 
 oc kustomize .
 ```
@@ -505,15 +517,14 @@ oc kustomize . | yq '.spec.shared_configuration.sc_deployment_license'
 
 #### prod overlay kustomizations
 
-> Change to the `overlay/prod` directory and create `kustomiztion.yaml` file.
+> Change to the `overlay/prod` directory and review `kustomiztion.yaml` file.
 
 > *Lab Steps*<br/>
-```
-cd $CERTKUBE/scripts/kustomize/overlay/prod
-```
 
 ```
-cat <<EOF > kustomization.yaml
+cd $SCRIPTS/kustomize/overlay/prod
+cat kustomization.yaml
+
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
@@ -535,17 +546,17 @@ patchesJson6902:
     version: v1
     kind: ICP4ACluster
     name: icp4adeploy
-EOF
 ```
 
 Note that we are using different key for the patch: `patchesJson6902`.<br/>
 
 This type of patch allows multiple `add/delete/replace` customizations.<br/>
 
-> Create `multi-json-patch.json` file.<br/>
+> Review `multi-json-patch.json` file.<br/>
 
 ```
-cat <<EOF > multi-json-patch.json
+cat multi-json-patch.json
+
 [
   {
     "op": "replace",
@@ -563,13 +574,12 @@ cat <<EOF > multi-json-patch.json
     "value": "production"
   }
 ]
-EOF
 ```
 
 > Apply `prod` overlay kustomizations:<br/>
 
 ```
-cd $CERTKUBE/scripts/kustomize/overlay/prod
+cd $SCRIPTS/kustomize/overlay/prod
 
 oc kustomize .
 ```
@@ -587,16 +597,11 @@ oc kustomize . | yq '.spec.shared_configuration.sc_deployment_license'
 
 #### Differences between kustomizations.
 
-If you did not complete previous steps, you can copy complete kustomization directory:<br/>
-```
-cp -r $KUST $CERTKUBE/scripts
-```
-
 > *Lab Steps*<br/>
 > Save `oc kustomize` output in each overlay directory and then run `diff` command to see differences.<br/>
 
 ```
-cd $CERTKUBE/scripts/kustomize
+cd $SCRIPTS/kustomize
 
 oc kustomize overlay/dev/ > kustomized-cr-dev.yaml
 oc kustomize overlay/prod/ > kustomized-cr-prod.yaml

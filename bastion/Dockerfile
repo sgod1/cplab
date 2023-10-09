@@ -20,9 +20,11 @@ RUN mkdir /.kube && chmod g+rwx /.kube && chmod -R g+rwx /cp4ba
 ENV CERTKUBE=$CERTK8s/cert-kubernetes
 ENV PATTERNS=$CERTKUBE/descriptors/patterns
 ENV SCRIPTS=$CERTKUBE/scripts
-ENV CASEGEN=/cp4ba/cplab/case-scripts
+#ENV CASEGEN=/cp4ba/cplab/case-scripts
 ENV KUST=/cp4ba/cplab/kustomize
 ENV OPOLM=$CERTKUBE/descriptors/op-olm
 ENV CP3PT0=$CERTKUBE/scripts/cpfs/installer_scripts/cp3pt0-deployment
+ENV GIT_ROOT=/cp4ba/cplab
+ENV WPS_GIT=$GIT_ROOT/patterns/workflow-process-service
 
 ENTRYPOINT ["sleep", "infinity"]
