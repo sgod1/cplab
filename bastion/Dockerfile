@@ -12,7 +12,8 @@ RUN mkdir -p /cp4ba/501 && tar xvf /root/ibm-cp-automation-5.0.1.tgz -C /cp4ba/5
 ENV CERTK8s=/cp4ba/501/ibm-cp-automation/inventory/cp4aOperatorSdk/files/deploy/crs
 RUN tar xvf $CERTK8s/cert-k8s-23.0.1.tar -C $CERTK8s
 
-RUN git clone https://github.com/sgod1/cplab /cp4ba/cplab
+# manual step
+# RUN git clone https://github.com/sgod1/cplab /cp4ba/cplab
 
 RUN mkdir /.kube && chmod g+rwx /.kube && chmod -R g+rwx /cp4ba
 
