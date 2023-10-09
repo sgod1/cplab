@@ -14,4 +14,4 @@ password="$basdb"
 
 cmd="CREATE SCHEMA IF NOT EXISTS $user AUTHORIZATION $user"
 echo "cmd => " $cmd
-oc exec $pod -c postgres  -- psql -d $db -U $user -W $basdb -c "$cmd"
+oc exec $pod -c postgres  -- psql -d $db -U $user -c "$cmd"
