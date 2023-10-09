@@ -1,6 +1,6 @@
 FROM registry.access.redhat.com/ubi8/ubi:8.8-1067
 
-RUN dnf install -y jq python39 bind-utils iputils openldap-clients git procps-ng diffutils
+RUN dnf install -y jq python39 bind-utils iputils openldap-clients git procps-ng diffutils java-11-openjdk-devel podman
 
 COPY oc-4.12.35-linux.tar.gz /root
 RUN tar zxvf /root/oc-4.12.35-linux.tar.gz -C /usr/local/bin
