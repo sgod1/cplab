@@ -102,3 +102,7 @@ Follow `module3-foundational-services.md` to complete module 3.<br/>
 Module 4 is a brief review of deployed CP4BA capability `Workflow Process Service Authoring`.<br/>
 
 Follow `workflow-process-service-authoring.md` to complete module 4.<br/>
+
+#### Module 5.
+Module 5 is about cloud pak upgrade.
+
