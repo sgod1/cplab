@@ -1,0 +1,65 @@
+apiVersion: postgresql.k8s.enterprisedb.io/v1
+kind: Cluster
+metadata:
+  name: cluster-cloudpak
+#  namespace: postgres
+spec:
+  logLevel: info
+  startDelay: 30
+  stopDelay: 30
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+  backup:
+    target: prefer-standby
+  enableSuperuserAccess: true
+  monitoring:
+    disableDefaultQueries: false
+    enablePodMonitor: false
+  minSyncReplicas: 0
+  postgresGID: 26
+  replicationSlots:
+    highAvailability:
+      enabled: false
+      slotPrefix: _cnp_
+    updateInterval: 30
+  primaryUpdateMethod: restart
+  bootstrap:
+    initdb:
+  postgresql:
+    parameters:
+      log_truncate_on_rotation: 'false'
+      archive_mode: 'on'
+      log_filename: postgres
+      archive_timeout: 5min
+      max_replication_slots: '32'
+      log_rotation_size: '0'
+      shared_preload_libraries: ''
+      logging_collector: 'on'
+      wal_receiver_timeout: 5s
+      log_directory: /controller/log
+      log_destination: csvlog
+      wal_sender_timeout: 5s
+      max_worker_processes: '32'
+      max_parallel_workers: '32'
+      log_rotation_age: '0'
+      max_connections: '400'
+      shared_memory_type: mmap
+      dynamic_shared_memory_type: posix
+      wal_keep_size: 512MB
+    pg_hba:
+      - host all all all scram-sha-256
+  failoverDelay: 0
+  postgresUID: 26
+  walStorage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  maxSyncReplicas: 0
+  switchoverDelay: 40000000
+  storage:
+    resizeInUseVolumes: true
+    size: 1Gi
+    storageClass: ocs-storagecluster-ceph-rbd
+  primaryUpdateStrategy: unsupervised
+  instances: 1
