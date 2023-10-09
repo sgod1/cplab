@@ -1,9 +1,12 @@
 ### IBM Cloud Pak for Business Automation (CP4BA) multi-pattern operator.
 
 > Lab steps.<br/>
-Run a script to install CP4BA operator.(*Required*)<br/>
+Run a script out of git repo to install CP4BA operator.(*Required*)<br/>
+
+Note that if you are working in a project other than *cp4ba*, you can pass your project name as an argument to the script.<br/>
+
 ```
-$CASEGEN/cloudpak-operators/install-cp4ba-operator.sh
+$GIT_ROOT/cloudpak-operators/install-cp4ba-operator.sh
 ```
 
 Script executes standard steps to install CP4BA operator to create catalog sources and operator subscription.<br/>
@@ -73,22 +76,19 @@ Common Services operator is a link between cloud pak operator and dynamic capabi
 Prerequisites script created ldap bind secret for the directory server.<br/>
 This secret is usually applied before property files validation.<br/>
 
-Apply ldap bind secret manually.<br/>
+This step was done in module 1.<br/>
 ```
-oc apply -f $CASEGEN/cp4ba-prerequisites/secret_template/ldap-bind-secret.yaml
+oc apply -f $SCRIPTS/cp4ba-prerequisites/secret_template/ldap-bind-secret.yaml
 ```
 
 #### Apply Kustomized CR.
 
-> Note: In the lab steps, we created kustomizations in `$CERTKUBE/scripts/kustomize` directory.<br/>
-> To minimize potential deployment errors we use generated cr in `$CASEGEN/generated_cr` and kustomizations in `$KUST` directory.<br/>
+> Note: In module 1, we created kustomizations in `$SCRIPTS/kustomize` directory.<br/>
 
-> Change to `$KUST` directory and apply `production` overlay.<br/>
+> Change to `$SCRIPTS/kustomize` directory and apply `production` overlay.<br/>
 
 ```
-cd $KUST
-
-cp $CASEGEN/generated_cr/ibm_cp4a_cr_final.yaml $KUST/base
+cd $SCRIPTS/kustomize
 
 oc kustomize overlay/prod > kustomized-cr-prod.yaml
 
@@ -106,7 +106,7 @@ oc get events --watch
 
 Deployment will take some time to complete.<br/>
 
-If you follow event output you will see that new operator subscriptions are dynamically created, together with new CR's, and operand services.<br/>
+If you follow event output you will see that new operator subscriptions are dynamically created, together with new types of CR's, and operand deployments.<br/>
 When all is complete, ICP4ACluster CR is in the `ready` state and we can log into the Cloud Pak console.<br/>
 
 We discuss how this works next.<br/>
