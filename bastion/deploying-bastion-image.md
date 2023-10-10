@@ -24,8 +24,9 @@ Wait for deployment to be ready, follow deployment to the bastion pod, click on 
 Create new project where you want to create bastion deployment.<br/>
 
 Grant pull authority from `cp4ba` namespace to default service account in your project:<br/>
+
 ```
-oc policy add-role-to-user system:image-puller system:serviceaccount:ice9:default --namespace=bastion
+$git-root/bastion/authorize-pull-image-from bastion-image-stream-project <image-deployment-project>
 ```
 
 Switch to development perspective and follow steps above</br>
