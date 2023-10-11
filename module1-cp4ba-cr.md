@@ -294,7 +294,7 @@ Quote `yq` query expressions, to prevent shell from pre-processing special chara
 >*Lab Steps*<br/>
 > Query `metadata` portion of CP4BA CR as json:<br/>
 ```
-cd $CASEGEN/generated-cr
+cd $SCRIPTS/generated-cr
 ```
 ```
 cat ibm_cp4a_cr_final.yaml | yq '.metadata'
@@ -311,7 +311,7 @@ cat ibm_cp4a_cr_final.yaml | yq '.metadata'
 
 > Query CR `metadata` as yaml:<br/>
 ```
-cd $CASEGEN/generated-cr
+cd $SCRIPTS/generated-cr
 ```
 ```
 cat ibm_cp4a_cr_final.yaml | yq -y '.metadata'
@@ -325,7 +325,7 @@ labels:
 
 > Query CR storage configuration:<br/>
 ```
-cd $CASEGEN/generated-cr
+cd $SCRIPTS/generated-cr
 ```
 ```
 cat ibm_cp4a_cr_final.yaml | yq '.spec.shared_configuration.storage_configuration'
@@ -339,7 +339,7 @@ cat ibm_cp4a_cr_final.yaml | yq '.spec.shared_configuration.storage_configuratio
 
 > Query CR ldap configuration:<br/>
 ```
-cd $CASEGEN/generated-cr
+cd $SCRIPTS/generated-cr
 ```
 ```
 cat ibm_cp4a_cr_final.yaml | yq '.spec.ldap_configuration'
