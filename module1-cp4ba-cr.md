@@ -199,7 +199,7 @@ In the second step, after property files are updated with required values, scrip
 
 In the third step, script validates property values, checking database logins, directory logins, storage classes, etc.<br/>
 
-Prerequisites script is preparing property files as input for generating cloud pak CR.</br/>
+Prerequisites script is preparing property files as input for generating cloud pak CR.<br/>
 
 The actual job of generating cloud pak CR is done by the `cp4a-deployment.sh` script.<br/>
 It takes input created by the prerequisites script and generates cloud pak CR yaml file.<br/>
