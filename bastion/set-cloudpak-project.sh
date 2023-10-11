@@ -2,9 +2,13 @@
 
 cloudpak_project=${1:-"cp4ba1"}
 
-echo <<EOF > ./cloudpak-project.env
+envfile="cloudpak-project.env"
+
+cat <<EOF > ./$envfile
 #!/bin/bash
 export CLOUDPAK_PROJECT=$cloudpak_project
 EOF
+
+chmod +x ./$envfile
 
 oc project $cloudpak_project
