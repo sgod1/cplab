@@ -3,7 +3,7 @@
 # env vars: <BUILDDIR>, GIT_ROOT, IBM_ENTITLEMENT_KEY, OC_TAR, CASE_TAR, <OPENLDAP_NS>, <BASTION_NS>, <MKTRACE>
 
 if [[ $MKTRACE == "trace" ]]; then
-    echo turing trace on
+ƒ    echo turing trace on
     set -x
 fi
 
@@ -52,7 +52,7 @@ cd $builddir
 ./create-bastion-buildconfig.sh
 
 authtoken=`oc whoami -t`
-./build-bastion.sh $authtoken
+./build-bastion.sh $builddir/$authtoken
 
 # deploy openldap container to openldap ns
 cd $gitroot/openldap
