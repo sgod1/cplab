@@ -8,6 +8,7 @@ if [[ $MKTRACE == "trace" ]]; then
 fi
 
 currdir=`pwd`
+currproj=`oc project --short`
 
 builddir=${1:-$BUILDDIR}
 gitroot=$GIT_ROOT
@@ -48,6 +49,8 @@ cd $gitroot/bastion
 ./copy-build-scripts.sh $builddir
 
 # build bastion container image
+oc project $bastion_ns
+
 cd $builddir
 ./create-bastion-buildconfig.sh
 
@@ -55,6 +58,8 @@ authtoken=`oc whoami -t`
 ./build-bastion.sh $authtoken
 
 # deploy openldap container to openldap ns
+oc new-project $openldap_ns
+
 cd $gitroot/openldap
 ./deploy-bitnami-openldap.sh $openldap_ns
 
@@ -75,5 +80,6 @@ cd $gitroot/bastion
 ./authorize-pull-image-from.sh $bastion_ns
 
 cd $currdir
+oc project $currproj
 
 echo Make complete
