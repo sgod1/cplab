@@ -72,7 +72,7 @@ cd $gitroot/bastion
 ./authorize-pull-image-from.sh $bastion_ns
 
 # create cloud pak project 2
-cp_ns="cp4ba1"
+cp_ns="cp4ba2"
 oc new-project $cp_ns
 
 cd $gitroot/bastion
