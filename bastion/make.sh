@@ -64,7 +64,7 @@ oc new-project $cp_ns
 
 cd $gitroot/bastion
 ./create-entitlement-key.sh $ibmkey $cp_ns
-./authorize_pull_image_from.sh $bastion_ns
+./authorize-pull-image-from.sh $bastion_ns
 
 # create cloud pak project 2
 cp_ns="cp4ba1"
@@ -72,7 +72,7 @@ oc new-project $cp_ns
 
 cd $gitroot/bastion
 ./create-entitlement-key.sh $ibmkey $cp_ns
-./authorize_pull_image_from.sh $bastion_ns
+./authorize-pull-image-from.sh $bastion_ns
 
 cd $currdir
 
