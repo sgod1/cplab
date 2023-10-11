@@ -13,8 +13,11 @@ currproj=`oc project --short`
 builddir=${1:-$BUILDDIR}
 gitroot=$GIT_ROOT
 ibmkey=$IBM_ENTITLEMENT_KEY
+
 openldap_ns=${OPENLDAP_NS:-"openldap"}
 bastion_ns=${BASTION_NS:-"bastion"}
+cp1_ns="cp4ba1"
+cp2_ns="cp4ba2"
 
 octar=${OC_TAR:-"oc-4.12.35-linux.tar.gz"}
 casetar=${CASE_TAR:-"ibm-cp-automation-5.0.1.tgz"}
@@ -44,6 +47,12 @@ if [[ -z $gitroot ]]; then
     exit 1
 fi
 
+# create all required projects
+oc new-project $bastion_ns
+oc new-project $openldap_ns
+oc new-project $cp1_ns
+oc new-project $cp2_ns
+
 # copy build scripts to build dir
 cd $gitroot/bastion
 ./copy-build-scripts.sh $builddir
@@ -58,25 +67,23 @@ authtoken=`oc whoami -t`
 ./build-bastion.sh $authtoken
 
 # deploy openldap container to openldap ns
-oc new-project $openldap_ns
+oc project $openldap_ns
 
 cd $gitroot/openldap
 ./deploy-bitnami-openldap.sh $openldap_ns
 
-# create cloud pak project 1
-cp_ns="cp4ba1"
-oc new-project $cp_ns
+# cloud pak project 1
+oc project $cp1_ns
 
 cd $gitroot/bastion
-./create-entitlement-key.sh $ibmkey $cp_ns
+./create-entitlement-key.sh $ibmkey $cp1_ns
 ./authorize-pull-image-from.sh $bastion_ns
 
-# create cloud pak project 2
-cp_ns="cp4ba2"
-oc new-project $cp_ns
+# cloud pak project 2
+oc project $cp2_ns
 
 cd $gitroot/bastion
-./create-entitlement-key.sh $ibmkey $cp_ns
+./create-entitlement-key.sh $ibmkey $cp2_ns
 ./authorize-pull-image-from.sh $bastion_ns
 
 cd $currdir
