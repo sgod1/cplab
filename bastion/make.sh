@@ -52,7 +52,7 @@ cd $builddir
 ./create-bastion-buildconfig.sh
 
 authtoken=`oc whoami -t`
-./build-bastion.sh $builddir/$authtoken
+./build-bastion.sh $authtoken
 
 # deploy openldap container to openldap ns
 cd $gitroot/openldap
