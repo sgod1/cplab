@@ -15,6 +15,7 @@ RUN tar xvf $CERTK8s/cert-k8s-23.0.1.tar -C $CERTK8s
 COPY auth-token /cp4ba
 COPY oc-login.sh /cp4ba
 COPY clone-git-repo.sh /cp4ba
+COPY set-cloudpak-project.sh /cp4ba
 
 RUN mkdir /.kube && chmod g+rwx /.kube && chmod -R g+rwx /cp4ba
 
