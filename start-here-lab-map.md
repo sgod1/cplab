@@ -65,19 +65,32 @@ OpenShift cluster url and credentials will be provided for the lab<br/s>
 ### Log into the bastion container.
 Repeat this step when you want to log into the `bastion` container.<br/>
 
-Log into the OpenShift console, and switch to the `cp4ba` project.<br/>
+Log into the OpenShift console, and select a project assigned to you.<br/>
+
+Assigned project is either `cp4ba1` or `cp4ba2`.
+
 Find `bastion` deployment, follow deployment pods to find `bastion` pod and click on the `Terminal` tab.<br/>
 Click `exapand` button on the upper right, to expand terminal window.<br/>
 
 In the `bastion` pod terminal window change to the `/cpba` directory and run `oc-login.sh` script.
+Pass assigned project name to the login script to set as default project.<br/>
+
 ```
 cd /cp4ba
-./oc-login.sh
+./oc-login.sh cp4ba1
 ```
 ```
 oc get nodes
 ```
 You should see a list of cluster nodes.<br/>
+
+You can call `/cp4ba/set-cloudpak-project.sh <project-name>` to set cloudpak project.<br/>
+This script will set CLOUDPAK_PROJECT environment variable.<br/>
+You can use this environment variable in the lab to change to the cloud pak project<br/>
+
+```
+oc project $CLOUDPAK_PROJECT
+```
 
 #### Module 1.
 Module 1 is about managing CP4BA multi-pattern cloud pak CR.<br/> 
