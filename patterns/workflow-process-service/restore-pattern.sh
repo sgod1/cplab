@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
 currdir=`pwd`
-basedir=${WPS_GIT:$currdir}
+basedir=${WPS_GIT:-$currdir}
 
 # copy prereq property files
 $basedir/prereq/copy-properties.sh
