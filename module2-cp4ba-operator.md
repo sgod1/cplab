@@ -3,10 +3,10 @@
 > Lab steps.<br/>
 Run a script out of git repo to install CP4BA operator.(*Required*)<br/>
 
-Note that if you are working in a project other than *cp4ba*, you can pass your project name as an argument to the script.<br/>
+Pass your cloud pak project name as an argument to the script.<br/>
 
 ```
-$GIT_ROOT/cloudpak-operators/install-cp4ba-operator.sh
+$GIT_ROOT/cloudpak-operators/install-cp4ba-operator.sh $CLOUDPAK_PROJECT
 ```
 
 Script executes standard steps to install CP4BA operator to create catalog sources and operator subscription.<br/>

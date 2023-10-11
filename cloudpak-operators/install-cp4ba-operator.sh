@@ -1,7 +1,8 @@
 #!/bin/bash -x
 
 # namespace parameter
-CP4BA=${1:-"cp4ba"}
+CP4BA1=${1:-$CLOUDPAK_PROJECT}
+CP4BA=${CP4BA1:-"cp4ba1"}
 
 echo Target namespace: $CP4BA
 
