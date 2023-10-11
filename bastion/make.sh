@@ -1,6 +1,12 @@
 #!/bin/bash
 
-# env vars: <BUILDDIR>, GIT_ROOT, IBM_ENTITLEMENT_KEY, OC_TAR, CASE_TAR, <OPENLDAP_NS>, <BASTION_NS>
+# env vars: <BUILDDIR>, GIT_ROOT, IBM_ENTITLEMENT_KEY, OC_TAR, CASE_TAR, <OPENLDAP_NS>, <BASTION_NS>, <MKTRACE>
+
+if [[ $MKTRACE == "trace" ]]; then
+    echo turing trace on
+    set -x
+fi
+
 currdir=`pwd`
 
 builddir=${1:-$BUILDDIR}
@@ -39,7 +45,7 @@ fi
 
 # copy build scripts to build dir
 cd $gitroot/bastion
-./copy-build-script.sh $builddir
+./copy-build-scripts.sh $builddir
 
 # build bastion container image
 cd $builddir
