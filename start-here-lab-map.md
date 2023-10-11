@@ -69,9 +69,10 @@ Log into the OpenShift console, and switch to the `cp4ba` project.<br/>
 Find `bastion` deployment, follow deployment pods to find `bastion` pod and click on the `Terminal` tab.<br/>
 Click `exapand` button on the upper right, to expand terminal window.<br/>
 
-In the `bastion` pod terminal window run `oc login` command.
+In the `bastion` pod terminal window change to the `/cpba` directory and run `oc-login.sh` script.
 ```
-oc login api:6443 --insecure-skip-tls-verify=true  -u <user> -p <password>
+cd /cp4ba
+./oc-login.sh
 ```
 ```
 oc get nodes
