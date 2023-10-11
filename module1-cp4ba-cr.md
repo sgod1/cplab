@@ -259,7 +259,7 @@ There are a number of options available for CR generation: the size of the deplo
 
 We will take a shortcut and copy CR from the pattern git repo.<br/>
 ```
-cp $WPS_GIT/generated-cr/copy-cr.sh
+$WPS_GIT/generated-cr/copy-cr.sh
 ```
 
 > Review final CP4BA CR `$SCRIPTS/generated-cr/ibm_cp4a_cr_final.yaml`.<br/>
