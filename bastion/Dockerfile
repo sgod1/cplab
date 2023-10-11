@@ -17,6 +17,8 @@ RUN tar xvf $CERTK8s/cert-k8s-23.0.1.tar -C $CERTK8s
 
 RUN mkdir /.kube && chmod g+rwx /.kube && chmod -R g+rwx /cp4ba
 
+COPY auth-token /cp4ba/auth-token
+
 ENV CERTKUBE=$CERTK8s/cert-kubernetes
 ENV PATTERNS=$CERTKUBE/descriptors/patterns
 ENV SCRIPTS=$CERTKUBE/scripts
