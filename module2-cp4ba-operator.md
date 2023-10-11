@@ -23,7 +23,7 @@ Choice of operator subscription mode plays important role in multi tenancy and w
 
 > Query installed operators.<br/>
 ```
-oc project cp4ba
+oc project $CLOUDPAK_PROJECT
 
 oc get csv
 ```
@@ -92,7 +92,7 @@ cd $SCRIPTS/kustomize
 
 oc kustomize overlay/prod > kustomized-cr-prod.yaml
 
-oc project cp4ba
+oc project $CLOUDPAK_PROJECT
 
 oc apply -f kustomized-cr-prod.yaml 
 icp4acluster.icp4a.ibm.com/icp4adeploy created
