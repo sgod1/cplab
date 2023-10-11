@@ -240,14 +240,12 @@ Apply generated ldap secret.<br/>
 This step is important. Without this step validation step fails, and CR deployment fails.<br/>
 ```
 cd $SCRIPTS/cp4ba-prerequisites/secret_template
-oc project cp4ba
 oc apply -f ./ldap-bind-secret.yaml
 ```
 
 Validate CR prerequisites.<br/>
 ```
 cd $SCRIPTS
-oc project cp4ba
 ./cp4a-prerequisites.sh -m validate
 ```
 Observe validation output for *storage classes* and *ldap* directory.<br/>

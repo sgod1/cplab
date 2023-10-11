@@ -12,3 +12,6 @@ fi
 cp $basedir/cp4ba_LDAP.property $PROPDIR
 
 cp $basedir/cp4ba_user_profile.property $PROPDIR
+
+touch $PROPDIR/cp4ba_db_name_user.property
+touch $PROPDIR/cp4ba_db_server.property
