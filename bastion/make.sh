@@ -2,6 +2,16 @@
 
 # env vars: <BUILDDIR>, GIT_ROOT, IBM_ENTITLEMENT_KEY, OC_TAR, CASE_TAR, <OPENLDAP_NS>, <BASTION_NS>, <MKTRACE>
 
+envfile=$1
+
+if [[ -z $envfile ]]; then
+    echo input environment file required
+    exit 1
+fi
+
+# load env file
+. $envfile
+
 if [[ $MKTRACE == "trace" ]]; then
     echo turing trace on
     set -x
@@ -10,7 +20,7 @@ fi
 currdir=`pwd`
 currproj=`oc project --short`
 
-builddir=${1:-$BUILDDIR}
+builddir=$BUILDDIR
 gitroot=$GIT_ROOT
 ibmkey=$IBM_ENTITLEMENT_KEY
 
