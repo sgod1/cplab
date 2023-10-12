@@ -10,3 +10,4 @@ cp ./build-bastion.sh $BUILDDIR
 cp ./clone-git-repo.sh $BUILDDIR
 cp ./oc-login.sh $BUILDDIR
 cp ./set-cloudpak-project.sh $BUILDDIR
+cp ./make-env-template.sh $BUILDDIR
