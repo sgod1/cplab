@@ -20,4 +20,6 @@ oc kustomize overlay/prod > kustomized-cr-prod.yaml
 # apply dev overlay
 oc kustomize overlay/dev > kustomized-cr-dev.yaml
 
+# copy ldap bind secret
+
 cd $currdir
