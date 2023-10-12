@@ -178,6 +178,8 @@ icp4adeploy-wps-db   7h35m   1           1       Cluster in healthy state   icp4
 zen-metastore-edb    7h58m   1           1       Cluster in healthy state   zen-metastore-edb-1
 ```
 
+You can see that operator manages database cluster.<br/>
+
 Edb Postgres Operator Cluster CR is owned by ICP4ACluster CR.<br/>
 ```
 oc get cluster icp4adeploy-wps-db  -o yaml | yq '.metadata.ownerReferences'
