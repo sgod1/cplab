@@ -9,6 +9,8 @@ Workflow Process Service is offered only as part of Cloud Pak for Business Autom
 Workflow Process Service Authoring pattern is authoring environment for WPS.<br/>
 Workflow Process Service Authoring pattern is deployed by CP4BA multi-pattern operator.<br/>
 
+## todo: should we deploy WFPS as well as part of this lab?
+
 Visit endpoints and explore pattern capabilities.<br/>
 
 ```
