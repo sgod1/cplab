@@ -2,15 +2,25 @@
 
 IBM CP4BA Workflow Process Service is a small-footprint business automation environment<br/>
 to develop, test, and run workflow processes that orchestrate human tasks and services.<br/>
-It provides single runtime container.<br/>
 
 Workflow Process Service is offered only as part of Cloud Pak for Business Automation.<br/>
 
-Workflow Process Service Authoring pattern is authoring environment for WPS.<br/>
-Workflow Process Service Authoring pattern is deployed by CP4BA multi-pattern operator.<br/>
+Workflow Process Service is designed to support a single application per workflow server.<br/>
 
-## todo: should we deploy WFPS as well as part of this lab?
+Workflow Process Service enables complete application isolation for runtime, versioning, tuning, and upgrade.<br/>
+Workflow Process Service leverages process artifacts from Business Automation Workflow.<br/>
 
+Workflow Process Service provides 2 environments:<br/> *Workflow Process Service Authoring*, and *Workflow Process Service Runtime*.<br/>
+
+*Workflow Process Service Authoring* pattern is deployed by *CP4BA multi-pattern* operator.<br/>
+
+*Workflow Process Service Authoring Runtime* is deployed by the *CP4BA Workflow Process Service* operator, by using it's own CR.<br/>
+We will not be deploying *Workflow Process Service Runtime* in this lab.<br/> 
+You can take it on as a followup exercise.<br/>
+
+We deployed *Workflow Process Service Authoring* pattern at the end of module 2.<br/>
+
+#### Pattern Endpoints.
 Visit endpoints and explore pattern capabilities.<br/>
 
 ```
@@ -40,13 +50,27 @@ oc get icp4acluster icp4adeploy -o yaml | yq -y '.status.endpoints'
 
 ```
 
-Components that can be installed with Workflow Process Service Authoring pattern.<br/>
+#### Pattern Components.
+*Workflow Process Service Authoring* components are packaged into *bastuidio-container*</br>
+
+`bastudio-container`: *BA Studio UI*, *Process Admin*, *App Repository*, *Embedded JMS*,<br/>
+*Process Designer*, *Process Admin*, *Process Repository*, *Workflow Playback*,<br/>
+*Process Portal*, *BAI Emitter*.<br/>
+
+Database pod is deployed by the *cloud-native-postgresql* operator.<br/>
+
+There are pods for *Cloud Pak Foundational Services* that are always deployed. (module 3a)<br/>
+
+Optional components and dependencies add more pods:<br/> 
+*Business Automation Insights*, *Flink*, *Kafka*, and *Elastic Search*.<br/>
+
+We can express *Workflow Process Service Authoring* requirements with the knowledge base from module 1.<br/>
 
 ```
 //
 // Workflow Process Service Authoring
 //
-always(workflow_process_service, wfps_authoring). // part of ba studio component
+always(workflow_process_service, wfps_authoring). // part of ba studio container
 
 always(workflow_process_service, ba_foundation, bas).
 depends_on(workflow_process_service, ba_foundation, bas, cp_foundation, bts).
@@ -65,11 +89,7 @@ always(workflow_process_service, cp_foundation, license).
 always(workflow_process_service, cp_foundation, certmgr).
 ```
 
-Buisness Automation Studio component from business automation foundation pattern is always deployed.<br/>
-Cloud Pak foundational services are always deployed.<br/>
-Business Automation Insights and Data Collector and Data Indexer are optional.<br/>
-Kafka, Elastic Search, and Flink are installed as dependencies of Business Automation Insights.<br/>
-
+#### Pattern exploration
 Query operator deployments.<br/>
 (Compare to the output of `oc get csv` later in the module)<br/>
 
@@ -95,60 +115,39 @@ operand-deployment-lifecycle-manager            1/1     1            1          
 postgresql-operator-controller-manager-1-18-5   1/1     1            1           6h47m
 ```
 
-Let's look at operator operands.<br/>
+Let's look at the operands.<br/>
 
-Operand can be any type of object created by an operator in response to CR: Deployment, Stateful Set, etc.
+Operand can be any type of object created by an operator in response to CR: Deployment, Stateful Set, a pod,  etc.
 
-Operand deployments:<br/>
+#### Operand Deployments - Deployments:<br/>
+
 ```
 oc get deployments | grep -v oper
 NAME                                            READY   UP-TO-DATE   AVAILABLE   AGE
 
-bastion                                         1/1     1            1           20h
-common-web-ui                                   1/1     1            1           6h54m
-ibm-nginx                                       1/1     1            1           6h34m
-ibm-nginx-tester                                1/1     1            1           6h34m
-meta-api-deploy                                 1/1     1            1           6h56m
-platform-auth-service                           1/1     1            1           6h54m
-platform-identity-management                    1/1     1            1           6h54m
-platform-identity-provider                      1/1     1            1           6h54m
-usermgmt                                        1/1     1            1           6h40m
-zen-audit                                       1/1     1            1           6h36m
-zen-core                                        1/1     1            1           6h36m
-zen-core-api                                    1/1     1            1           6h36m
-zen-watcher                                     1/1     1            1           6h36m
+bastion                                         1/1     1            1           20h    <- Lab Bastion
+common-web-ui                                   1/1     1            1           6h54m  <- Foundational Service
+ibm-nginx                                       1/1     1            1           6h34m  <- Cloud Pak Service
+ibm-nginx-tester                                1/1     1            1           6h34m  <- Cloud Pak Service
+meta-api-deploy                                 1/1     1            1           6h56m  <- Foundational Service
+platform-auth-service                           1/1     1            1           6h54m  <- Foundational Service
+platform-identity-management                    1/1     1            1           6h54m  <- Foundational Service
+platform-identity-provider                      1/1     1            1           6h54m  <- Foundational Service
+usermgmt                                        1/1     1            1           6h40m  <- Foundational Service
+zen-audit                                       1/1     1            1           6h36m  <- Foundational Service
+zen-core                                        1/1     1            1           6h36m  <- Foundational Service
+zen-core-api                                    1/1     1            1           6h36m  <- Foundational Service
+zen-watcher                                     1/1     1            1           6h36m  <- Foundational Service
 ```
 
-Operand Stateful Sets:<br/>
+#### Operand Deployments - Stateful Sets:<br/>
 ```
 oc get StatefulSets
 
 NAME                              READY   AGE
-icp-mongodb                       1/1     7h6m
-icp4adeploy-bastudio-deployment   1/1     6h25m
-zen-minio                         3/3     6h57m
-```
-
-How to find environment variable names in Stateful Set?<br/>
-```
-oc get statefulset icp4adeploy-bastudio-deployment -o yaml | yq '.spec.template.spec.containers[0].env[].name'
-```
-
-`icp4adeploy-bastudio-deployment` StatefulSet is Business Automation Studio and internal Business Automation and JMS Runtime.<br/>
-```
-oc get statefulset icp4adeploy-bastudio-deployment -o yaml | yq '.spec.template.spec.containers[0].env[] | select(.name=="is_internal_baw")'
-{
-  "name": "is_internal_baw",
-  "value": "true"
-}
-```
-
-```
-oc get statefulset icp4adeploy-bastudio-deployment -o yaml | yq '.spec.template.spec.containers[0].env[] | select(.name=="JMS_SERVER_HOST")'
-{
-  "name": "JMS_SERVER_HOST",
-  "value": "icp4adeploy-bastudio-deployment-0.icp4adeploy-bastudio-service-headless.cp4ba1.svc"
-}
+icp-mongodb                       1/1     7h6m  <- Foundational Service
+icp4adeploy-bastudio-deployment   1/1     6h25m <- Cloud Pak Service
+zen-minio                         3/3     6h57m <- Foundational Service
 ```
 
 There is one pod in this stateful set.<br/>
@@ -158,7 +157,7 @@ oc get pods | grep -i run | grep -v oper | grep icp4adeploy-bastudio-deployment
 icp4adeploy-bastudio-deployment-0                                1/1     Running     0               7h8m
 ```
 
-Workflow Process Authoring database pod is owned by Edb Postgres Cluster Custom Resource.<br/>
+*Workflow Process Authoring* database pod is owned by Edb Postgres *Cluster* Custom Resource.<br/>
 ```
 oc get pods icp4adeploy-wps-db-1 -o yaml | yq '.metadata.ownerReferences'
 [
@@ -173,16 +172,17 @@ oc get pods icp4adeploy-wps-db-1 -o yaml | yq '.metadata.ownerReferences'
 ]
 ```
 
+#### Operand Deployments - Pods.
 ```
 oc get cluster
 NAME                 AGE     INSTANCES   READY   STATUS                     PRIMARY
-icp4adeploy-wps-db   7h35m   1           1       Cluster in healthy state   icp4adeploy-wps-db-1
-zen-metastore-edb    7h58m   1           1       Cluster in healthy state   zen-metastore-edb-1
+icp4adeploy-wps-db   7h35m   1           1       Cluster in healthy state   icp4adeploy-wps-db-1  <- WPS database
+zen-metastore-edb    7h58m   1           1       Cluster in healthy state   zen-metastore-edb-1   <- Zen database, Foundational Service
 ```
 
-You can see that operator manages database cluster.<br/>
+You can see that EDB Postgres operand is a pod that it manages directly.<br/>
 
-Edb Postgres Operator Cluster CR is owned by ICP4ACluster CR.<br/>
+Edb Postgres Operator *Cluster* CR is owned by ICP4ACluster CR.<br/>
 ```
 oc get cluster icp4adeploy-wps-db  -o yaml | yq '.metadata.ownerReferences'
 [
@@ -201,10 +201,12 @@ oc get icp4acluster icp4adeploy  -o yaml | yq '.metadata.ownerReferences'
 null
 ```
 
+#### Operator pods.
 Query operator pods.<br/>
 
 ```
 oc get pods | grep -i run | grep oper 
+
 ibm-ads-operator-5659cc6c6d-qvj7j                                1/1     Running     0               8h
 ibm-common-service-operator-85f66db89b-qskx8                     1/1     Running     0               8h
 ibm-commonui-operator-5cfb967969-hzjb9                           1/1     Running     0               8h
@@ -250,13 +252,16 @@ operand-deployment-lifecycle-manager.v4.0.0   Operand Deployment Lifecycle Manag
 
 It is easy to correlate operator pods with operator subscriptions.<br/>
 
+#### Worker pods
 Query operand pods.<br/>
-Note that not every operator deployed an operand.<br/>
+
+Note that not every operator has deployed operand.<br/>
 As we discussed in module 2 static operator dependencies are always deployed.<br/>
 Deployed CR's depend on the use case.<br/>
 
 ```
 oc get pods | grep -i run | grep -v oper
+
 bastion-75ffd56c45-2sjnx                                         1/1     Running     0            3h13m
 common-web-ui-b6d689f8-sgnmh                                     1/1     Running     0            8h
 ibm-nginx-d846df78-469tx                                         2/2     Running     0            8h
@@ -279,4 +284,4 @@ zen-minio-2                                                      1/1     Running
 zen-watcher-ffcbfc8d5-g5wqk                                      2/2     Running     0            8h
 ```
 
-We recoginize foundational services pods that we discussed in module 3, and Cloud Pak pods.<br/>
+We recoginize *Foundational Services* pods that we discussed in module 3, and *CP4BA* pods.<br/>

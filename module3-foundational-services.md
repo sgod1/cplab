@@ -35,9 +35,8 @@ Other cloud paks (*Cloud Pak for Integration*, *Cloud Pak for Data*, *Cloud Pak 
 
 > If we query installed operators before and after we applied cloud pak CR, we find that operator list has more operators.<br/>
 ```
-oc project cp4ba
-
 oc get csv
+
 NAME                                          DISPLAY                                                       VERSION   REPLACES                          PHASE
 cloud-native-postgresql.v1.18.5               EDB Postgres for Kubernetes                                   1.18.5    cloud-native-postgresql.v1.18.4   Succeeded
 ibm-ads-operator.v23.1.1                      IBM CP4BA Automation Decision Service                         23.1.1                                      Succeeded
