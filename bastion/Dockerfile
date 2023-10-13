@@ -27,4 +27,6 @@ ENV CP3PT0=$CERTKUBE/scripts/cpfs/installer_scripts/cp3pt0-deployment
 ENV GIT_ROOT=/cp4ba/cplab
 ENV WPS_GIT=$GIT_ROOT/patterns/workflow-process-service
 
+ENV PATH=.:$PATH
+
 ENTRYPOINT ["sleep", "infinity"]
