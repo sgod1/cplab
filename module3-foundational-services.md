@@ -299,7 +299,7 @@ size: starterset
 storageClass: ocs-storagecluster-ceph-rbd
 ```
 
-By using parameters in this CR we can affect placement of Foundational Services operators, and Foundational Services in different namespaces.<br/>
+By using parameters in this CR we can affect placement of Foundational Services operators, and Foundational Services namespaces.<br/>
 This is how we achieve mutli tenancy and workload isolation for Cloud Pak deployments.<br/>
 
 We review mutli-tenancy and workload isolation in another module.<br/>
