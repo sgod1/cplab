@@ -67,20 +67,24 @@ As we discussed earlier, when an operator is installed, dependent operators are 
 
 In turn, `ibm-common-services` operator depends on another operator, `operand-deployment-lifecycle-manager` operator, *ODLM*.<br/>
 
-> Following dependency chain: `cloud-pak operator` -> `ibm-common-services-operator` -> `ODLM`.<br/>
+> Dependency chain: `cloud-pak operator` -> `ibm-common-services-operator` -> `ODLM`.<br/>
 
-An *operator* is acting on it's *operands*. CR is a trigger. When operator detects a change in CR, it will act on it's *operands* to reconsile state with CR requirements. To say it differently, CR reconciliation results in *operand* deployment.<br/>
+An *operator* is acting on it's *operands*. CR is a *trigger*. <br/>
+When operator detects CR, it will act on it's *operands* to reconsile state with CR requirements.<br/> 
+To say it differently, CR reconciliation results in *operand* deployment.<br/>
 
-For ODLM, an operand is another operator. To act, ODLM installs it's operand and then creates a CR for it, triggering reconciliation and operand deployment.<br/>
+Operand examples: *Deployment*, *StatefulSet*, *Pod*, *Operator*.<br/>
 
-ODLM CR is called OperandRequest.<br/>
-OperandRequest CR can trigger a group of ODLM operands. ODLM will manage them at the same time.<br/>
+For *ODLM*, an operand is another operator. To act, *ODLM* installs it's operand and then creates a CR for it, triggering reconciliation and operand deployment.<br/>
 
-> Following event chain: OperandRequest CR -> ODLM -> install new operator(s) and create CR(s) -> trigger operand deployment for new operator(s).<br/>
+*OperandRequest* is ODLM CR.<br/>
+*OperandRequest* CR can trigger a group of *ODLM* operands. ODLM will manage them at the same time.<br/>
 
-ODLM manages *groups of operands*.<br/>
+> Event chain: *OperandRequest* CR -> *ODLM* -> install new operator(s) and create CR(s) -> trigger operand deployment for new operator(s).<br/>
 
-*ODLM* enables on-demand depedency resolution, and sharing of foundational services.<br/>
+*ODLM* manages *groups of operands*.<br/>
+
+*ODLM* enables *on-demand depedency resolution*, and *sharing of foundational services*.<br/>
 
 > *This is Key*:<br/>
 `ODLM` installs new operators *on demand* and *automatically applies preconfigured CR*, triggering CR reconciliation and new operand deployment.<br/>
@@ -93,16 +97,14 @@ In some cases, ODLM will just install it's operand without creating triggering C
 
 #### *ODLM* on-demand dependecy resolution.
 
-We review ODLM configuration CRs, and explain runtime dependency resolution.<br/>
+We review *ODLM* configuration CRs, and explain runtime dependency resolution.<br/>
 
-To start, when cloud pak operator needs foundational services it creates OperandRequest CR with required services.<br/>
+To start, when cloud pak operator needs foundational services it creates *OperandRequest* CR with required services.<br/>
 
 > Lab step<br/>
-View OperandRequests created by CP4BA operator.<br/>
+View *OperandRequests* created by CP4BA operator.<br/>
 
 ```
-oc project cp4ba
-oc get OperandRequests
 oc get OperandRequests
 
 NAME                             AGE    PHASE     CREATED AT
@@ -115,9 +117,10 @@ zen-ca-operand-request           4d8h   Running   2023-09-25T18:30:36Z
 ```
 
 > Lab step
-View iaf-system-common-service OperandRequest<br/>
+View `iaf-system-common-service` OperandRequest<br/>
 ```
 oc get operandrequests iaf-system-common-service -o yaml | yq -y '.spec'
+
 requests:
   - operands:
       - name: ibm-platformui-operator
@@ -125,15 +128,28 @@ requests:
     registry: common-service
     registryNamespace: cp4ba
 ```
-We see that 2 operands are requested: `ibm-platformui-operator`, and `ibm-im-operator`.<br/>
+
+2 operands are requested: `ibm-platformui-operator`, and `ibm-im-operator`.<br/>
 There is also a reference to *registry* and *registry namespace*.<br/>
 
-Registry is a name of OperandRegistry CR in `cp4ba` namespace.<br/>
-OperandRegistry is a list operator subscription metadata for all foundational services.<br/>
-ODLM will search OperandRegstry CR `common-service` for the names of 2 operands.<br/>
+*Registry* refers to *OperandRegistry* CR.<br/>
+*OperandRegistry* is a list of operator subscription metadata for all foundational services operators.<br/>
+*ODLM* will search *OperandRegstry* CR `common-service` for the names of operands.<br/>
 
 > Lab step.<br/>
-Query OperandRegisty common-service CR for ibm-platformui-operator subscription.<br/>
+How many subscriptions in OperandRegistry common-registry?<br/>
+```
+oc get operandregistry common-service -o yaml | yq '.spec.operators[].name' | wc -l
+27
+```
+
+List all subscription names in OperandRegistry common-registry.<br/>
+```
+oc get operandregistry common-service -o yaml | yq '.spec.operators[].name'
+```
+
+> Lab step.<br/>
+Query *OperandRegisty* common-service CR for *ibm-platformui-operator* subscription.<br/>
 
 ```
 oc get OperandRegistry common-service -o yaml | yq -y '.spec.operators[] | select(.name == "ibm-platformui-operator")'
@@ -141,7 +157,7 @@ oc get OperandRegistry common-service -o yaml | yq -y '.spec.operators[] | selec
 channel: v4.0
 installPlanApproval: Automatic
 name: ibm-platformui-operator
-namespace: cp4ba
+namespace: cp4ba1
 packageName: ibm-zen-operator
 scope: public
 sourceName: opencloud-operators-v4-0
@@ -149,7 +165,7 @@ sourceNamespace: openshift-marketplace
 ```
 
 > Lab step<br/>
-Query OperandRegistry common-service CR for ibm-im-operator.<br/>
+Query *OperandRegistry* common-service CR for ibm-im-operator.<br/>
 
 ```
 oc get OperandRegistry common-service -o yaml | yq -y '.spec.operators[] | select(.name == "ibm-im-operator")'
@@ -157,78 +173,38 @@ oc get OperandRegistry common-service -o yaml | yq -y '.spec.operators[] | selec
 channel: v4.0
 installPlanApproval: Automatic
 name: ibm-im-operator
-namespace: cp4ba
+namespace: cp4ba1
 packageName: ibm-iam-operator
 scope: public
 sourceName: opencloud-operators-v4-0
 sourceNamespace: openshift-marketplace
 ```
 
-ODLM will use this information to create operator subscriptions for requested foundational services operators.<br/>
+*ODLM* will use this information to create subscriptions for requested *Foundational Services* operators.<br/>
 
-To find information about how to create CR's, ODLM will query OperandConfig CR.<br/>
+Note that *namespace* key is operator subscription namespace. We could have changed the value of the *namespace* key to some other namespace.<br/>
+This is key to *multi-tenancy* deployments and *workload isolation*. This is how we control operator placement for Foundational Services.<br/>
+
+We now know how *ODLM* creates operator subscriptions to install FoundationalServices operators.<br/>
+But how to create CR's for these new operators?<br/>
+
+To find information about how to create CR's, *ODLM* will query *OperandConfig* CR.<br/>
 
 > Lab step.<br/>
-Query OperandConfig common-service CR for ibm-im-operator CR.<br/>
+List OperandConfig CR.<br/>
+```
+oc get OperandConfig
+
+NAME             AGE    PHASE     CREATED AT
+common-service   2d6h   Running   2023-10-11T19:20:26Z
+```
+
+*OperandConfig* common-service CR contains information needed to build CR.<br/>
+
+Query *OperandConfig* common-service CR for ibm-im-operator CR.<br/>
 
 ```
 oc get OperandConfig common-service -o yaml | yq -y '.spec.services[] | select(.name == "ibm-im-operator")'
-
-name: ibm-im-operator
-spec:
-  authentication:
-    auditService:
-      resources:
-        limits:
-          cpu: 20m
-          memory: 40Mi
-        requests:
-          cpu: 10m
-          memory: 20Mi
-    authService:
-      resources:
-        limits:
-          cpu: 1000m
-          memory: 1090Mi
-        requests:
-          cpu: 600m
-          memory: 650Mi
-    clientRegistration:
-      resources:
-        limits:
-          cpu: 1000m
-          memory: 50Mi
-        requests:
-          cpu: 20m
-          memory: 50Mi
-    config:
-      onPremMultipleDeploy: true
-    identityManager:
-      resources:
-        limits:
-          cpu: 1000m
-          memory: 410Mi
-        requests:
-          cpu: 260m
-          memory: 240Mi
-    identityProvider:
-      resources:
-        limits:
-          cpu: 1000m
-          memory: 420Mi
-        requests:
-          cpu: 570m
-          memory: 250Mi
-    replicas: 1
-  operandBindInfo:
-    operand: ibm-im-operator
-  operandRequest:
-    requests:
-      - operands:
-          - name: ibm-im-mongodb-operator
-          - name: ibm-idp-config-ui-operator
-        registry: common-service
-  policydecision: {}
 ```
 
 > Lab Step.<br/>
@@ -236,73 +212,12 @@ Query OperandConfig common-service for ibm-platformui-operator.<br/>
 
 ```
 oc get OperandConfig common-service -o yaml | yq -y '.spec.services[] | select(.name == "ibm-platformui-operator")'
-
-name: ibm-platformui-operator
-resources:
-  - apiVersion: batch/v1
-    data:
-      spec:
-        activeDeadlineSeconds: 600
-        backoffLimit: 5
-        template:
-          metadata:
-            annotations:
-              productID: 068a62892a1e4db39641342e592daa25
-              productMetric: FREE
-              productName: IBM Cloud Platform Common Services
-          spec:
-            affinity:
-              nodeAffinity:
-                requiredDuringSchedulingIgnoredDuringExecution:
-                  nodeSelectorTerms:
-                    - matchExpressions:
-                        - key: kubernetes.io/arch
-                          operator: In
-                          values:
-                            - amd64
-                            - ppc64le
-                            - s390x
-            containers:
-              - command:
-                  - bash
-                  - -c
-                  - bash /setup/pre-zen.sh
-                env:
-                  - name: common_services_namespace
-                    valueFrom:
-                      fieldRef:
-                        fieldPath: metadata.namespace
-                image: icr.io/cpopen/ibm-zen-operator@sha256:a2e257825cfd8581b1433fb8760115cf8dcc4e233cda95f0b141c5b832c1a390
-                name: pre-zen-job
-                resources:
-                  limits:
-                    cpu: 500m
-                    memory: 512Mi
-                  requests:
-                    cpu: 100m
-                    memory: 50Mi
-                securityContext:
-                  allowPrivilegeEscalation: false
-                  capabilities:
-                    drop:
-                      - ALL
-                  privileged: false
-                  readOnlyRootFilesystem: false
-            restartPolicy: OnFailure
-            securityContext:
-              runAsNonRoot: true
-            serviceAccount: operand-deployment-lifecycle-manager
-            serviceAccountName: operand-deployment-lifecycle-manager
-            terminationGracePeriodSeconds: 30
-    force: true
-    kind: Job
-    name: pre-zen-operand-config-job
-    namespace: cp4ba
-spec:
-  operandBindInfo: {}
 ```
 
-By using information about foundational service operator subscription and about foundational service operator CR, ODLM will create operator subscriptions, and CR to trigger operand deployment reconciliation for ibm-im-operator, and ibm-platformui-operator.<br/>
+With information about foundational service operator subscription and about foundational service operator CR,<br/> 
+ODLM will create operator subscriptions, and then create CR to trigger operand deployment reconciliation.<br/>
+
+Operator and Operand are deployed on-demand.<br/>
 
 > Lab step.<br/>
 Validate ibm-im-operator, and ibm-platformui-operator subscriptions.<br/>
@@ -314,98 +229,77 @@ ibm-im-operator                                                                 
 ibm-platformui-operator                                                              ibm-zen-operator               opencloud-operators-v4-0          v4.0 
 ```
 
+To see what *Foundational Service* operators are installed and why, query *status* field of the *OperandRegistry*.<br/>
+In the output, operator name key is followed by OperandRequests.<br/>
+
 > Lab step.<br/>
-Query OperandRegistry common-service for all OperandRequests for foundational services.<br/>
+Query OperandRegistry common-service for foundational services operator status.<br/>
+
 ```
-oc get OperandRegistry common-service -o yaml | yq -y '.status.operatorsStatus'
+oc get operandregistry common-service -o yaml | yq -y '.status'
 
-cloud-native-postgresql:
-  reconcileRequests:
-    - name: ibm-wps-postgre-operandrequest
-      namespace: cp4ba
-    - name: cloud-native-postgresql-opreq
-      namespace: cp4ba
-ibm-idp-config-ui-operator:
-  reconcileRequests:
-    - name: ibm-iam-request
-      namespace: cp4ba
-ibm-im-mongodb-operator:
-  reconcileRequests:
-    - name: ibm-iam-request
-      namespace: cp4ba
-ibm-im-operator:
-  reconcileRequests:
-    - name: iaf-system-common-service
-      namespace: cp4ba
-    - name: ibm-iam-service
-      namespace: cp4ba
-ibm-platformui-operator:
-  reconcileRequests:
-    - name: iaf-system-common-service
-      namespace: cp4ba
-    - name: zen-ca-operand-request
-      namespace: cp4ba
+operatorsStatus:
+  cloud-native-postgresql:
+    reconcileRequests:
+      - name: cloud-native-postgresql-opreq
+        namespace: cp4ba1
+      - name: ibm-wps-postgre-operandrequest
+        namespace: cp4ba1
+  ibm-idp-config-ui-operator:
+    reconcileRequests:
+      - name: ibm-iam-request
+        namespace: cp4ba1
+  ibm-im-mongodb-operator:
+    reconcileRequests:
+      - name: ibm-iam-request
+        namespace: cp4ba1
+  ibm-im-operator:
+    reconcileRequests:
+      - name: ibm-iam-service
+        namespace: cp4ba1
+      - name: iaf-system-common-service
+        namespace: cp4ba1
+  ibm-platformui-operator:
+    reconcileRequests:
+      - name: zen-ca-operand-request
+        namespace: cp4ba1
+      - name: iaf-system-common-service
+        namespace: cp4ba1
+phase: Running
 ```
 
-We validated the basic workings of ODLM, and how it creates on-demand operator subscriptions, and CR's to trigger operand deployment.<br/>
+We validated basic workings of *ODLM*, and how it creates on-demand operator subscriptions, and CR's to trigger operand deployment.<br/>
 
-> Follow: OperandRequest CR -> ODLM, (OperandRegistry, OperandConfig) -> operator subscription, CR -> operand deployment<br/>
+> Event chain: *OperandRequest* CR -> *ODLM*, (search *OperandRegistry*, *OperandConfig*) -> operator subscription, CR -> operand deployment<br/>
 
 #### IBM Common Services Operator
 
-There is one more important component supporting foundational services. It is `ibm-common-services` operator.<br/>
-As mentioned before it is a link between foundational services and cloud pak operator.<br/>
+There is one more important operator supporting foundational services. It is `ibm-common-services` operator.<br/>
+As mentioned before, this is a link between *Foundational Services* and *Cloud Pak* operator.<br/>
 
-`ibm-operational-services` creates CommonService CR common-service that plays important role in foundational services configuration and multi-tenancy.<br/>
-
-> Lab step.<br/>
-Query CommonService common-service CR for installed foundational operators.<br/>
+`ibm-foundational-services` operator creates *CommonService* CR *common-service* that plays important role in foundational services configuration and multi-tenancy.<br/>
 
 ```
-oc get commonservice common-service -o yaml | yq -y .status      
+oc get CommonService
 
-bedrockOperators:
-  - installPlanName: install-xjxdg
-    name: ibm-iam-operator
-    operatorStatus: Succeeded
-    subscriptionStatus: Succeeded
-    version: v4.0.1
-  - installPlanName: install-lz9fm
-    name: ibm-mongodb-operator
-    operatorStatus: Succeeded
-    subscriptionStatus: Succeeded
-    version: v4.0.0
-  - installPlanName: install-xjxdg
-    name: ibm-zen-operator
-    operatorStatus: Succeeded
-    subscriptionStatus: Succeeded
-    version: v5.0.0
-  - installPlanName: install-lz9fm
-    name: ibm-commonui-operator
-    operatorStatus: Succeeded
-    subscriptionStatus: Succeeded
-    version: v4.0.0
-  - installPlanName: install-m2578
-    name: cloud-native-postgresql
-    operatorStatus: Succeeded
-    subscriptionStatus: Succeeded
-    version: v1.18.5
+NAME             AGE
+common-service   2d8h
 ```
 
-To conclude, we review parameters in CommonService CR that support foundation services multi-tenancy and workload isolation.<br/>
-
-It is possible to place 'OperandRegistry' and 'OperandConfig' CR's in different namespaces and affect placement of foundational services operators and foundational services in different namespaces to achieve workload isolation objectives. We will review examples of workload isolation topologies.<br/>
-
-> Lab step.
-Query CommonService common-service CR.<br/>
+If you need to configure foundational services, you will be working with *CommonService common-service* CR.<br/>
 
 ```
 oc get CommonService common-service -o yaml | yq -y '.spec'
 
 license:
   accept: true
-operatorNamespace: cp4ba
-servicesNamespace: cp4ba
+operatorNamespace: cp4ba1 <= namespace for Foundational Services operators
+servicesNamespace: cp4ba1 <= namespace for Foundational Services (operands)
 size: starterset
 storageClass: ocs-storagecluster-ceph-rbd
 ```
+
+By using parameters in this CR we can affect placement of Foundational Services operators, and Foundational Services in different namespaces.<br/>
+This is how we achieve mutli tenancy and workload isolation for Cloud Pak deployments.<br/>
+
+We review mutli-tenancy and workload isolation in another module.<br/>
