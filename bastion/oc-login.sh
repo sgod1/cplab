@@ -1,10 +1,5 @@
 #!/bin/bash -x
 
-pk=
-t=
-u=
-p=
-
 while getopts c:t:u:p: opt
 do
     case $opt in
@@ -29,7 +24,7 @@ elif test ! -z "$u" -a ! -z "$p"; then
     oc login api:6443 --insecure-skip-tls-verify=true -u="$u" -p="$p"
     oc whoami -t > auth-token
 
-else if -f ./auth-token; then
+elif if -f ./auth-token; then
     # login with saved token
     oc login api:6443 --insecure-skip-tls-verify=true --token=`cat auth-token`
 
