@@ -42,6 +42,8 @@ This topology enables maximum isolation between cloud pak deployments. Each clou
 
 ![Simple Isolation](./images/2-namespace-request.drawio.png)
 
+<br/>
+
 #### Cloud Paks and Namespaces for the Same Tenant with Shared Services.
 A `Tenant` is a line of business.<br/> 
 
@@ -68,6 +70,8 @@ Shared services `im` and `zen` are created only once in `tenant1-services` names
 Services for `Flink`, etc are created in Cloud Pak operator namespaces.<br/>
 
 ![Multi Namespace](./images/multi-namespacesx.drawio.png)
+
+<br/>
 
 #### All Namespace Mode Installation with Single-Tenancy
 In `All Namespace` mode the whole cluster is allocated for one tenant.<br/>
