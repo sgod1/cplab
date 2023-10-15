@@ -63,7 +63,7 @@ Cloud Pak for Business Automation namespace: `tenant1-cp4ba`<br/>
 Cloud Pak for Integration namespace: `tenant1-cp4i`<br/>
 
 Operators in `tenant1-services` must be able to watch `tenant1-cp4ba` and `tenant1-cp4i` namespaces.<br/>
-This is setup by `NamespaceScope operator`.<br/>
+This authorization is setup by `NamespaceScope operator`.<br/>
 
 The reverse is not true: operators in `tenant1-cp4ba` and `tenant1-cp4i` namespaces are not watching `tenant1-services` namespace.<br/>
 
@@ -72,6 +72,26 @@ Shared services `im` and `zen` are created only once in `tenant1-services` names
 Services for `Flink`, etc are created in Cloud Pak operator namespaces.<br/>
 
 ![Multi Namespace](./images/multi-namespacesx.drawio.png)
+
+<br/>
+
+#### Install One Cloudpak into 2 namespaces.
+Install Foundational Services operators and Cloud Pak operator in one namespace.<br/>
+Install Foundational Sevices operands, and Cloud Pak operands in another namespace.<br/>
+
+In this topology, service accounts used by operators are different from service accounts used by operands.<br/>
+
+Operator namespace is called `Control Namespace`, operand namespace is called `Data Namespace`.<br/>
+
+Foundational Services Operators namespace: *operatorNamespace*=`tenant1-control`.<br/>
+Foundational Services Operand namespace: *servicesNamespace*=`tenant1-data`.<br/>
+
+Operators in `tenant1-control` namespace are watching `tenant1-data` namespace.<br/>
+This authorization is setup by `NamespaceScope` operator.<br/>
+
+Cloud Pak CR is created in `tenant1-data` namespace.<br/>
+
+![Control-Data Separation](./images/control-data-separation.drawio.png)
 
 <br/>
 
