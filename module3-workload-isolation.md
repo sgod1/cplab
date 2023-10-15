@@ -112,6 +112,13 @@ Operators in `openshift-operators` namespace are watching `ibm-common-services` 
 
 <br/>
 
+### Cloud Pak for Data Topologies.
+Cloud Pak for data adopts `Operators - Operands - Data` topology.<br/>
+
+![Control - Shared Services - Data](./images/cp4d-private-topology-detailed.svg)
+
+<br/>
+
 ### Cloud Pak Cluster Topology Considerations
 
 It is recommended that cloud paks are installed in isolated namespaces and not share foundational services.<br/>
