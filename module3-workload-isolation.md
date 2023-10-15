@@ -91,18 +91,26 @@ This authorization is setup by `NamespaceScope` operator.<br/>
 
 Cloud Pak CR is created in `tenant1-data` namespace.<br/>
 
-![Control-Data Separation](./images/control-data-separation.drawio.png)
+![Control and Data Separation](./images/control-data-separation.drawio.png)
 
 <br/>
 
 #### All Namespace Mode Installation with Single-Tenancy
 In `All Namespace` mode the whole cluster is allocated for one tenant.<br/>
 
-If cloud pak operator is installed in 'all-namespaces' mode, then foundational services operators must be installed in `all namespaces` mode.<br/>
-If one cloud pak operator is installed in 'all-namespaces' mode, then all other cloud pak operators must be installed in `all-namespaces` mode.<br/>
+All Cloud Pak operators and all Foundational Services operators will be installed in `all-namespaces` mode.<br/>
+
+Foundational Services Operators namespace: *operatorNamespace*=`openshift-operators`.<br/>
+Foundational Services Operand namespace: *servicesNamespace*=`ibm-common-services`.<br/>
+
+Cloud Pak operators are installed in `openshift-operators` namespace.<br/>
+Cloud Pak operands are deployed to `cp4i-a` and `cp4i-b` namespace.<br/>
+
+Operators in `openshift-operators` namespace are watching `ibm-common-services` namespace and Cloud Pak operand namespaces.<br/>
 
 ![All Namespace](./images/allnamespacesst.drawio.png)
 
+<br/>
 
 ### Cloud Pak Cluster Topology Considerations
 
