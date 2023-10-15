@@ -127,6 +127,8 @@ Foundational Services Operand namespace: *servicesNamespace*=`cpd-instance`.<br/
 Operators in `cpd-operators` are watching `cpd-instance` namespace and `cpd-instance-tethered1` and `cpd-instance-tethered2` namespaces.<br/>
 Secrets from `cpd-instance` namespace are copied to tehtered namespaces, for access to Common Services.<br/>
 
+<br/>
+
 ![Control - Shared Services - Data](./images/cp4dataTopology.drawio.png)
 
 <br/>
