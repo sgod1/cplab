@@ -37,7 +37,7 @@ in Cloud Pak namespace.<br/>
 
 <br/>
 
-#### Simple Isolation.
+#### Simple Isolation. (A)
 By default, Cloud Pak operator is installed in `one namespace` mode with foundational services in the same namespace.<br/>
 
 This topology enables maximum isolation between cloud pak deployments. Each cloud pak deployment can be upgraded independently.<br/>
@@ -46,7 +46,7 @@ This topology enables maximum isolation between cloud pak deployments. Each clou
 
 <br/>
 
-#### Cloud Paks and Namespaces for the Same Tenant with Shared Services.
+#### Cloud Paks and Namespaces for the Same Tenant with Shared Services. (B)
 A `Tenant` is a line of business.<br/> 
 
 Install Foundational Services operators and operands in one namespace.<br/>
@@ -75,7 +75,7 @@ Services for `Flink`, etc are created in Cloud Pak operator namespaces.<br/>
 
 <br/>
 
-#### Install One Cloudpak into 2 namespaces.
+#### Install One Cloudpak into 2 namespaces. (C)
 Install Foundational Services operators and Cloud Pak operator in one namespace.<br/>
 Install Foundational Sevices operands, and Cloud Pak operands in another namespace.<br/>
 
@@ -95,7 +95,7 @@ Cloud Pak CR is created in `tenant1-data` namespace.<br/>
 
 <br/>
 
-#### All Namespace Mode Installation with Single-Tenancy
+#### All Namespace Mode Installation with Single-Tenancy (D)
 In `All Namespace` mode the whole cluster is allocated for one tenant.<br/>
 
 All Cloud Pak operators and all Foundational Services operators will be installed in `all-namespaces` mode.<br/>
@@ -112,18 +112,32 @@ Operators in `openshift-operators` namespace are watching `ibm-common-services` 
 
 <br/>
 
-### Cloud Pak for Data Topologies.
+### Cloud Pak for Data Topologies. (E)
 Cloud Pak for data adopts `Operators - Operands - Data` topology.<br/>
+
+This topology is a combination of `Topology B` and `Topology C`.<br/>
+
+Foundational Services Operators and Foundational Services Operands are placed in different namespaces. (Topology *C*).<br/>
+
+Foundational Sevices Operands are shared by Cloud Pak Operands. (Topology *B*).<br/>
+
+Foundational Services Operators namespace: *operatorNamespace*=`cpd-operators`.<br/>
+Foundational Services Operand namespace: *servicesNamespace*=`cpd-instance`.<br/>
+
+Operators in `cpd-operators` are watching `cpd-instance` namespace and `cpd-instance-tethered1` and `cpd-instance-tethered2` namespaces.<br/>
+Secrets from `cpd-instance` namespace are copied to tehtered namespaces, for access to Common Services.<br/>
+
+![Control - Shared Services - Data](./images/cp4dataTopology.drawio.png)
 
 ![Control - Shared Services - Data](./images/cp4d-private-topology-detailed.svg)
 
 <br/>
 
 ### Cloud Pak Cluster Topology Considerations
+IBM recommends, that Cloud Pak namespaces be labeled and assigned to machine sets. Machine set must have 3 or more nodes<br/>
 
-It is recommended that cloud paks are installed in isolated namespaces and not share foundational services.<br/>
+Private topology is prefred to isolate all services by tenant (namespace).<br/>
+IBM recommends that each cloud pak instance is installed with it's own dedicated foundational services.<br/>
 
-
-> IBM recommends, that Cloud Pak namespaces be labeled and assigned to machine sets. Machine set must have 3 or more nodes<br/>
-> Private topology is prefred to isolate all services by tenant (namespace). IBM recommends that each cloud pak instance is installed with it's own dedicated foundational services.<br/>
-> Cloud Paks can be deployed to Machine Sets (grouping of worker nodes that scale up and down) to provide workload isolation for worker nodes. For clusters with in Cloud Availability Zones, worker nodes should be placed accross all zones.<br/>
+Cloud Paks can be deployed to Machine Sets (grouping of worker nodes that scale up and down) to provide workload isolation for worker nodes.<br/> 
+For clusters with in Cloud Availability Zones, worker nodes should be placed accross all zones.<br/>
