@@ -13,7 +13,7 @@ Other cloud paks (*Cloud Pak for Integration*, *Cloud Pak for Data*, *Cloud Pak 
 
 `Core` foundational services:<br/>
 ```
-- iam - Identity and Access Management
+- iam - Identity and Access Management, single sign-on and identiy management.
 - zen UI - Integrated UI, includes identity and role management to control access to installed capabilities.
 - licensing - Cloud Pak usage, *singleton*, only one instance of this operator in the cluster.
 - certificate management - manage and store tls certificates, *singleton*, only one instance of this operator in the cluster.
@@ -22,13 +22,13 @@ Other cloud paks (*Cloud Pak for Integration*, *Cloud Pak for Data*, *Cloud Pak 
 
 `Optional` foundational services:<br/>
 ```
-- db2
-- postgres
-- kafka
-- flink
-- elastic search
-- user data services
-- business teams service
+- db2 - database
+- postgres - database
+- kafka - data streaming
+- flink - event processing
+- elastic search - search
+- user data services - usage data collection
+- bts - business teams service, administer and manage global teams across business applications
 ```
 
 ### Foundational Services Operators.

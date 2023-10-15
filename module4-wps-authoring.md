@@ -64,7 +64,7 @@ There are pods for *Cloud Pak Foundational Services* that are always deployed. (
 Optional components and dependencies add more pods:<br/> 
 *Business Automation Insights*, *Flink*, *Kafka*, and *Elastic Search*.<br/>
 
-We can express *Workflow Process Service Authoring* requirements with the knowledge base from module 1.<br/>
+*Workflow Process Service Authoring* pattern knowledge base from module 1.<br/>
 
 ```
 //
@@ -145,9 +145,9 @@ zen-watcher                                     1/1     1            1          
 oc get StatefulSets
 
 NAME                              READY   AGE
-icp-mongodb                       1/1     7h6m  <- Foundational Service
-icp4adeploy-bastudio-deployment   1/1     6h25m <- Cloud Pak Service
-zen-minio                         3/3     6h57m <- Foundational Service
+icp-mongodb                       1/1     7h6m  <- Foundational Service Operand
+icp4adeploy-bastudio-deployment   1/1     6h25m <- Cloud Pak Operand
+zen-minio                         3/3     6h57m <- Foundational Service Operand
 ```
 
 There is one pod in this stateful set.<br/>
