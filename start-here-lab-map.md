@@ -84,8 +84,12 @@ oc get nodes
 ```
 You should see a list of cluster nodes.<br/>
 
-You can call `/cp4ba/set-cloudpak-project.sh <project-name>` to set cloudpak project.<br/>
-This script will set CLOUDPAK_PROJECT environment variable.<br/>
+Set CLOUDPAK_PROJECT environment variable.<br/>
+```
+cd /cp4ba
+. cloudpak-project.env
+```
+
 You can use this environment variable in the lab to change to the cloud pak project<br/>
 
 ```
