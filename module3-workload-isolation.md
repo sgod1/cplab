@@ -35,6 +35,8 @@ in Cloud Pak namespace.<br/>
 *One Namespace Request Example*.
 ![One Namespace Request](./images/1-namespace-request.drawio.png)
 
+<br/>
+
 #### Simple Isolation.
 By default, Cloud Pak operator is installed in `one namespace` mode with foundational services in the same namespace.<br/>
 
@@ -52,7 +54,7 @@ Foundational Services (`im`, `zen`) will be shared within a `Tenant`.<br/>
 
 Install Cloud Pak operators and operands in other namespaces.<br/>
 
-Because this is single tenant topology, versions and upgrades must be coordinated withing the business unit.<br/>
+Because this is single tenant topology, versions and upgrades must be coordinated within the business unit.<br/>
 
 Foundational Services Operators namespace: *operatorNamespace*=`tenant1-services-namespace`.<br/>
 Foundational Services Operand namespace: *servicesNamespace*=`tenant1-services-namespace`.<br/>
