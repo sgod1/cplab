@@ -3,7 +3,7 @@ We present a number of isolation topologies, and discuss the role foundational s
 
 Each topology will make a choice on the placement of foundational operators, and foundational services (operands), and this choice will enable a variety of workload isolation patterns.<br/>
 
-Examples of foundational services: `im`, `zen`, 'Flink`, `Elastic Search`, etc.<br/>
+Examples of foundational services: `im`, `zen`, `Flink`, `Elastic Search`, etc.<br/>
 
 Ask about Foundational Services:<br/>
 - What is the namespace for Foundational Services operators? Make a note of *operatorNamespace* value.<br/>
@@ -36,19 +36,36 @@ in Cloud Pak namespace.<br/>
 ![One Namespace Request](./images/1-namespace-request.drawio.png)
 
 #### Simple Isolation.
-By default, Cloud Pak operator is installed in 'one namespace' mode with foundational services in the same namespace.<br/>
+By default, Cloud Pak operator is installed in `one namespace` mode with foundational services in the same namespace.<br/>
 
 This topology enables maximum isolation between cloud pak deployments. Each cloud pak deployment can be upgraded independently.<br/>
 
 ![Simple Isolation](./images/2-namespace-request.drawio.png)
 
-#### Cloud Paks and Namespaces for the Same Tenant with Shared Services
-`Tenant` is a line of business. Foundational services and operators are installed in shared namespace.<br/>
-There is only one instance of `im` and `zen` deployments shared by `tenant` cloud paks.<br/>
-Services that are not shared, are created in the requestor namespace.<br/>
-This topology requires compatible cloud pak versions with respect to foundational services.<br/>
-To enable this topology, foundational services namespace must be created and configured first.<br/>
+#### Cloud Paks and Namespaces for the Same Tenant with Shared Services.
+A `Tenant` is a line of business.<br/> 
+
+Install Foundational Services operators and operands in one namespace.<br/>
+Foundational Services (`im`, `zen`) will be shared within a `Tenant`.<br/>
+
+Install Cloud Pak operators and operands in other namespaces.<br/>
+
 Because this is single tenant topology, versions and upgrades must be coordinated withing the business unit.<br/>
+
+Foundational Services Operators namespace: *operatorNamespace*=`tenant1-services-namespace`.<br/>
+Foundational Services Operand namespace: *servicesNamespace*=`tenant1-services-namespace`.<br/>
+
+Cloud Pak for Business Automation namespace: `tenant1-cp4ba`<br/>
+Cloud Pak for Integration namespace: `tenant1-cp4i`<br/>
+
+Operators in `tenant1-services` must be able to watch `tenant1-cp4ba` and `tenant1-cp4i` namespaces.<br/>
+This is setup by `NamespaceScope operator`.<br/>
+
+The reverse is not true: operators in `tenant1-cp4ba` and `tenant1-cp4i` namespaces are not watching `tenant1-services` namespace.<br/>
+
+Shared services `im` and `zen` are created only once in `tenant1-services` namespace.<br/>
+
+Services for `Flink`, etc are created in Cloud Pak operator namespaces.<br/>
 
 ![Multi Namespace](./images/multi-namespacesx.drawio.png)
 
