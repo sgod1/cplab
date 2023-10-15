@@ -107,16 +107,17 @@ Follow `deploy-cp4ba-cr.md` to complete module 2.<br/>
 
 #### Module 3.
 Module 3 is about `Foundational Services`.<br/>
-This module discusses Foundational Operators and Services, ODLM, and on-demand dependecy resolution.<br/>
-This module concludes with multi-tenancy and workload isolation.<br/>
+Module 3a is about multi-tenancy and workload isolation.<br/>
+Optional Module 3b is about Foundational Operators and Services, ODLM, and on-demand dependecy resolution.<br/>
 
-Follow `module3-foundational-services.md` to complete module 3.<br/>
+Follow `module3a-workload-isolation.md` to complete module 3.<br/>
+
+Follow optional `module3b-foundational-services.md`.<br/>
 
 #### Module 4.
 Module 4 is a brief review of deployed CP4BA capability `Workflow Process Service Authoring`.<br/>
 
-Follow `workflow-process-service-authoring.md` to complete module 4.<br/>
+Follow `module4-wps-authoring.md` to complete module 4.<br/>
 
 #### Module 5.
-Module 5 is about cloud pak upgrade.
-
+Module 5 is optional module about cloud pak upgrade.<br/>
