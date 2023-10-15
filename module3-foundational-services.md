@@ -67,7 +67,9 @@ As we discussed earlier, when an operator is installed, dependent operators are 
 
 In turn, `ibm-common-services` operator depends on another operator, `operand-deployment-lifecycle-manager` operator, *ODLM*.<br/>
 
-> Dependency chain: `cloud-pak operator` -> `ibm-common-services-operator` -> `ODLM`.<br/>
+> Bootstrap chain: `cloud-pak operator` -> `ibm-common-services-operator` -> `ODLM`.<br/>
+
+![Foundational Services Bootstrap Chain](./images/1-namespace-basic.drawio.png)
 
 An *operator* is acting on it's *operands*. CR is a *trigger*. <br/>
 When operator detects CR, it will act on it's *operands* to reconsile state with CR requirements.<br/> 
