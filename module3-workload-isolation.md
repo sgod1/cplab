@@ -129,6 +129,8 @@ Secrets from `cpd-instance` namespace are copied to tehtered namespaces, for acc
 
 ![Control - Shared Services - Data](./images/cp4dataTopology.drawio.png)
 
+<br/>
+
 ![Control - Shared Services - Data](./images/cp4d-private-topology-detailed.svg)
 
 <br/>
