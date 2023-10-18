@@ -169,7 +169,7 @@ Optional parameters are not included, and set to default values by cloud pak ope
 
 ```
 cd $PATTERNS
-cat `ibm_cp4a_cr_production_workflow.yaml`
+cat ibm_cp4a_cr_production_workflow.yaml
 ```
 
 > Lab step.<br/>
@@ -179,7 +179,7 @@ Optional parameters are not included, and set to default values by cloud pak ope
 
 ```
 cd $PATTERNS
-cat `ibm_cp4a_cr_production_content.yaml`
+cat ibm_cp4a_cr_production_content.yaml
 ```
 It is clear that we need a way to understand and manage pattern CR's.<br/>
 

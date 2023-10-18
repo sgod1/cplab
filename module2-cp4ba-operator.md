@@ -6,7 +6,7 @@ Run a script out of git repo to install CP4BA operator.(*Required*)<br/>
 Pass your cloud pak project name as an argument to the script.<br/>
 
 ```
-$GIT_ROOT/cloudpak-operators/install-cp4ba-operator.sh $CLOUDPAK_PROJECT
+$GIT_ROOT/cloudpak-operators/install-cp4ba-operator.sh cp4ba1
 ```
 
 Script executes standard steps to install CP4BA operator to create catalog sources and operator subscription.<br/>
@@ -23,7 +23,7 @@ Choice of operator subscription mode plays important role in multi tenancy and w
 
 > Query installed operators.<br/>
 ```
-oc project $CLOUDPAK_PROJECT
+oc project cp4ba1
 
 oc get csv
 ```
@@ -92,7 +92,7 @@ cd $SCRIPTS/kustomize
 
 oc kustomize overlay/prod > kustomized-cr-prod.yaml
 
-oc project $CLOUDPAK_PROJECT
+oc project cp4ba1
 
 oc apply -f kustomized-cr-prod.yaml 
 icp4acluster.icp4a.ibm.com/icp4adeploy created
