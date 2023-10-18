@@ -33,6 +33,11 @@ will trigger `Flink` operator install by *ODLM* and must create `Flink` CR thems
 in Cloud Pak namespace.<br/>
 
 *One Namespace Request Example*.
+
+Foundational Services Operators namespace: *operatorNamespace*=`tenant`.<br/>
+Foundational Services Operand namespace: *servicesNamespace*=`tenant`.<br/>
+<br/>
+
 ![One Namespace Request](./images/1-namespace-request.drawio.png)
 
 <br/>
